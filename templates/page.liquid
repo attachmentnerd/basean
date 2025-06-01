@@ -1,0 +1,35 @@
+{% comment %}
+  Page Template
+  Displays static pages with optional sidebar
+{% endcomment %}
+
+<div class="page-wrapper">
+  <div class="container">
+    {% if page.image %}
+      <div class="page-hero">
+        <img src="{{ page.image | image_url: 'master' }}" alt="{{ page.title }}" class="page-hero__image">
+      </div>
+    {% endif %}
+    
+    <div class="page-content {% if settings.show_page_sidebar %}has-sidebar{% endif %}">
+      <article class="page-main">
+        <header class="page-header">
+          <h1 class="page-title">{{ page.title }}</h1>
+          {% if page.subtitle %}
+            <p class="page-subtitle">{{ page.subtitle }}</p>
+          {% endif %}
+        </header>
+        
+        <div class="page-body rte">
+          {{ page.content }}
+        </div>
+      </article>
+      
+      {% if settings.show_page_sidebar %}
+        <aside class="page-sidebar">
+          {% section 'page-sidebar' %}
+        </aside>
+      {% endif %}
+    </div>
+  </div>
+</div>

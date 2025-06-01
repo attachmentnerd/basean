@@ -1,0 +1,50 @@
+{% comment %}
+  Pagination Snippet
+  Usage: {% include 'pagination', paginate: paginate %}
+{% endcomment %}
+
+{% if paginate.pages > 1 %}
+  <nav class="pagination" aria-label="Pagination">
+    <ul class="pagination__list">
+      {% if paginate.previous %}
+        <li class="pagination__item">
+          <a href="{{ paginate.previous.url }}" class="pagination__link pagination__link--prev" aria-label="Previous page">
+            {% include 'icon', icon: 'chevron-left', size: 'small' %}
+            <span>Previous</span>
+          </a>
+        </li>
+      {% endif %}
+      
+      {% for part in paginate.parts %}
+        {% if part.is_link %}
+          <li class="pagination__item">
+            <a href="{{ part.url }}" class="pagination__link">{{ part.title }}</a>
+          </li>
+        {% else %}
+          {% if part.title == paginate.current_page %}
+            <li class="pagination__item">
+              <span class="pagination__current" aria-current="page">{{ part.title }}</span>
+            </li>
+          {% else %}
+            <li class="pagination__item">
+              <span class="pagination__ellipsis">{{ part.title }}</span>
+            </li>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+      
+      {% if paginate.next %}
+        <li class="pagination__item">
+          <a href="{{ paginate.next.url }}" class="pagination__link pagination__link--next" aria-label="Next page">
+            <span>Next</span>
+            {% include 'icon', icon: 'chevron-right', size: 'small' %}
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+    
+    <p class="pagination__info">
+      Page {{ paginate.current_page }} of {{ paginate.pages }}
+    </p>
+  </nav>
+{% endif %}

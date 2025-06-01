@@ -1,0 +1,49 @@
+{% comment %}
+  Blog Template
+  Displays blog posts with filtering and pagination
+{% endcomment %}
+
+<div class="blog-wrapper">
+  {% section 'blog-header' %}
+  
+  <div class="container">
+    <div class="blog-content {% if settings.show_blog_sidebar %}has-sidebar{% endif %}">
+      <div class="blog-main">
+        {% if blog.categories.size > 0 %}
+          <nav class="blog-categories">
+            <ul class="category-list">
+              <li class="category-item">
+                <a href="{{ blog.url }}" class="category-link {% unless current_category %}is-active{% endunless %}">
+                  All Posts
+                </a>
+              </li>
+              {% for category in blog.categories %}
+                <li class="category-item">
+                  <a href="{{ category.url }}" class="category-link {% if current_category.id == category.id %}is-active{% endif %}">
+                    {{ category.title }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </nav>
+        {% endif %}
+        
+        <div class="blog-posts">
+          {% for post in blog.posts %}
+            {% render 'post-card', post: post %}
+          {% endfor %}
+        </div>
+        
+        {% if paginate.pages > 1 %}
+          {% render 'pagination', paginate: paginate %}
+        {% endif %}
+      </div>
+      
+      {% if settings.show_blog_sidebar %}
+        <aside class="blog-sidebar">
+          {% section 'blog-sidebar' %}
+        </aside>
+      {% endif %}
+    </div>
+  </div>
+</div>

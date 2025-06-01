@@ -1,0 +1,194 @@
+<div class="footer">
+  <div class="container">
+    <div class="footer-main">
+      <!-- Brand Column -->
+      <div class="footer-brand">
+        <a href="{{ routes.root_url }}" class="footer-logo" kjb-settings-id="{{ 'footer_logo_link' | settings_id: section: section }}">
+          {% if section.settings.footer_logo %}
+            <img src="{{ section.settings.footer_logo | image_url: 'x50' }}" alt="{{ shop.name }}" class="footer-logo-image" kjb-settings-id="{{ 'footer_logo' | settings_id: section: section }}">
+          {% else %}
+            <span class="footer-logo-text" kjb-settings-id="{{ 'footer_logo_text' | settings_id: section: section }}">{{ shop.name }}</span>
+          {% endif %}
+        </a>
+        
+        {% if section.settings.footer_description %}
+          <p class="footer-description" kjb-settings-id="{{ 'footer_description' | settings_id: section: section }}">{{ section.settings.footer_description }}</p>
+        {% endif %}
+        
+        {% if section.settings.show_social %}
+          <div class="footer-social">
+            {% if settings.social_facebook %}
+              <a href="{{ settings.social_facebook }}" class="social-link" aria-label="Facebook">
+                {% include 'icon', icon: 'facebook' %}
+              </a>
+            {% endif %}
+            {% if settings.social_twitter %}
+              <a href="{{ settings.social_twitter }}" class="social-link" aria-label="Twitter">
+                {% include 'icon', icon: 'twitter' %}
+              </a>
+            {% endif %}
+            {% if settings.social_instagram %}
+              <a href="{{ settings.social_instagram }}" class="social-link" aria-label="Instagram">
+                {% include 'icon', icon: 'instagram' %}
+              </a>
+            {% endif %}
+            {% if settings.social_youtube %}
+              <a href="{{ settings.social_youtube }}" class="social-link" aria-label="YouTube">
+                {% include 'icon', icon: 'youtube' %}
+              </a>
+            {% endif %}
+            {% if settings.social_linkedin %}
+              <a href="{{ settings.social_linkedin }}" class="social-link" aria-label="LinkedIn">
+                {% include 'icon', icon: 'linkedin' %}
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+      
+      <!-- Footer Menus -->
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'menu' %}
+            <div class="footer-menu">
+              <h3 class="footer-menu-title" kjb-settings-id="{{ 'title' | settings_id: section: section, block: block }}">{{ block.settings.title }}</h3>
+              <ul class="footer-menu-list">
+                {% for link in block.settings.menu.links %}
+                  <li class="footer-menu-item">
+                    <a href="{{ link.url }}" class="footer-menu-link">{{ link.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+            
+          {% when 'newsletter' %}
+            <div class="footer-newsletter">
+              <h3 class="footer-menu-title" kjb-settings-id="{{ 'title' | settings_id: section: section, block: block }}">{{ block.settings.title }}</h3>
+              <p class="newsletter-description" kjb-settings-id="{{ 'description' | settings_id: section: section, block: block }}">{{ block.settings.description }}</p>
+              
+              <form action="{{ routes.newsletter_url }}" method="post" class="newsletter-form">
+                <div class="form-field">
+                  <input type="email" 
+                         name="email" 
+                         placeholder="{{ block.settings.placeholder }}"
+                         kjb-settings-id="{{ 'placeholder' | settings_id: section: section, block: block }}" 
+                         class="newsletter-input" 
+                         required>
+                  <button type="submit" class="newsletter-button">
+                    {% include 'icon', icon: 'arrow-right' %}
+                  </button>
+                </div>
+              </form>
+            </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+    
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <div class="footer-copyright">
+        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. <span kjb-settings-id="{{ 'copyright_text' | settings_id: section: section }}">{{ section.settings.copyright_text }}</span>
+      </div>
+      
+      <nav class="footer-legal">
+        {% if section.settings.footer_legal_menu %}
+          {% for link in section.settings.footer_legal_menu.links %}
+            <a href="{{ link.url }}" class="legal-link">{{ link.title }}</a>
+          {% endfor %}
+        {% endif %}
+      </nav>
+      
+      {% if section.settings.show_payment_icons %}
+        <div class="footer-payments">
+          {% include 'payment-icons' %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Footer",
+  "elements": [
+    {
+      "type": "image_picker",
+      "id": "footer_logo",
+      "label": "Footer logo"
+    },
+    {
+      "type": "textarea",
+      "id": "footer_description",
+      "label": "Footer description",
+      "default": "Empowering parents with resources, community, and support for their parenting journey."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "Show social icons",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright text",
+      "default": "All rights reserved."
+    },
+    {
+      "type": "link_list",
+      "id": "footer_legal_menu",
+      "label": "Legal menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu",
+      "elements": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Quick Links"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "elements": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Stay Connected"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "Get parenting tips and exclusive offers delivered to your inbox."
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Input placeholder",
+          "default": "Enter your email"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

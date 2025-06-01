@@ -1,0 +1,30 @@
+{% comment %}
+  Library Template
+  Member's course library
+{% endcomment %}
+
+<div class="library-wrapper">
+  <div class="container">
+    <h1 class="library-title">My Library</h1>
+    
+    {% if member %}
+      {% if member.courses.size > 0 %}
+        <div class="courses-grid">
+          {% for course in member.courses %}
+            {% include 'course-card', course: course, show_progress: true %}
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-state">
+          <p>You don't have any courses yet.</p>
+          <a href="{{ routes.products_url }}" class="btn btn--primary">Browse Courses</a>
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="login-prompt">
+        <p>Please log in to view your library.</p>
+        <a href="{{ routes.account_login_url }}" class="btn btn--primary">Log In</a>
+      </div>
+    {% endif %}
+  </div>
+</div>

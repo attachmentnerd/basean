@@ -1,0 +1,47 @@
+{% comment %}
+  Product Card Snippet
+  Usage: {% include 'product-card', product: product %}
+{% endcomment %}
+
+<article class="product-card">
+  <a href="{{ product.url }}" class="product-card__link">
+    <div class="product-card__media">
+      {% if product.featured_image %}
+        <img src="{{ product.featured_image | image_url: '400x400' }}" 
+             alt="{{ product.title }}" 
+             class="product-card__image"
+             loading="lazy">
+      {% else %}
+        <div class="product-card__placeholder">
+          {% include 'icon', icon: 'package', size: 'xlarge' %}
+        </div>
+      {% endif %}
+      
+      {% if product.compare_at_price > product.price %}
+        <span class="product-card__badge">Sale</span>
+      {% elsif product.tags contains 'new' %}
+        <span class="product-card__badge product-card__badge--new">New</span>
+      {% endif %}
+      
+      <div class="product-card__overlay">
+        <span class="btn btn--primary btn--small">View Details</span>
+      </div>
+    </div>
+    
+    <div class="product-card__info">
+      <h3 class="product-card__title">{{ product.title }}</h3>
+      
+      {% if product.subtitle %}
+        <p class="product-card__subtitle">{{ product.subtitle }}</p>
+      {% endif %}
+      
+      <div class="product-card__price">
+        {% if product.compare_at_price > product.price %}
+          <span class="price-compare">{{ product.compare_at_price | money }}</span>
+        {% endif %}
+        <span class="price-current">{{ product.price | money }}</span>
+      </div>
+      
+    </div>
+  </a>
+</article>

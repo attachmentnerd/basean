@@ -1,0 +1,48 @@
+<div class="blog-header">
+  <div class="container">
+    <h1 class="blog-header__title">{{ section.settings.title | default: blog.title }}</h1>
+    
+    {% if section.settings.description %}
+      <p class="blog-header__description">{{ section.settings.description }}</p>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  .blog-header {
+    padding: var(--space-2xl) 0;
+    text-align: center;
+    background-color: var(--color-surface);
+  }
+  
+  .blog-header__title {
+    margin-bottom: var(--space-sm);
+    font-size: 3rem;
+    font-weight: 700;
+  }
+  
+  .blog-header__description {
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 1.25rem;
+    color: var(--color-text-light);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Blog Header",
+  "elements": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    }
+  ]
+}
+{% endschema %}

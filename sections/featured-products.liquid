@@ -1,0 +1,106 @@
+<section class="featured-products">
+  <div class="container">
+    <header class="section-header">
+      <h2 class="section-title" kjb-settings-id="{{ 'title' | settings_id: section: section }}">{{ section.settings.title }}</h2>
+      {% if section.settings.description %}
+        <p class="section-description" kjb-settings-id="{{ 'description' | settings_id: section: section }}">{{ section.settings.description }}</p>
+      {% endif %}
+    </header>
+    
+    <div class="products-slider" data-products-slider>
+      <div class="products-track">
+        {% if section.settings.category %}
+          {% for product in section.settings.category.products limit: section.settings.products_limit %}
+            <div class="product-slide">
+              {% include 'product-card', product: product %}
+            </div>
+          {% endfor %}
+        {% elsif products %}
+          {% for product in products limit: section.settings.products_limit %}
+            <div class="product-slide">
+              {% include 'product-card', product: product %}
+            </div>
+          {% endfor %}
+        {% else %}
+          {% for i in (1..section.settings.products_limit) %}
+            <div class="product-slide">
+              {% include 'product-card-placeholder' %}
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+      
+      {% if section.settings.show_arrows %}
+        <button class="slider-arrow slider-arrow--prev" data-slider-prev aria-label="Previous">
+          {% include 'icon', icon: 'chevron-left' %}
+        </button>
+        <button class="slider-arrow slider-arrow--next" data-slider-next aria-label="Next">
+          {% include 'icon', icon: 'chevron-right' %}
+        </button>
+      {% endif %}
+    </div>
+    
+    {% if section.settings.show_view_all %}
+      <div class="section-footer">
+        <a href="{% if section.settings.category %}{{ section.settings.category.url }}{% else %}{{ routes.products_url }}{% endif %}" class="btn btn--secondary">
+          View All Products
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "elements": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Featured Products"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "category",
+      "label": "Category",
+      "options": [
+        { "value": "", "label": "All Products" }
+      ],
+      "default": ""
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "label": "Number of products",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show navigation arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View all' button",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Products",
+      "category": "Content"
+    }
+  ]
+}
+{% endschema %}

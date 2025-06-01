@@ -1,0 +1,153 @@
+<section class="testimonials testimonials--{{ section.settings.layout }}">
+  <div class="container">
+    <header class="section-header">
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+      {% if section.settings.description %}
+        <p class="section-description">{{ section.settings.description }}</p>
+      {% endif %}
+    </header>
+    
+    <div class="testimonials-wrapper">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'testimonial' %}
+            <article class="testimonial">
+              <div class="testimonial-content">
+                {% if section.settings.show_stars %}
+                  <div class="testimonial-rating">
+                    {% for i in (1..5) %}
+                      {% include 'icon', icon: 'star', class: 'star-icon' %}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+                
+                <blockquote class="testimonial-quote">
+                  "{{ block.settings.quote }}"
+                </blockquote>
+                
+                <footer class="testimonial-footer">
+                  {% if block.settings.author_image %}
+                    <img src="{{ block.settings.author_image | image_url: '80x80' }}" 
+                         alt="{{ block.settings.author_name }}" 
+                         class="testimonial-avatar">
+                  {% endif %}
+                  
+                  <div class="testimonial-author">
+                    <cite class="author-name">{{ block.settings.author_name }}</cite>
+                    {% if block.settings.author_title %}
+                      <span class="author-title">{{ block.settings.author_title }}</span>
+                    {% endif %}
+                  </div>
+                </footer>
+              </div>
+            </article>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  #section-{{ section.id }} {
+    background-color: {{ section.settings.background_color }};
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "elements": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "What Parents Are Saying"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Description",
+      "default": "Join thousands of families who have transformed their parenting journey"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Grid"
+        },
+        {
+          "value": "carousel",
+          "label": "Carousel"
+        },
+        {
+          "value": "masonry",
+          "label": "Masonry"
+        }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stars",
+      "label": "Show star rating",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f9fafb"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "elements": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "This program has completely changed how I connect with my children. The strategies are practical and the support is incredible."
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author name",
+          "default": "Sarah Johnson"
+        },
+        {
+          "type": "text",
+          "id": "author_title",
+          "label": "Author title",
+          "default": "Mother of 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "author_image",
+          "label": "Author image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

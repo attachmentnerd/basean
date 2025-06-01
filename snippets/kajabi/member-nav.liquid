@@ -1,0 +1,51 @@
+{% comment %}
+  Kajabi Member Navigation
+  Display member-specific navigation items
+{% endcomment %}
+
+{% if member %}
+  <nav class="member-nav">
+    <ul class="member-nav__list">
+      <li class="member-nav__item">
+        <a href="{{ routes.account_dashboard_url }}" class="member-nav__link {% if template == 'account' %}is-active{% endif %}">
+          {% include 'icon', icon: 'home', size: 'small' %}
+          <span>Dashboard</span>
+        </a>
+      </li>
+      
+      {% if member.has_active_courses %}
+        <li class="member-nav__item">
+          <a href="{{ routes.account_courses_url }}" class="member-nav__link {% if template == 'courses' %}is-active{% endif %}">
+            {% include 'icon', icon: 'book-open', size: 'small' %}
+            <span>My Courses</span>
+          </a>
+        </li>
+      {% endif %}
+      
+      {% if member.has_community_access %}
+        <li class="member-nav__item">
+          <a href="{{ routes.community_url }}" class="member-nav__link">
+            {% include 'icon', icon: 'users', size: 'small' %}
+            <span>Community</span>
+          </a>
+        </li>
+      {% endif %}
+      
+      {% if member.has_downloads %}
+        <li class="member-nav__item">
+          <a href="{{ routes.account_downloads_url }}" class="member-nav__link {% if template == 'downloads' %}is-active{% endif %}">
+            {% include 'icon', icon: 'download', size: 'small' %}
+            <span>Downloads</span>
+          </a>
+        </li>
+      {% endif %}
+      
+      <li class="member-nav__item">
+        <a href="{{ routes.account_settings_url }}" class="member-nav__link {% if template == 'settings' %}is-active{% endif %}">
+          {% include 'icon', icon: 'settings', size: 'small' %}
+          <span>Settings</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+{% endif %}

@@ -1,0 +1,50 @@
+{% comment %}
+  Post Card Snippet
+  Usage: {% include 'post-card', post: post %}
+{% endcomment %}
+
+<article class="post-card">
+  <a href="{{ post.url }}" class="post-card__link">
+    {% if post.featured_image %}
+      <div class="post-card__media">
+        <img src="{{ post.featured_image | image_url: '400x300' }}" 
+             alt="{{ post.title }}" 
+             class="post-card__image"
+             loading="lazy">
+      </div>
+    {% endif %}
+    
+    <div class="post-card__content">
+      {% if post.categories.size > 0 %}
+        <div class="post-card__meta">
+          <span class="post-card__category">{{ post.categories.first.title }}</span>
+          <span class="post-card__divider">•</span>
+          <time class="post-card__date">{{ post.published_at | date: '%b %d, %Y' }}</time>
+        </div>
+      {% else %}
+        <time class="post-card__date">{{ post.published_at | date: '%B %d, %Y' }}</time>
+      {% endif %}
+      
+      <h3 class="post-card__title">{{ post.title }}</h3>
+      
+      {% if post.excerpt %}
+        <p class="post-card__excerpt">{{ post.excerpt | strip_html | truncate: 120 }}</p>
+      {% endif %}
+      
+      <div class="post-card__footer">
+        {% if post.author %}
+          <div class="post-card__author">
+            {% if post.author.image %}
+              <img src="{{ post.author.image | image_url: '32x32' }}" 
+                   alt="{{ post.author.name }}" 
+                   class="author-avatar">
+            {% endif %}
+            <span class="author-name">{{ post.author.name }}</span>
+          </div>
+        {% endif %}
+        
+        <span class="post-card__read-time">{{ post.reading_time }} min read</span>
+      </div>
+    </div>
+  </a>
+</article>

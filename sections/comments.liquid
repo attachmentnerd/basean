@@ -1,0 +1,271 @@
+<div class="comments-section">
+  <div class="comments-header">
+    <h2 class="comments-title">
+      {% if post.comments_count > 0 %}
+        {{ post.comments_count }} {% if post.comments_count == 1 %}Comment{% else %}Comments{% endif %}
+      {% else %}
+        Leave a Comment
+      {% endif %}
+    </h2>
+  </div>
+  
+  {% if post.comments.size > 0 %}
+    <div class="comments-list">
+      {% for comment in post.comments %}
+        <article class="comment" id="comment-{{ comment.id }}">
+          <div class="comment-avatar">
+            {% if comment.author.avatar %}
+              <img src="{{ comment.author.avatar | image_url: '80x80' }}" alt="{{ comment.author.name }}">
+            {% else %}
+              <div class="comment-avatar-placeholder">
+                {{ comment.author.name | slice: 0 | upcase }}
+              </div>
+            {% endif %}
+          </div>
+          
+          <div class="comment-content">
+            <header class="comment-header">
+              <h3 class="comment-author">{{ comment.author.name }}</h3>
+              <time class="comment-date">{{ comment.created_at | date: '%B %d, %Y at %I:%M %p' }}</time>
+            </header>
+            
+            <div class="comment-body">
+              {{ comment.content }}
+            </div>
+            
+            {% if section.settings.show_reply_button %}
+              <button class="comment-reply" data-reply-to="{{ comment.id }}">Reply</button>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+    
+    {% if post.comments_paginate %}
+      {% include 'pagination', paginate: post.comments_paginate %}
+    {% endif %}
+  {% endif %}
+  
+  {% if post.comments_enabled %}
+    <div class="comment-form-wrapper">
+      <h3 class="comment-form-title">Leave a Comment</h3>
+      
+      {% if post.moderated %}
+        <p class="comment-form-notice">
+          Your comment will be published after moderation.
+        </p>
+      {% endif %}
+      
+      <form action="{{ post.url }}#comment-form" method="post" class="comment-form" id="comment-form">
+        {% if form.errors %}
+          <div class="form-errors">
+            {{ form.errors | default_errors }}
+          </div>
+        {% endif %}
+        
+        <div class="form-row">
+          <div class="form-field">
+            <label for="comment-author-name">Name</label>
+            <input type="text" 
+                   id="comment-author-name" 
+                   name="comment[author]" 
+                   value="{{ form.author }}" 
+                   required>
+          </div>
+          
+          <div class="form-field">
+            <label for="comment-author-email">Email</label>
+            <input type="email" 
+                   id="comment-author-email" 
+                   name="comment[email]" 
+                   value="{{ form.email }}" 
+                   required>
+          </div>
+        </div>
+        
+        <div class="form-field">
+          <label for="comment-body">Comment</label>
+          <textarea id="comment-body" 
+                    name="comment[body]" 
+                    rows="5" 
+                    required>{{ form.body }}</textarea>
+        </div>
+        
+        <div class="form-actions">
+          <button type="submit" class="btn btn--primary">Post Comment</button>
+        </div>
+      </form>
+      
+      {% if form.posted_successfully? %}
+        <p class="comment-success">
+          Thank you for your comment! 
+          {% if post.moderated %}
+            It will be published after moderation.
+          {% endif %}
+        </p>
+      {% endif %}
+    </div>
+  {% else %}
+    <p class="comments-disabled">Comments are closed for this post.</p>
+  {% endif %}
+</div>
+
+<style>
+  .comments-section {
+    margin-top: var(--space-3xl);
+    padding-top: var(--space-2xl);
+    border-top: 1px solid var(--color-border);
+  }
+  
+  .comments-header {
+    margin-bottom: var(--space-xl);
+  }
+  
+  .comments-title {
+    font-size: 2rem;
+    font-weight: 600;
+  }
+  
+  .comments-list {
+    margin-bottom: var(--space-2xl);
+  }
+  
+  .comment {
+    display: flex;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .comment:last-child {
+    border-bottom: none;
+  }
+  
+  .comment-avatar {
+    flex-shrink: 0;
+  }
+  
+  .comment-avatar img {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-full);
+  }
+  
+  .comment-avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
+    background-color: var(--color-primary);
+    border-radius: var(--radius-full);
+  }
+  
+  .comment-content {
+    flex: 1;
+  }
+  
+  .comment-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+  }
+  
+  .comment-author {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  
+  .comment-date {
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+  }
+  
+  .comment-body {
+    margin-bottom: var(--space-sm);
+    line-height: 1.6;
+  }
+  
+  .comment-reply {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+    color: var(--color-primary);
+    background: none;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+  
+  .comment-reply:hover {
+    color: white;
+    background-color: var(--color-primary);
+  }
+  
+  .comment-form-wrapper {
+    max-width: 600px;
+  }
+  
+  .comment-form-title {
+    margin-bottom: var(--space-md);
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  
+  .comment-form-notice {
+    margin-bottom: var(--space-md);
+    padding: var(--space-sm);
+    font-size: 0.875rem;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-md);
+  }
+  
+  .comment-form .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+  }
+  
+  @media (max-width: 640px) {
+    .comment-form .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .comment-success {
+    margin-top: var(--space-md);
+    padding: var(--space-md);
+    color: #059669;
+    background-color: #d1fae5;
+    border-radius: var(--radius-md);
+  }
+  
+  .comments-disabled {
+    padding: var(--space-lg);
+    text-align: center;
+    color: var(--color-text-light);
+    background-color: var(--color-surface);
+    border-radius: var(--radius-md);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Comments",
+  "elements": [
+    {
+      "type": "checkbox",
+      "id": "show_reply_button",
+      "label": "Show reply button",
+      "default": false,
+      "info": "Requires custom JavaScript implementation"
+    }
+  ]
+}
+{% endschema %}

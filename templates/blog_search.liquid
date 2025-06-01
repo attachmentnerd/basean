@@ -1,0 +1,33 @@
+{% comment %}
+  Blog Search Template
+  Search results for blog posts
+{% endcomment %}
+
+<div class="blog-search">
+  <div class="container">
+    <h1 class="search-title">Search Results</h1>
+    
+    {% if search.performed %}
+      <p class="search-query">
+        Results for: <strong>{{ search.terms }}</strong>
+      </p>
+      
+      {% if search.results_count > 0 %}
+        <div class="search-results">
+          {% for item in search.results %}
+            {% include 'post-card', post: item %}
+          {% endfor %}
+        </div>
+        
+        {% if paginate.pages > 1 %}
+          {% include 'pagination', paginate: paginate %}
+        {% endif %}
+      {% else %}
+        <div class="no-results">
+          <p>No results found for "{{ search.terms }}"</p>
+          <a href="{{ routes.blog_url }}" class="btn btn--secondary">Back to Blog</a>
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>

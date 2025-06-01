@@ -1,0 +1,522 @@
+/* ==========================================================================
+   Custom Site Styles - Checkout & Member Pages
+   ========================================================================== */
+
+/* ==========================================================================
+   Kajabi Page Overrides
+   ========================================================================== */
+
+/* Reset Kajabi Default Styles */
+.kajabi-checkout-page *,
+.kajabi-member-page * {
+  box-sizing: border-box;
+}
+
+/* Apply Custom Font Stack */
+.kajabi-checkout-page,
+.kajabi-member-page {
+  font-family: var(--font-primary);
+  color: var(--color-text);
+  line-height: var(--line-height-normal);
+}
+
+/* ==========================================================================
+   Checkout Page Styles
+   ========================================================================== */
+
+/* Checkout Container */
+.checkout-container {
+  max-width: var(--container-lg);
+  margin: 0 auto;
+  padding: var(--space-2xl) var(--space-lg);
+}
+
+/* Checkout Header */
+.checkout-header {
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+}
+
+.checkout-header h1 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  margin-bottom: var(--space-md);
+}
+
+.checkout-header p {
+  font-size: var(--font-size-lg);
+  color: var(--color-gray-600);
+}
+
+/* Checkout Form */
+.checkout-form {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.checkout-form-section {
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-xl);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.checkout-form-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.checkout-form-section h2 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  margin-bottom: var(--space-lg);
+}
+
+/* Order Summary */
+.order-summary {
+  background: var(--color-gray-100);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.order-summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm) 0;
+}
+
+.order-summary-item:not(:last-child) {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.order-summary-total {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  padding-top: var(--space-md);
+  border-top: 2px solid var(--color-primary);
+}
+
+/* Payment Methods */
+.payment-methods {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.payment-method {
+  display: flex;
+  align-items: center;
+  padding: var(--space-md);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.payment-method:hover {
+  border-color: var(--color-primary-light);
+}
+
+.payment-method.selected {
+  border-color: var(--color-primary);
+  background: rgba(var(--color-primary-rgb), 0.05);
+}
+
+.payment-method input[type="radio"] {
+  margin-right: var(--space-md);
+}
+
+/* Security Badge */
+.security-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+  padding: var(--space-md);
+  background: var(--color-gray-100);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
+}
+
+.security-badge svg {
+  width: 20px;
+  height: 20px;
+  color: var(--color-success);
+}
+
+/* ==========================================================================
+   Member Dashboard Styles
+   ========================================================================== */
+
+/* Dashboard Layout */
+.member-dashboard {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: var(--space-xl);
+  max-width: var(--container-2xl);
+  margin: 0 auto;
+  padding: var(--space-2xl) var(--space-lg);
+}
+
+@media (max-width: 768px) {
+  .member-dashboard {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Sidebar Navigation */
+.member-sidebar {
+  background: var(--color-gray-100);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  height: fit-content;
+  position: sticky;
+  top: var(--space-lg);
+}
+
+.member-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.member-nav-item {
+  margin-bottom: var(--space-xs);
+}
+
+.member-nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  color: var(--color-text);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.member-nav-link:hover {
+  background: var(--color-gray-200);
+}
+
+.member-nav-link.active {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* Content Area */
+.member-content {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  min-height: 600px;
+}
+
+.member-content-header {
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.member-content-header h1 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  margin: 0;
+}
+
+/* Course Grid */
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-lg);
+}
+
+.course-card {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all var(--transition-base);
+  cursor: pointer;
+}
+
+.course-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.course-card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.course-card-content {
+  padding: var(--space-lg);
+}
+
+.course-card-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.course-card-progress {
+  margin-top: var(--space-md);
+}
+
+.progress-bar {
+  height: 8px;
+  background: var(--color-gray-300);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--color-secondary);
+  transition: width var(--transition-base);
+}
+
+/* ==========================================================================
+   Profile Settings
+   ========================================================================== */
+
+.profile-settings {
+  max-width: 600px;
+}
+
+.profile-avatar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+.profile-avatar img {
+  width: 100px;
+  height: 100px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+}
+
+.profile-avatar-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/* ==========================================================================
+   Notifications
+   ========================================================================== */
+
+.notification-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.notification-item {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background: var(--color-gray-100);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.notification-item:hover {
+  background: var(--color-gray-200);
+}
+
+.notification-item.unread {
+  background: rgba(var(--color-primary-rgb), 0.1);
+  border-left: 4px solid var(--color-primary);
+}
+
+.notification-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary);
+  color: var(--color-white);
+  border-radius: var(--radius-full);
+}
+
+.notification-content {
+  flex: 1;
+}
+
+.notification-title {
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-xs);
+}
+
+.notification-time {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
+}
+
+/* ==========================================================================
+   Success Pages
+   ========================================================================== */
+
+.success-page {
+  text-align: center;
+  padding: var(--space-4xl) var(--space-lg);
+}
+
+.success-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto var(--space-xl);
+  background: var(--color-success);
+  color: var(--color-white);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.success-icon svg {
+  width: 40px;
+  height: 40px;
+}
+
+.success-title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  margin-bottom: var(--space-md);
+}
+
+.success-message {
+  font-size: var(--font-size-lg);
+  color: var(--color-gray-600);
+  margin-bottom: var(--space-2xl);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.success-actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+}
+
+/* ==========================================================================
+   Loading States
+   ========================================================================== */
+
+.skeleton {
+  background: linear-gradient(90deg, var(--color-gray-200) 25%, var(--color-gray-300) 50%, var(--color-gray-200) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-text {
+  height: 1em;
+  border-radius: var(--radius-base);
+  margin-bottom: var(--space-sm);
+}
+
+.skeleton-title {
+  height: 1.5em;
+  width: 60%;
+  border-radius: var(--radius-base);
+  margin-bottom: var(--space-md);
+}
+
+.skeleton-image {
+  height: 200px;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-md);
+}
+
+/* ==========================================================================
+   Empty States
+   ========================================================================== */
+
+.empty-state {
+  text-align: center;
+  padding: var(--space-3xl);
+}
+
+.empty-state-icon {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto var(--space-xl);
+  color: var(--color-gray-400);
+}
+
+.empty-state-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-700);
+  margin-bottom: var(--space-sm);
+}
+
+.empty-state-message {
+  color: var(--color-gray-600);
+  margin-bottom: var(--space-xl);
+}
+
+/* ==========================================================================
+   Kajabi-Specific Overrides
+   ========================================================================== */
+
+/* Override Kajabi button styles */
+.kajabi-checkout-page .btn,
+.kajabi-member-page .btn,
+.kjb-button {
+  font-family: var(--font-primary) !important;
+  font-weight: var(--font-weight-medium) !important;
+  transition: all var(--transition-base) !important;
+}
+
+/* Override Kajabi form styles */
+.kajabi-checkout-page input,
+.kajabi-checkout-page select,
+.kajabi-checkout-page textarea,
+.kajabi-member-page input,
+.kajabi-member-page select,
+.kajabi-member-page textarea {
+  font-family: var(--font-primary) !important;
+  transition: all var(--transition-fast) !important;
+}
+
+/* Override Kajabi headings */
+.kajabi-checkout-page h1,
+.kajabi-checkout-page h2,
+.kajabi-checkout-page h3,
+.kajabi-member-page h1,
+.kajabi-member-page h2,
+.kajabi-member-page h3 {
+  font-family: var(--font-primary) !important;
+  color: var(--color-primary) !important;
+}

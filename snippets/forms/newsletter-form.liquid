@@ -1,0 +1,43 @@
+{% comment %}
+  Newsletter Form Snippet
+  Usage: {% include 'newsletter-form', form_id: 'footer-newsletter', button_text: 'Subscribe' %}
+{% endcomment %}
+
+{% assign form_id = form_id | default: 'newsletter' %}
+{% assign button_text = button_text | default: 'Subscribe' %}
+
+<form action="{{ routes.newsletter_url }}" 
+      method="post" 
+      id="{{ form_id }}" 
+      class="newsletter-form"
+      data-newsletter-form>
+  
+  {% if form.posted_successfully? %}
+    <div class="form-success">
+      <p>Thanks for subscribing! Check your email for confirmation.</p>
+    </div>
+  {% elsif form.errors %}
+    <div class="form-errors">
+      {{ form.errors | default_errors }}
+    </div>
+  {% endif %}
+  
+  <div class="form-field">
+    <label for="{{ form_id }}-email" class="visually-hidden">Email address</label>
+    <input type="email" 
+           name="contact[email]" 
+           id="{{ form_id }}-email" 
+           class="form-input" 
+           placeholder="Enter your email"
+           required
+           aria-required="true">
+    
+    <button type="submit" class="btn btn--primary">
+      {{ button_text }}
+    </button>
+  </div>
+  
+  {% if settings.newsletter_consent_text %}
+    <p class="form-consent">{{ settings.newsletter_consent_text }}</p>
+  {% endif %}
+</form>

@@ -1,0 +1,190 @@
+{%- comment -%}
+  Dynamic CSS Variables from Theme Settings
+  This file generates CSS custom properties based on Kajabi theme settings
+{%- endcomment -%}
+
+<style>
+  :root {
+    {%- comment -%} Primary Colors from Theme Settings {%- endcomment -%}
+    {%- if settings.color_primary -%}
+      --color-primary: {{ settings.color_primary }};
+      --color-primary-rgb: {{ settings.color_primary | color_to_rgb | remove: 'rgb(' | remove: ')' }};
+    {%- endif -%}
+    
+    {%- if settings.color_primary_light -%}
+      --color-primary-light: {{ settings.color_primary_light }};
+    {%- endif -%}
+    
+    {%- if settings.color_primary_dark -%}
+      --color-primary-dark: {{ settings.color_primary_dark }};
+    {%- endif -%}
+    
+    {%- comment -%} Secondary Colors from Theme Settings {%- endcomment -%}
+    {%- if settings.color_secondary -%}
+      --color-secondary: {{ settings.color_secondary }};
+      --color-secondary-rgb: {{ settings.color_secondary | color_to_rgb | remove: 'rgb(' | remove: ')' }};
+    {%- endif -%}
+    
+    {%- if settings.color_secondary_light -%}
+      --color-secondary-light: {{ settings.color_secondary_light }};
+    {%- endif -%}
+    
+    {%- if settings.color_secondary_dark -%}
+      --color-secondary-dark: {{ settings.color_secondary_dark }};
+    {%- endif -%}
+    
+    {%- comment -%} Accent Colors from Theme Settings {%- endcomment -%}
+    {%- if settings.color_accent -%}
+      --color-accent: {{ settings.color_accent }};
+      --color-accent-rgb: {{ settings.color_accent | color_to_rgb | remove: 'rgb(' | remove: ')' }};
+    {%- endif -%}
+    
+    {%- if settings.color_accent_light -%}
+      --color-accent-light: {{ settings.color_accent_light }};
+    {%- endif -%}
+    
+    {%- if settings.color_accent_dark -%}
+      --color-accent-dark: {{ settings.color_accent_dark }};
+    {%- endif -%}
+    
+    {%- comment -%} Typography from Theme Settings {%- endcomment -%}
+    {%- if settings.font_heading -%}
+      --font-heading: {{ settings.font_heading }}, var(--font-primary);
+    {%- endif -%}
+    
+    {%- if settings.font_body -%}
+      --font-primary: {{ settings.font_body }}, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    {%- endif -%}
+    
+    {%- if settings.font_size_base -%}
+      --font-size-base: {{ settings.font_size_base }}px;
+    {%- endif -%}
+    
+    {%- comment -%} Spacing from Theme Settings {%- endcomment -%}
+    {%- if settings.spacing_unit -%}
+      --space-unit: {{ settings.spacing_unit }}px;
+      --space-xs: calc(var(--space-unit) * 0.25);
+      --space-sm: calc(var(--space-unit) * 0.5);
+      --space-md: var(--space-unit);
+      --space-lg: calc(var(--space-unit) * 1.5);
+      --space-xl: calc(var(--space-unit) * 2);
+      --space-2xl: calc(var(--space-unit) * 3);
+      --space-3xl: calc(var(--space-unit) * 4);
+      --space-4xl: calc(var(--space-unit) * 6);
+    {%- endif -%}
+    
+    {%- comment -%} Border Radius from Theme Settings {%- endcomment -%}
+    {%- if settings.border_radius -%}
+      --radius-base: {{ settings.border_radius }}px;
+      --radius-sm: calc(var(--radius-base) * 0.5);
+      --radius-md: calc(var(--radius-base) * 1.5);
+      --radius-lg: calc(var(--radius-base) * 2);
+      --radius-xl: calc(var(--radius-base) * 3);
+      --radius-2xl: calc(var(--radius-base) * 4);
+    {%- endif -%}
+    
+    {%- comment -%} Button Styles from Theme Settings {%- endcomment -%}
+    {%- if settings.button_padding_x -%}
+      --button-padding-x: {{ settings.button_padding_x }}px;
+    {%- endif -%}
+    
+    {%- if settings.button_padding_y -%}
+      --button-padding-y: {{ settings.button_padding_y }}px;
+    {%- endif -%}
+    
+    {%- if settings.button_border_width -%}
+      --button-border-width: {{ settings.button_border_width }}px;
+    {%- endif -%}
+    
+    {%- comment -%} Header Settings {%- endcomment -%}
+    {%- if settings.header_height -%}
+      --header-height: {{ settings.header_height }}px;
+    {%- endif -%}
+    
+    {%- if settings.header_height_mobile -%}
+      --header-height-mobile: {{ settings.header_height_mobile }}px;
+    {%- endif -%}
+    
+    {%- comment -%} Container Widths from Theme Settings {%- endcomment -%}
+    {%- if settings.container_max_width -%}
+      --container-xl: {{ settings.container_max_width }}px;
+      --container-2xl: calc(var(--container-xl) * 1.2);
+      --container-lg: calc(var(--container-xl) * 0.8);
+      --container-md: calc(var(--container-xl) * 0.6);
+      --container-sm: calc(var(--container-xl) * 0.5);
+    {%- endif -%}
+    
+    {%- comment -%} Custom CSS Properties from Theme Settings {%- endcomment -%}
+    {%- if settings.custom_css_properties -%}
+      {{ settings.custom_css_properties }}
+    {%- endif -%}
+  }
+  
+  {%- comment -%} Dark Mode Overrides {%- endcomment -%}
+  {%- if settings.enable_dark_mode -%}
+    @media (prefers-color-scheme: dark) {
+      :root {
+        {%- if settings.dark_color_background -%}
+          --color-background: {{ settings.dark_color_background }};
+        {%- endif -%}
+        
+        {%- if settings.dark_color_text -%}
+          --color-text: {{ settings.dark_color_text }};
+        {%- endif -%}
+        
+        {%- if settings.dark_color_border -%}
+          --color-border: {{ settings.dark_color_border }};
+        {%- endif -%}
+        
+        {%- comment -%} Custom Dark Mode Properties {%- endcomment -%}
+        {%- if settings.dark_custom_css_properties -%}
+          {{ settings.dark_custom_css_properties }}
+        {%- endif -%}
+      }
+    }
+  {%- endif -%}
+  
+  {%- comment -%} Breakpoint-specific overrides {%- endcomment -%}
+  {%- if settings.mobile_font_size_base -%}
+    @media (max-width: 640px) {
+      :root {
+        --font-size-base: {{ settings.mobile_font_size_base }}px;
+      }
+    }
+  {%- endif -%}
+  
+  {%- if settings.tablet_font_size_base -%}
+    @media (min-width: 641px) and (max-width: 1024px) {
+      :root {
+        --font-size-base: {{ settings.tablet_font_size_base }}px;
+      }
+    }
+  {%- endif -%}
+  
+  {%- comment -%} Brand-specific overrides {%- endcomment -%}
+  {%- if settings.brand_name == 'AttachmentNerd' -%}
+    :root {
+      /* AttachmentNerd Brand Colors */
+      --brand-forest: #2C5F2D;
+      --brand-sage: #97BC62;
+      --brand-wheat: #F4A460;
+      --brand-cream: #FFF8DC;
+      
+      /* Override defaults with brand colors */
+      --color-primary: var(--brand-forest);
+      --color-secondary: var(--brand-sage);
+      --color-accent: var(--brand-wheat);
+      
+      /* Brand-specific typography */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-heading: 'Playfair Display', Georgia, serif;
+    }
+  {%- endif -%}
+</style>
+
+{%- comment -%} Custom Theme CSS {%- endcomment -%}
+{%- if settings.custom_css -%}
+  <style>
+    {{ settings.custom_css }}
+  </style>
+{%- endif -%}

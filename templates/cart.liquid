@@ -1,0 +1,24 @@
+{% comment %}
+  Cart Template - Kajabi Version
+  Note: Kajabi handles checkout through its own system
+{% endcomment %}
+
+<div class="cart-wrapper">
+  <div class="container">
+    <div class="cart-redirect">
+      <h1 class="cart-title">Shopping Cart</h1>
+      
+      <div class="cart-message">
+        <p>Kajabi handles checkout through the product and offer pages.</p>
+        <p>Products are purchased directly from their respective pages.</p>
+      </div>
+      
+      <div class="cart-actions">
+        <a href="{{ routes.products_url }}" class="btn btn--primary">View Products</a>
+        {% if member %}
+          <a href="{{ routes.account_courses_url }}" class="btn btn--secondary">My Courses</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

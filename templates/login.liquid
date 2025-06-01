@@ -1,0 +1,138 @@
+{% comment %}
+  Login Template
+  Sign in and registration forms
+{% endcomment %}
+
+<div class="auth-wrapper">
+  <div class="container container--narrow">
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button class="auth-tab is-active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="register">Create Account</button>
+      </div>
+      
+      <!-- Login Form -->
+      <div class="auth-panel is-active" data-panel="login">
+        <h1 class="auth-title">Welcome Back</h1>
+        <p class="auth-subtitle">Sign in to access your account</p>
+        
+        <form action="{{ routes.account_login_url }}" method="post" class="auth-form">
+          {% if form.errors %}
+            <div class="form-errors">
+              {{ form.errors | default_errors }}
+            </div>
+          {% endif %}
+          
+          <div class="form-field">
+            <label for="member-email" class="form-label">Email</label>
+            <input type="email" 
+                   name="member[email]" 
+                   id="member-email" 
+                   class="form-input" 
+                   required
+                   autocomplete="email"
+                   {% if form.email %}value="{{ form.email }}"{% endif %}>
+          </div>
+          
+          <div class="form-field">
+            <label for="member-password" class="form-label">Password</label>
+            <input type="password" 
+                   name="member[password]" 
+                   id="member-password" 
+                   class="form-input" 
+                   required
+                   autocomplete="current-password">
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="btn btn--primary btn--full">Sign In</button>
+          </div>
+          
+          <div class="auth-links">
+            <a href="{{ routes.account_recover_url }}" class="auth-link">Forgot your password?</a>
+          </div>
+        </form>
+        
+        {% render 'social-login' %}
+      </div>
+      
+      <!-- Register Form -->
+      <div class="auth-panel" data-panel="register">
+        <h1 class="auth-title">Create Account</h1>
+        <p class="auth-subtitle">Join our community today</p>
+        
+        <form action="{{ routes.account_register_url }}" method="post" class="auth-form">
+          {% if form.errors %}
+            <div class="form-errors">
+              {{ form.errors | default_errors }}
+            </div>
+          {% endif %}
+          
+          <div class="form-row">
+            <div class="form-field">
+              <label for="register-first-name" class="form-label">First Name</label>
+              <input type="text" 
+                     name="member[first_name]" 
+                     id="register-first-name" 
+                     class="form-input" 
+                     required
+                     autocomplete="given-name"
+                     {% if form.first_name %}value="{{ form.first_name }}"{% endif %}>
+            </div>
+            
+            <div class="form-field">
+              <label for="register-last-name" class="form-label">Last Name</label>
+              <input type="text" 
+                     name="member[last_name]" 
+                     id="register-last-name" 
+                     class="form-input" 
+                     required
+                     autocomplete="family-name"
+                     {% if form.last_name %}value="{{ form.last_name }}"{% endif %}>
+            </div>
+          </div>
+          
+          <div class="form-field">
+            <label for="register-email" class="form-label">Email</label>
+            <input type="email" 
+                   name="member[email]" 
+                   id="register-email" 
+                   class="form-input" 
+                   required
+                   autocomplete="email"
+                   {% if form.email %}value="{{ form.email }}"{% endif %}>
+          </div>
+          
+          <div class="form-field">
+            <label for="register-password" class="form-label">Password</label>
+            <input type="password" 
+                   name="member[password]" 
+                   id="register-password" 
+                   class="form-input" 
+                   required
+                   autocomplete="new-password"
+                   minlength="8">
+            <p class="form-help">Must be at least 8 characters</p>
+          </div>
+          
+          <div class="form-field">
+            <label class="checkbox-label">
+              <input type="checkbox" name="member[accepts_marketing]" class="checkbox-input">
+              <span>Send me tips, updates and special offers</span>
+            </label>
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="btn btn--primary btn--full">Create Account</button>
+          </div>
+          
+          <p class="auth-terms">
+            By creating an account, you agree to our 
+            <a href="{{ routes.terms_url }}">Terms of Service</a> and 
+            <a href="{{ routes.privacy_url }}">Privacy Policy</a>.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

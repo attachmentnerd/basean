@@ -1,0 +1,72 @@
+{% comment %}
+  Mobile Menu Snippet
+  Off-canvas mobile navigation
+{% endcomment %}
+
+<div class="mobile-menu" data-mobile-menu>
+  <div class="mobile-menu__overlay" data-menu-overlay></div>
+  
+  <div class="mobile-menu__panel">
+    <div class="mobile-menu__header">
+      <a href="{{ routes.root_url }}" class="mobile-menu__logo">
+        {% if settings.logo %}
+          <img src="{{ settings.logo | image_url: 'x40' }}" alt="{{ site.name }}">
+        {% else %}
+          {{ site.name }}
+        {% endif %}
+      </a>
+      
+      <button class="mobile-menu__close" data-menu-close aria-label="Close menu">
+        {% include 'icon', icon: 'x' %}
+      </button>
+    </div>
+    
+    <nav class="mobile-menu__nav">
+      <ul class="mobile-menu__list">
+        {% for link in linklists.main-menu.links %}
+          <li class="mobile-menu__item {% if link.links.size > 0 %}has-submenu{% endif %}">
+            {% if link.links.size > 0 %}
+              <button class="mobile-menu__toggle" data-submenu-toggle>
+                {{ link.title }}
+                {% include 'icon', icon: 'chevron-down', size: 'small' %}
+              </button>
+              
+              <ul class="mobile-menu__submenu">
+                {% for child_link in link.links %}
+                  <li class="mobile-menu__subitem">
+                    <a href="{{ child_link.url }}" class="mobile-menu__sublink {% if child_link.active %}is-active{% endif %}">
+                      {{ child_link.title }}
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <a href="{{ link.url }}" class="mobile-menu__link {% if link.active %}is-active{% endif %}">
+                {{ link.title }}
+              </a>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+    
+    <div class="mobile-menu__actions">
+      {% if member %}
+        <a href="{{ routes.account_url }}" class="mobile-menu__account">
+          {% include 'icon', icon: 'user', size: 'small' %}
+          My Account
+        </a>
+      {% else %}
+        <a href="{{ routes.account_login_url }}" class="mobile-menu__account">
+          {% include 'icon', icon: 'user', size: 'small' %}
+          Sign In
+        </a>
+      {% endif %}
+      
+      <a href="{{ routes.products_url }}" class="mobile-menu__products">
+        {% include 'icon', icon: 'shopping-bag', size: 'small' %}
+        Products
+      </a>
+    </div>
+  </div>
+</div>

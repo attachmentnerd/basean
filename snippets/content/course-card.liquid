@@ -1,0 +1,77 @@
+{% comment %}
+  Course Card Snippet
+  Usage: {% include 'course-card', course: course, show_progress: true %}
+{% endcomment %}
+
+<article class="course-card">
+  <a href="{{ course.url }}" class="course-card__link">
+    <div class="course-card__media">
+      {% if course.featured_image %}
+        <img src="{{ course.featured_image | image_url: '400x225' }}" 
+             alt="{{ course.title }}" 
+             class="course-card__image"
+             loading="lazy">
+      {% else %}
+        <div class="course-card__placeholder">
+          {% include 'icon', icon: 'book-open', size: 'xlarge' %}
+        </div>
+      {% endif %}
+      
+      {% if course.enrollment_status == 'open' %}
+        <span class="course-card__badge course-card__badge--open">Open</span>
+      {% elsif course.enrollment_status == 'coming_soon' %}
+        <span class="course-card__badge course-card__badge--soon">Coming Soon</span>
+      {% endif %}
+    </div>
+    
+    <div class="course-card__content">
+      <h3 class="course-card__title">{{ course.title }}</h3>
+      
+      {% if course.instructor %}
+        <p class="course-card__instructor">by {{ course.instructor.name }}</p>
+      {% endif %}
+      
+      <p class="course-card__description">{{ course.description | strip_html | truncate: 100 }}</p>
+      
+      <div class="course-card__meta">
+        {% if course.duration %}
+          <span class="meta-item">
+            {% include 'icon', icon: 'clock', size: 'small' %}
+            {{ course.duration }}
+          </span>
+        {% endif %}
+        
+        {% if course.lessons_count %}
+          <span class="meta-item">
+            {% include 'icon', icon: 'book', size: 'small' %}
+            {{ course.lessons_count }} lessons
+          </span>
+        {% endif %}
+        
+        {% if course.students_count %}
+          <span class="meta-item">
+            {% include 'icon', icon: 'users', size: 'small' %}
+            {{ course.students_count }} students
+          </span>
+        {% endif %}
+      </div>
+      
+      {% if show_progress and course.user_progress %}
+        <div class="course-card__progress">
+          <div class="progress-bar">
+            <div class="progress-bar__fill" style="width: {{ course.user_progress }}%"></div>
+          </div>
+          <span class="progress-text">{{ course.user_progress }}% complete</span>
+        </div>
+      {% endif %}
+      
+      <div class="course-card__price">
+        {% if course.price == 0 %}
+          <span class="price-free">Free</span>
+        {% else %}
+          {{ course.price | money }}
+        {% endif %}
+      </div>
+    </div>
+  </a>
+</article>

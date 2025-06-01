@@ -1,0 +1,76 @@
+{% comment %}
+  Blog Post Template
+  Displays individual blog post with comments
+{% endcomment %}
+
+<article class="post-wrapper" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="container container--narrow">
+    <header class="post-header">
+      <div class="post-meta">
+        {% if post.categories.size > 0 %}
+          <div class="post-categories">
+            {% for category in post.categories %}
+              <a href="{{ category.url }}" class="post-category">{{ category.title }}</a>
+            {% endfor %}
+          </div>
+        {% endif %}
+        
+        <time datetime="{{ post.published_at | date: '%Y-%m-%d' }}" class="post-date" itemprop="datePublished">
+          {{ post.published_at | date: '%B %d, %Y' }}
+        </time>
+      </div>
+      
+      <h1 class="post-title" itemprop="headline">{{ post.title }}</h1>
+      
+      {% if post.subtitle %}
+        <p class="post-subtitle" itemprop="description">{{ post.subtitle }}</p>
+      {% endif %}
+      
+      {% if post.author %}
+        <div class="post-author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          {% if post.author.image %}
+            <img src="{{ post.author.image | image_url: '80x80' }}" alt="{{ post.author.name }}" class="author-avatar">
+          {% endif %}
+          <div class="author-info">
+            <span class="author-name" itemprop="name">{{ post.author.name }}</span>
+            {% if post.author.bio %}
+              <span class="author-bio">{{ post.author.bio }}</span>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    </header>
+    
+    {% if post.featured_image %}
+      <figure class="post-featured-image">
+        <img src="{{ post.featured_image | image_url: 'master' }}" alt="{{ post.title }}" itemprop="image">
+        {% if post.featured_image_caption %}
+          <figcaption>{{ post.featured_image_caption }}</figcaption>
+        {% endif %}
+      </figure>
+    {% endif %}
+    
+    <div class="post-content rte" itemprop="articleBody">
+      {{ post.content }}
+    </div>
+    
+    {% if post.tags.size > 0 %}
+      <div class="post-tags">
+        <span class="tags-label">Tagged:</span>
+        {% for tag in post.tags %}
+          <a href="{{ tag.url }}" class="post-tag">#{{ tag.title }}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+    
+    {% render 'social-share', url: post.url, title: post.title %}
+    
+    {% if settings.show_related_posts %}
+      {% render 'related-posts', post: post %}
+    {% endif %}
+    
+    {% if post.comments_enabled %}
+      {% section 'comments' %}
+    {% endif %}
+  </div>
+</article>

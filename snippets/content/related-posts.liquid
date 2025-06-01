@@ -1,0 +1,41 @@
+{% comment %}
+  Related Posts Snippet
+  Shows related blog posts based on categories
+{% endcomment %}
+
+{% assign related_posts = post.related_posts | default: blog.posts | where: 'id', '!=', post.id | limit: 3 %}
+
+{% if related_posts.size > 0 %}
+  <section class="related-posts">
+    <div class="container container--narrow">
+      <h2 class="related-posts__title">Related Articles</h2>
+      
+      <div class="related-posts__grid">
+        {% for related_post in related_posts %}
+          {% include 'post-card', post: related_post %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+<style>
+  .related-posts {
+    margin-top: var(--space-3xl);
+    padding: var(--space-2xl) 0;
+    background-color: var(--color-surface);
+  }
+  
+  .related-posts__title {
+    margin-bottom: var(--space-xl);
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+  }
+  
+  .related-posts__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-lg);
+  }
+</style>

@@ -1,0 +1,123 @@
+<div class="header-container">
+  <div class="header-inner">
+    <!-- Logo -->
+    <div class="header-logo">
+      <a href="{{ routes.root_url }}" class="logo-link" kjb-settings-id="{{ 'logo_link' | settings_id: section: section }}">
+        {% if section.settings.logo %}
+          <img src="{{ section.settings.logo | image_url: 'x60' }}" 
+               alt="{{ site.name }}" 
+               class="logo-image"
+               style="max-height: {{ section.settings.logo_max_height }}px;"
+               kjb-settings-id="{{ 'logo' | settings_id: section: section }}">
+        {% else %}
+          <span class="logo-text" kjb-settings-id="{{ 'logo_text' | settings_id: section: section }}">{{ site.name }}</span>
+        {% endif %}
+      </a>
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="header-nav" role="navigation" aria-label="Main navigation">
+      <ul class="nav-list">
+        {% for link in section.settings.menu.links %}
+          <li class="nav-item {% if link.links.size > 0 %}has-dropdown{% endif %}">
+            <a href="{{ link.url }}" 
+               class="nav-link {% if link.active %}is-active{% endif %}"
+               {% if link.links.size > 0 %}aria-haspopup="true" aria-expanded="false"{% endif %}>
+              {{ link.title }}
+              {% if link.links.size > 0 %}
+                {% include 'icon', icon: 'chevron-down', size: 'small' %}
+              {% endif %}
+            </a>
+            
+            {% if link.links.size > 0 %}
+              <ul class="nav-dropdown">
+                {% for child_link in link.links %}
+                  <li class="dropdown-item">
+                    <a href="{{ child_link.url }}" class="dropdown-link {% if child_link.active %}is-active{% endif %}">
+                      {{ child_link.title }}
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+    
+    <!-- Header Actions -->
+    <div class="header-actions">
+      <!-- Search -->
+      <button class="header-action search-toggle" aria-label="Search" data-search-toggle>
+        {% include 'icon', icon: 'search' %}
+      </button>
+      
+      <!-- Account -->
+      <a href="{{ routes.account_url }}" class="header-action" aria-label="Account">
+        {% include 'icon', icon: 'user' %}
+      </a>
+      
+      <!-- Products -->
+      <a href="{{ routes.products_url }}" class="header-action" aria-label="Products">
+        {% include 'icon', icon: 'shopping-bag' %}
+      </a>
+      
+      <!-- Mobile Menu Toggle -->
+      <button class="header-action mobile-menu-toggle" aria-label="Menu" data-menu-toggle>
+        {% include 'icon', icon: 'menu' %}
+      </button>
+    </div>
+  </div>
+  
+  <!-- Search Overlay -->
+  <div class="search-overlay" data-search-overlay>
+    <form action="{{ routes.search_url }}" method="get" class="search-form">
+      <input type="search" 
+             name="q" 
+             placeholder="Search..." 
+             class="search-input" 
+             autofocus>
+      <button type="submit" class="search-submit">
+        {% include 'icon', icon: 'search' %}
+      </button>
+      <button type="button" class="search-close" data-search-close>
+        {% include 'icon', icon: 'x' %}
+      </button>
+    </form>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "elements": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_max_height",
+      "label": "Logo max height",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky_header",
+      "label": "Enable sticky header",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

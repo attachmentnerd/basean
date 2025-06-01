@@ -1,0 +1,141 @@
+{% comment %}
+  Account Dashboard Template
+  Member account overview and navigation
+{% endcomment %}
+
+<div class="account-wrapper">
+  <div class="container">
+    <div class="account-header">
+      <h1 class="account-title">My Account</h1>
+      <p class="account-welcome">Welcome back, {{ member.first_name }}!</p>
+    </div>
+    
+    <div class="account-content">
+      <aside class="account-nav">
+        <ul class="account-menu">
+          <li class="account-menu__item">
+            <a href="{{ routes.account_url }}" class="account-menu__link is-active">
+              {% render 'icon', icon: 'user' %}
+              Dashboard
+            </a>
+          </li>
+          <li class="account-menu__item">
+            <a href="{{ routes.account_orders_url }}" class="account-menu__link">
+              {% render 'icon', icon: 'package' %}
+              Orders
+            </a>
+          </li>
+          <li class="account-menu__item">
+            <a href="{{ routes.account_subscriptions_url }}" class="account-menu__link">
+              {% render 'icon', icon: 'refresh' %}
+              Subscriptions
+            </a>
+          </li>
+          <li class="account-menu__item">
+            <a href="{{ routes.account_downloads_url }}" class="account-menu__link">
+              {% render 'icon', icon: 'download' %}
+              Downloads
+            </a>
+          </li>
+          <li class="account-menu__item">
+            <a href="{{ routes.account_addresses_url }}" class="account-menu__link">
+              {% render 'icon', icon: 'map-pin' %}
+              Addresses
+            </a>
+          </li>
+          <li class="account-menu__item">
+            <a href="{{ routes.account_settings_url }}" class="account-menu__link">
+              {% render 'icon', icon: 'settings' %}
+              Settings
+            </a>
+          </li>
+          <li class="account-menu__item">
+            <a href="{{ routes.account_logout_url }}" class="account-menu__link">
+              {% render 'icon', icon: 'log-out' %}
+              Sign Out
+            </a>
+          </li>
+        </ul>
+      </aside>
+      
+      <div class="account-main">
+        <!-- Overview Cards -->
+        <div class="account-cards">
+          <div class="stat-card">
+            <div class="stat-card__icon">
+              {% render 'icon', icon: 'package' %}
+            </div>
+            <div class="stat-card__content">
+              <h3 class="stat-card__value">{{ member.orders_count }}</h3>
+              <p class="stat-card__label">Total Orders</p>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-card__icon">
+              {% render 'icon', icon: 'book-open' %}
+            </div>
+            <div class="stat-card__content">
+              <h3 class="stat-card__value">{{ member.courses_count }}</h3>
+              <p class="stat-card__label">Active Courses</p>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-card__icon">
+              {% render 'icon', icon: 'refresh' %}
+            </div>
+            <div class="stat-card__content">
+              <h3 class="stat-card__value">{{ member.subscriptions_count }}</h3>
+              <p class="stat-card__label">Subscriptions</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Recent Activity -->
+        <section class="account-section">
+          <h2 class="section-title">Recent Activity</h2>
+          
+          {% if member.recent_orders.size > 0 %}
+            <div class="activity-list">
+              {% for order in member.recent_orders limit: 5 %}
+                <article class="activity-item">
+                  <div class="activity-item__info">
+                    <h3 class="activity-item__title">
+                      <a href="{{ order.url }}">Order #{{ order.order_number }}</a>
+                    </h3>
+                    <p class="activity-item__meta">
+                      {{ order.created_at | date: '%B %d, %Y' }} • {{ order.financial_status_label }}
+                    </p>
+                  </div>
+                  <div class="activity-item__amount">
+                    {{ order.total_price | money }}
+                  </div>
+                </article>
+              {% endfor %}
+            </div>
+            
+            <a href="{{ routes.account_orders_url }}" class="btn-link">View All Orders</a>
+          {% else %}
+            <p class="empty-message">No recent orders</p>
+          {% endif %}
+        </section>
+        
+        <!-- Active Courses -->
+        {% if member.courses.size > 0 %}
+          <section class="account-section">
+            <h2 class="section-title">Your Courses</h2>
+            
+            <div class="course-grid">
+              {% for course in member.courses limit: 4 %}
+                {% render 'course-card', course: course, show_progress: true %}
+              {% endfor %}
+            </div>
+            
+            <a href="{{ routes.account_courses_url }}" class="btn-link">View All Courses</a>
+          </section>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

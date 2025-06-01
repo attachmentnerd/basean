@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <!-- SEO Meta Tags -->
+  <title>{{ page_title }}</title>
+  <meta name="description" content="{{ page_description | escape }}">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="{{ page_title | escape }}">
+  <meta property="og:description" content="{{ page_description | escape }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ canonical_url }}">
+  {% if page_image %}
+    <meta property="og:image" content="{{ page_image | image_url }}">
+  {% endif %}
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ page_title | escape }}">
+  <meta name="twitter:description" content="{{ page_description | escape }}">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="{{ canonical_url }}">
+  
+  <!-- Favicon -->
+  {% if settings.favicon %}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url }}">
+  {% endif %}
+  
+  <!-- Preconnect to CDNs -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Kajabi Styles -->
+  {{ 'application.css' | asset_url | stylesheet_tag }}
+  
+  <!-- Custom CSS Variables -->
+  <style>
+    :root {
+      /* Brand Colors */
+      --color-primary: {{ settings.color_primary | default: '#2563eb' }};
+      --color-primary-dark: {{ settings.color_primary_dark | default: '#1d4ed8' }};
+      --color-secondary: {{ settings.color_secondary | default: '#7c3aed' }};
+      --color-accent: {{ settings.color_accent | default: '#f59e0b' }};
+      
+      /* Neutral Colors */
+      --color-text: {{ settings.color_text | default: '#1f2937' }};
+      --color-text-light: {{ settings.color_text_light | default: '#6b7280' }};
+      --color-background: {{ settings.color_background | default: '#ffffff' }};
+      --color-surface: {{ settings.color_surface | default: '#f9fafb' }};
+      --color-border: {{ settings.color_border | default: '#e5e7eb' }};
+      
+      /* Typography */
+      --font-sans: {{ settings.font_sans | default: 'Inter, system-ui, -apple-system, sans-serif' }};
+      --font-serif: {{ settings.font_serif | default: '"Crimson Text", Georgia, serif' }};
+      
+      /* Spacing */
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 1.5rem;
+      --space-lg: 2rem;
+      --space-xl: 3rem;
+      --space-2xl: 4rem;
+      --space-3xl: 6rem;
+      
+      /* Layout */
+      --container-max: 1280px;
+      --container-narrow: 720px;
+      --container-wide: 1440px;
+      
+      /* Shadows */
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+      
+      /* Border Radius */
+      --radius-sm: 0.25rem;
+      --radius-md: 0.375rem;
+      --radius-lg: 0.5rem;
+      --radius-xl: 0.75rem;
+      --radius-full: 9999px;
+      
+      /* Transitions */
+      --transition-fast: 150ms ease;
+      --transition-base: 200ms ease;
+      --transition-slow: 300ms ease;
+    }
+  </style>
+  
+  <!-- Kajabi Scripts -->
+  {{ content_for_header }}
+  
+  <!-- Custom Scripts -->
+  <script>
+    // Remove no-js class
+    document.documentElement.classList.remove('no-js');
+    
+    // Add loading state handler
+    document.documentElement.classList.add('is-loading');
+    window.addEventListener('load', function() {
+      document.documentElement.classList.remove('is-loading');
+    });
+  </script>
+</head>
+
+<body class="template-{{ template | replace: '.', '-' | handle }} page-{{ page.handle | default: 'index' }}">
+  <!-- Skip to content -->
+  <a href="#main-content" class="skip-link">Skip to content</a>
+  
+  <!-- Announcement Bar -->
+  {% if settings.show_announcement_bar %}
+    {% include 'announcement-bar' %}
+  {% endif %}
+  
+  <!-- Header -->
+  <header class="site-header" role="banner">
+    {% section 'header' %}
+  </header>
+  
+  <!-- Main Content -->
+  <main id="main-content" class="main-content" role="main">
+    {{ content_for_layout }}
+  </main>
+  
+  <!-- Footer -->
+  <footer class="site-footer" role="contentinfo">
+    {% section 'footer' %}
+  </footer>
+  
+  <!-- Mobile Menu -->
+  {% include 'mobile-menu' %}
+  
+  <!-- Scripts -->
+  {{ 'application.js' | asset_url | script_tag }}
+  
+  <!-- Kajabi Footer Scripts -->
+  {{ content_for_footer }}
+</body>
+</html>

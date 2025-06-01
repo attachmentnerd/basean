@@ -1,0 +1,41 @@
+{% comment %}
+  Thank You Template
+  Post-purchase thank you page
+{% endcomment %}
+
+<div class="thank-you-wrapper">
+  <div class="container container--narrow">
+    <div class="thank-you-content">
+      <div class="success-icon">
+        {% include 'icon', icon: 'check-circle', size: 'xlarge' %}
+      </div>
+      
+      <h1 class="thank-you-title">Thank You!</h1>
+      
+      {% if offer %}
+        <p class="thank-you-message">
+          Your purchase of <strong>{{ offer.title }}</strong> was successful.
+        </p>
+        
+        {% if offer.thank_you_body %}
+          <div class="thank-you-body rte">
+            {{ offer.thank_you_body }}
+          </div>
+        {% endif %}
+      {% else %}
+        <p class="thank-you-message">
+          Your purchase was successful. You'll receive an email confirmation shortly.
+        </p>
+      {% endif %}
+      
+      <div class="thank-you-actions">
+        <a href="{{ routes.library_url }}" class="btn btn--primary">
+          Go to My Library
+        </a>
+        <a href="{{ routes.root_url }}" class="btn btn--secondary">
+          Back to Home
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

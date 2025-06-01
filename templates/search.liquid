@@ -1,0 +1,108 @@
+{% comment %}
+  Search Results Template
+  Displays search results across all content types
+{% endcomment %}
+
+<div class="search-wrapper">
+  <div class="container">
+    <div class="search-header">
+      <h1 class="search-title">
+        {% if search.performed %}
+          {% if search.results_count > 0 %}
+            {{ search.results_count }} {% if search.results_count == 1 %}result{% else %}results{% endif %} for "{{ search.terms }}"
+          {% else %}
+            No results for "{{ search.terms }}"
+          {% endif %}
+        {% else %}
+          Search
+        {% endif %}
+      </h1>
+      
+      <form action="{{ routes.search_url }}" method="get" class="search-form">
+        <div class="search-input-wrapper">
+          <input type="search" 
+                 name="q" 
+                 value="{{ search.terms | escape }}" 
+                 placeholder="Search products, posts, and pages..." 
+                 class="search-input"
+                 autofocus>
+          <button type="submit" class="search-button">
+            {% render 'icon', icon: 'search' %}
+            <span class="visually-hidden">Search</span>
+          </button>
+        </div>
+        
+        {% if search.performed %}
+          <div class="search-filters">
+            <span class="filter-label">Filter by:</span>
+            <label class="filter-option">
+              <input type="checkbox" name="type[]" value="product" {% if search.filters contains 'product' %}checked{% endif %}>
+              Products
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" name="type[]" value="post" {% if search.filters contains 'post' %}checked{% endif %}>
+              Blog Posts
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" name="type[]" value="page" {% if search.filters contains 'page' %}checked{% endif %}>
+              Pages
+            </label>
+          </div>
+        {% endif %}
+      </form>
+    </div>
+    
+    {% if search.performed %}
+      {% if search.results_count > 0 %}
+        <div class="search-results">
+          {% for item in search.results %}
+            <article class="search-result">
+              {% case item.object_type %}
+                {% when 'product' %}
+                  <div class="result-type">Product</div>
+                  <h2 class="result-title">
+                    <a href="{{ item.url }}">{{ item.title }}</a>
+                  </h2>
+                  {% if item.featured_image %}
+                    <img src="{{ item.featured_image | image_url: '100x100' }}" alt="{{ item.title }}" class="result-image">
+                  {% endif %}
+                  <p class="result-excerpt">{{ item.description | strip_html | truncate: 160 }}</p>
+                  <p class="result-price">{{ item.price | money }}</p>
+                  
+                {% when 'post' %}
+                  <div class="result-type">Blog Post</div>
+                  <h2 class="result-title">
+                    <a href="{{ item.url }}">{{ item.title }}</a>
+                  </h2>
+                  <p class="result-meta">{{ item.published_at | date: '%B %d, %Y' }}</p>
+                  <p class="result-excerpt">{{ item.excerpt | strip_html | truncate: 160 }}</p>
+                  
+                {% when 'page' %}
+                  <div class="result-type">Page</div>
+                  <h2 class="result-title">
+                    <a href="{{ item.url }}">{{ item.title }}</a>
+                  </h2>
+                  <p class="result-excerpt">{{ item.content | strip_html | truncate: 160 }}</p>
+              {% endcase %}
+            </article>
+          {% endfor %}
+        </div>
+        
+        {% if paginate.pages > 1 %}
+          {% render 'pagination', paginate: paginate %}
+        {% endif %}
+      {% else %}
+        <div class="search-empty">
+          <p class="empty-message">No results found for your search.</p>
+          <h3 class="empty-title">Search suggestions:</h3>
+          <ul class="search-tips">
+            <li>Check your spelling</li>
+            <li>Try different keywords</li>
+            <li>Try more general keywords</li>
+            <li>Try fewer keywords</li>
+          </ul>
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>

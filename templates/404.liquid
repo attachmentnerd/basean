@@ -1,0 +1,46 @@
+{% comment %}
+  404 Error Template
+  Page not found
+{% endcomment %}
+
+<div class="error-wrapper">
+  <div class="container container--narrow">
+    <div class="error-content">
+      <h1 class="error-code">404</h1>
+      <h2 class="error-title">Page Not Found</h2>
+      <p class="error-message">
+        Sorry, we couldn't find the page you're looking for. It might have been moved or deleted.
+      </p>
+      
+      <div class="error-actions">
+        <a href="{{ routes.root_url }}" class="btn btn--primary">Go to Homepage</a>
+        <button type="button" onclick="history.back()" class="btn btn--secondary">Go Back</button>
+      </div>
+      
+      <div class="error-search">
+        <p class="search-prompt">Try searching for what you need:</p>
+        <form action="{{ routes.search_url }}" method="get" class="search-form">
+          <div class="search-input-wrapper">
+            <input type="search" 
+                   name="q" 
+                   placeholder="Search..." 
+                   class="search-input">
+            <button type="submit" class="search-button">
+              {% render 'icon', icon: 'search' %}
+            </button>
+          </div>
+        </form>
+      </div>
+      
+      <div class="helpful-links">
+        <h3 class="links-title">Helpful Links</h3>
+        <ul class="links-list">
+          <li><a href="{{ routes.products_url }}">Browse Products</a></li>
+          <li><a href="{{ routes.blog_url }}">Read Blog</a></li>
+          <li><a href="{{ routes.contact_url }}">Contact Us</a></li>
+          <li><a href="{{ routes.account_url }}">My Account</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

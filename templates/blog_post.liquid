@@ -1,0 +1,40 @@
+{% comment %}
+  Blog Post Template
+  Individual blog post display
+{% endcomment %}
+
+<article class="blog-post">
+  <div class="container container--narrow">
+    <header class="post-header">
+      <h1 class="post-title">{{ blog_post.title }}</h1>
+      
+      <div class="post-meta">
+        <time datetime="{{ blog_post.created_at | date: '%Y-%m-%d' }}">
+          {{ blog_post.created_at | date: '%B %d, %Y' }}
+        </time>
+        {% if blog_post.tags.size > 0 %}
+          <span class="meta-separator">•</span>
+          <span class="post-tags">
+            {{ blog_post.tags | join: ', ' }}
+          </span>
+        {% endif %}
+      </div>
+    </header>
+    
+    {% if blog_post.image_url %}
+      <div class="post-image">
+        <img src="{{ blog_post.image_url }}" alt="{{ blog_post.title }}" loading="eager">
+      </div>
+    {% endif %}
+    
+    <div class="post-content rte">
+      {{ blog_post.content }}
+    </div>
+    
+    <footer class="post-footer">
+      {% include 'social-share', url: blog_post.url, title: blog_post.title %}
+    </footer>
+  </div>
+</article>
+
+{% section 'comments' %}

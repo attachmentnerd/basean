@@ -1,0 +1,45 @@
+{% comment %}
+  Announcement Bar Snippet
+  Displays promotional messages at the top of the site
+{% endcomment %}
+
+{% if settings.announcement_text != blank %}
+  <div class="announcement-bar">
+    <div class="container">
+      <div class="announcement-content">
+        {% if settings.announcement_link %}
+          <a href="{{ settings.announcement_link }}" class="announcement-link">
+            {{ settings.announcement_text }}
+            {% include 'icon', icon: 'arrow-right', size: 'small' %}
+          </a>
+        {% else %}
+          <span class="announcement-text">{{ settings.announcement_text }}</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+<style>
+  .announcement-bar {
+    position: relative;
+    padding: 0.75rem 0;
+    font-size: 0.875rem;
+    text-align: center;
+    color: white;
+    background-color: var(--color-primary);
+  }
+  
+  .announcement-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: inherit;
+    text-decoration: none;
+    transition: opacity var(--transition-fast);
+  }
+  
+  .announcement-link:hover {
+    opacity: 0.8;
+  }
+</style>

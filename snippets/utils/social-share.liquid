@@ -1,0 +1,52 @@
+{% comment %}
+  Social Share Snippet
+  Usage: {% include 'social-share', url: post.url, title: post.title %}
+{% endcomment %}
+
+<div class="social-share">
+  <span class="social-share__label">Share:</span>
+  
+  <div class="social-share__buttons">
+    <!-- Facebook -->
+    <a href="https://www.facebook.com/sharer/sharer.php?u={{ url | url_encode }}" 
+       class="social-share__button social-share__button--facebook" 
+       target="_blank" 
+       rel="noopener"
+       aria-label="Share on Facebook">
+      {% include 'icon', icon: 'facebook', size: 'small' %}
+    </a>
+    
+    <!-- Twitter -->
+    <a href="https://twitter.com/intent/tweet?text={{ title | url_encode }}&url={{ url | url_encode }}" 
+       class="social-share__button social-share__button--twitter" 
+       target="_blank" 
+       rel="noopener"
+       aria-label="Share on Twitter">
+      {% include 'icon', icon: 'twitter', size: 'small' %}
+    </a>
+    
+    <!-- LinkedIn -->
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ url | url_encode }}" 
+       class="social-share__button social-share__button--linkedin" 
+       target="_blank" 
+       rel="noopener"
+       aria-label="Share on LinkedIn">
+      {% include 'icon', icon: 'linkedin', size: 'small' %}
+    </a>
+    
+    <!-- Email -->
+    <a href="mailto:?subject={{ title | url_encode }}&body=Check out this article: {{ url | url_encode }}" 
+       class="social-share__button social-share__button--email"
+       aria-label="Share via Email">
+      {% include 'icon', icon: 'mail', size: 'small' %}
+    </a>
+    
+    <!-- Copy Link -->
+    <button class="social-share__button social-share__button--copy" 
+            data-copy-link="{{ url }}"
+            aria-label="Copy link">
+      {% include 'icon', icon: 'link', size: 'small' %}
+      <span class="tooltip">Link copied!</span>
+    </button>
+  </div>
+</div>
