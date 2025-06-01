@@ -1,0 +1,31 @@
+<style>
+  {% comment %}
+    The following is a fix for blurry/zoomed-in images on mobile due to iOS
+    devices not supporting background-attachment:
+    https://stackoverflow.com/questions/24154666/background-size-cover-not-working-on-ios
+  {% endcomment %}
+
+  {% if settings.use_background_image %}
+    body::after{
+      content:"";
+      position:fixed; {% comment %} stretch a fixed position to the whole screen {% endcomment %}
+      top:0;
+      height:100vh; {% comment %} fix for mobile browser address bar appearing disappearing {% endcomment %}
+      left:0;
+      right:0;
+      z-index:-1; {% comment %}  needed to keep in the background {% endcomment %}
+      background: linear-gradient({{ settings.background_color | default: "rgba(0,0,0,0)" }}, {{ settings.background_color | default: "rgba(0,0,0,0)" }}), url({{ settings.background_image | image_picker_url: "background.jpg" }});
+      background-position: center center;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+    }
+  {% else %}
+    {% if settings.background_color != blank %}
+      body {
+        background-color: {{ settings.background_color }};
+      }
+    {% endif %}
+  {% endif %}
+</style>

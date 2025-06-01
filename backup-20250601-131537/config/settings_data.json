@@ -1,0 +1,75 @@
+{
+  "current": {
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "style": "primary",
+          "sticky": true
+        },
+        "blocks": {
+          "logo": {
+            "type": "logo",
+            "settings": {
+              "logo_type": "text",
+              "logo_text": "AttachmentNerd",
+              "logo_width": "150"
+            }
+          },
+          "menu": {
+            "type": "menu",
+            "settings": {
+              "menu": "main-menu"
+            }
+          },
+          "user": {
+            "type": "user",
+            "settings": {
+              "language_login": "Log In",
+              "language_logout": "Log Out",
+              "language_library": "My Library",
+              "language_settings": "Settings"
+            }
+          }
+        },
+        "block_order": ["logo", "menu", "user"]
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "style": "default",
+          "copyright": "AttachmentNerd",
+          "copyright_text": "All rights reserved.",
+          "show_powered_by": true
+        },
+        "blocks": {
+          "logo": {
+            "type": "logo",
+            "settings": {
+              "logo_type": "text",
+              "logo_text": "AttachmentNerd",
+              "description": "Empowering creators to share their knowledge with the world."
+            }
+          },
+          "menu": {
+            "type": "menu",
+            "settings": {
+              "title": "Quick Links",
+              "menu": "footer"
+            }
+          },
+          "newsletter": {
+            "type": "newsletter",
+            "settings": {
+              "title": "Stay Updated",
+              "description": "Get the latest updates and exclusive content.",
+              "placeholder": "Enter your email",
+              "button_text": "Subscribe"
+            }
+          }
+        },
+        "block_order": ["logo", "menu", "newsletter"]
+      }
+    }
+  }
+}

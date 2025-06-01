@@ -1,0 +1,83 @@
+{% assign offer = current_site.find_offer[block.settings.offer] %}
+{% assign btn_background_color = block.settings.btn_background_color | default: settings.btn_background_color %}
+{% assign btn_text_color = block.settings.btn_text_color | default: settings.btn_text_color %}
+{% assign btn_border_radius = block.settings.btn_border_radius | default: settings.btn_border_radius | remove: "px" | append: "px" %}
+{% assign btn_style = block.settings.btn_style | default: settings.btn_style %}
+{% assign btn_size = block.settings.btn_size | default: settings.btn_size %}
+{% assign btn_width = block.settings.btn_width | default: settings.btn_width %}
+{% capture anchor_attrs %}
+  href="{{ block.settings.btn_action }}"
+  {% if block.settings.btn_action == "#two-step" %} data-target="#two-step" data-toggle="modal" {% endif %}
+  {% if block.settings.btn_action == "#cta-popup" %} data-target="#cta-popup-{{ block.id }}" {% endif %}
+  {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %}
+{% endcapture %}
+
+<style>
+  {% if block.settings.currently_owned %}
+    {% if offer.currently_owned? %}
+      #block-{{ block.id }} {
+        display: none;
+      }
+    {% endif %}
+  {% endif %}
+  #block-{{ block.id }} .cta__wrapper {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #block-{{ block.id }} .btn {
+    border-color: {{ btn_background_color }};
+    border-radius: {{ btn_border_radius }};
+    background: {{ btn_background_color }};
+    color: {{ btn_text_color }};
+    margin: 0;
+  }
+  #block-{{ block.id }} .btn--outline {
+    background: transparent;
+    color: {{ btn_background_color }};
+  }
+</style>
+
+{% if offer %}
+  {% if block.settings.show_cta == true %}
+    <div class="card" href="{{ offer.checkout_url }}" {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %}>
+      {% if offer.image_url %}
+        {{ offer.image_url | image_tag: class: "card__image", alt: "" }}
+      {% endif %}
+      <div class="card__body background-{{ block.settings.background_color | color_scheme_class }}">
+        <h4 class="card__title">{{ offer.title }}</h4>
+        <p class="card__text">{{ offer.description | strip_html }}</p>
+        <h5 class="card__price">{{ offer | display_price }}</h5>
+        <div class="cta__wrapper">
+          <a {{ anchor_attrs }} class="btn card__button btn--{{ btn_style }} btn--{{ btn_width }} btn--{{ btn_size }}" kjb-settings-id="{{ 'btn_text' | settings_id: section: section, block: block }}">
+            {%- element "block.settings.btn_text" -%}
+            {{ block.settings.btn_text }}
+            {%- endelement -%}
+          </a>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <a class="card" href="{{ offer.checkout_url }}" {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %}>
+      {% if offer.image_url %}
+        {{ offer.image_url | image_tag: class: "card__image", alt: "" }}
+      {% endif %}
+      <div class="card__body background-{{ block.settings.background_color | color_scheme_class }}">
+        <h4 class="card__title">{{ offer.title }}</h4>
+        <p class="card__text">{{ offer.description | strip_html }}</p>
+        <h5 class="card__price">{{ offer | display_price }}</h5>
+      </div>
+    </a>
+  {% endif %}
+{% else %}
+  {% if editor %}
+    <div class="editor-null" kjb-settings-id="{{ 'offer' | settings_id: section: section, block: block }}">
+      Click here to select an offer to display.
+    </div>
+  {% endif %}
+{% endif %}
+
+{% if editor or block.settings.btn_action == "#cta-popup" %}
+  {% include "cta_popup", block: block %}
+{% endif %}

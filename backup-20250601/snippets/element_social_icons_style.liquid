@@ -1,0 +1,26 @@
+<style>
+  .social-icons--{{ block.id }} .social-icons__icons {
+    justify-content: {{ block.settings.mobile_horizontal }}
+  }
+  .social-icons--{{ block.id }} .social-icons__icon {
+    color: {{ block.settings.social_icons_text_color }} !important;
+  }
+  .social-icons--{{ block.id }}.social-icons--round .social-icons__icon {
+    background-color: {{ block.settings.social_icons_background_color | default: settings.color_primary }};
+  }
+  .social-icons--{{ block.id }}.social-icons--square .social-icons__icon {
+    background-color: {{ block.settings.social_icons_background_color | default: settings.color_primary }};
+  }
+  {% if block.settings.social_icons_text_color == block.settings.social_icons_background_color %}
+    {% if block.settings.social_icon_background_style == "round" or block.settings.social_icon_background_style == "square" %}
+      .social-icons--{{ block.id }} .social-icons__icon {
+        color: #ffffff !important;
+      }
+    {% endif %}
+  {% endif %}
+  @media (min-width: 768px) {
+    .social-icons--{{ block.id }} .social-icons__icons {
+      justify-content: {{ block.settings.horizontal }}
+    }
+  }
+</style>

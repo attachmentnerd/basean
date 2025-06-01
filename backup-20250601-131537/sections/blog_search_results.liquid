@@ -1,0 +1,25 @@
+<section class="section">
+  <div class="container">
+    <h1>Search Results</h1>
+    
+    {% if search.results.size > 0 %}
+      <p>Found {{ search.results.size }} results for "{{ search.terms }}"</p>
+      
+      {% for result in search.results %}
+        <article class="card mb-4">
+          <h2><a href="{{ result.url }}">{{ result.title }}</a></h2>
+          <p>{{ result.content | strip_html | truncate: 150 }}</p>
+        </article>
+      {% endfor %}
+    {% else %}
+      <p>No results found for "{{ search.terms }}"</p>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Blog Search Results",
+  "elements": []
+}
+{% endschema %}

@@ -1,0 +1,12 @@
+{
+  "current": {
+    "favicon": "",
+    "font_family": "Open Sans",
+    "color_primary": "#222",
+    "language_login": "Login",
+    "language_logout": "Logout",
+    "language_settings": "Settings",
+    "language_library": "My Library"
+  },
+  "presets": {}
+}

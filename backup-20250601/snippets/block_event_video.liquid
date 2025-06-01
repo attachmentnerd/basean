@@ -1,0 +1,135 @@
+{% assign event = current_site.find_event[block.settings.event] %}
+{% assign v = current_site.find_video[block.settings.video] %}
+{% assign video_image = block.settings.video_image | image_picker_url: "video_still.png" %}
+{% assign autoPlay = block.settings.auto_play %}
+{% assign playButton = block.settings.play_button %}
+{% assign smallPlayButton = block.settings.small_play_button %}
+{% assign fullScreen = block.settings.full_screen %}
+{% assign playbar = block.settings.playbar %}
+{% assign videoSettings = block.settings.video_settings %}
+{% assign controlsOnLoad = block.settings.controls_on_load %}
+{% assign playerColor = block.settings.video_color | default: settings.color_primary %}
+{% if block.settings.loop %}
+  {% assign loop = "loop" %}
+{% endif %}
+
+
+{% if editor %}
+  <style>
+    .event-video .event-video__item {
+      visibility: visible;
+      height: auto;
+      position: relative;
+      display: block;
+      margin-bottom: 1rem;
+    }
+    .event-video__box {
+      width: 100%;
+      min-height: 420px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+    }
+    .event-video .event-video__item:before {
+      z-index: 9999;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      padding: 10px 20px;
+      margin-bottom: 20px;
+      background: #2e91fc;
+      font-size: 14px;
+      color: #fff;
+      text-align: center;
+      width:200px;
+    }
+    .event-video .event-video__item--before:before {
+      content: "Shows Before Event"
+    }
+    .event-video .event-video__item--join:before {
+      content: "Shows At Event Start"
+    }
+    .event-video .event-video__item--during:before {
+      content: "Shows During Event"
+    }
+    .event-video .event-video__item--after:before {
+      content: "Shows After Event"
+    }
+  </style>
+{% endif %}
+
+<style>
+  #block-{{ block.id }} .event-video .event-video__item--before .event-video__box .event-video__box-inner {
+    padding: 20px;
+  }
+</style>
+
+<div class="event-video"
+  data-event-time="{{ event.occurs_at | date: "%Y-%jT%T%:z" }}"
+  data-offset-number="{{ block.settings.event_offset_number }}"
+  data-offset-period="{{ block.settings.event_offset_period }}">
+  <div class="event-video__item event-video__item--before"
+  kjb-settings-id="{{ 'before_bg_image' | settings_id: section: section, block: block }}">
+    <div class="event-video__box background-{{ block.settings.before_bg_color | color_scheme_class }}">
+      <div class="event-video__box-inner d-flex flex-column justify-content-center p-40">
+        <h2 
+          class="event-video--text"
+          kjb-settings-id="{{ 'before_event_text' | settings_id: section: section, block: block }}"  
+          {% element_attributes "block.settings.before_event_text" %}
+        >
+          {{ block.settings.before_event_text }}
+        </h2>
+        {% include "block_countdown", appended_countdown_class: "countdown--video"  %}
+      </div>
+    </div>
+  </div>
+  <div class="event-video__item event-video__item--join" kjb-settings-id="{{ kjb-JoinBg }}">
+    <div class="event-video__box">
+      <div class="event-video__box-inner">
+        <h2 
+          class="event-video--text" 
+          kjb-settings-id="{{ 'join_event_text' | settings_id: section: section, block: block }}" 
+          {% element_attributes "block.settings.join_event_text" %}
+        >
+          {{ block.settings.join_event_text }}
+        </h2>
+        {% include "block_cta", button_text_override: block.settings.event_start_btn_text %}
+      </div>
+    </div>
+  </div>
+  <div class="event-video__item event-video__item--during" kjb-settings-id="{{ 'video' | settings_id: section: section, block: block }}">
+    {% if v %}
+      {{ v | wistia_video:
+        playerPreference: "html5",
+        player_color: playerColor,
+        still_url: video_image,
+        auto_play: autoPlay,
+        controls_visible_on_load: controlsOnLoad,
+        playbar: playbar,
+        fullscreen_button: fullScreen,
+        playback_rate_control: videoSettings,
+        quality_control: videoSettings,
+        settings_control: videoSettings,
+        small_play_button: smallPlayButton,
+        volume_control: autoPlay,
+        play_button: playButton  }}
+    {% else %}
+      {{ video_image | image_tag: alt: "Video Poster Image" }}
+    {% endif %}
+  </div>
+  <div class="event-video__item event-video__item--after" kjb-settings-id="{{ kjb-AfterBg }}">
+    <div class="event-video__box">
+      <div class="event-video__box-inner">
+        <h2 
+          class="event-video--text" 
+          kjb-settings-id="{{ 'after_event_text' | settings_id: section: section, block: block }}"
+          {% element_attributes "block.settings.after_event_text" %}
+        >
+          {{ block.settings.after_event_text }}
+        </h2>
+        {% include "block_cta", button_text_override: block.settings.btn_text %}
+      </div>
+    </div>
+  </div>
+</div>

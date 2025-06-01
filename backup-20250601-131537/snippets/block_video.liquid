@@ -1,0 +1,36 @@
+{% assign autoPlay = block.settings.auto_play %}
+{% assign playButton = block.settings.play_button %}
+{% assign smallPlayButton = block.settings.small_play_button %}
+{% assign fullScreen = block.settings.full_screen %}
+{% assign playbar = block.settings.playbar %}
+{% assign videoSettings = block.settings.video_settings %}
+{% assign controlsOnLoad = block.settings.controls_on_load %}
+{% assign playerColor = block.settings.video_color | default: settings.color_primary %}
+{% if block.settings.loop %}
+  {% assign loop = "loop" %}
+{% endif %}
+
+{% assign still_image = block.settings.image | image_picker_url: "video_still.png" %}
+{% assign vid_img = block.settings.image | image_picker_url: "video.png" %}
+{% assign v = current_site.find_video[block.settings.video] %}
+
+<div class="video">
+  {% if v %}
+    {{ v | wistia_video:
+      playerPreference: "html5",
+      player_color: playerColor,
+      still_url: vid_img,
+      auto_play: autoPlay,
+      controls_visible_on_load: controlsOnLoad,
+      playbar: playbar,
+      fullscreen_button: fullScreen,
+      playback_rate_control: videoSettings,
+      quality_control: videoSettings,
+      settings_control: videoSettings,
+      small_play_button: smallPlayButton,
+      endVideoBehavior: loop,
+      play_button: playButton  }}
+  {% else %}
+    {{ still_image | image_tag: alt: "Video Poster Image" }}
+  {% endif %}
+</div>

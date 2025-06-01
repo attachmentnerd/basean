@@ -1,0 +1,266 @@
+{% layout "minimal" %}
+{% include "section_styles" %}
+
+{% assign btn_background_color = section.settings.btn_background_color | default: settings.btn_background_color %}
+{% assign btn_text_color = section.settings.btn_text_color | default: settings.btn_text_color %}
+{% assign btn_border_radius = section.settings.btn_border_radius | default: settings.btn_border_radius | remove: "px" | append: "px" %}
+{% assign btn_style = section.settings.btn_style | default: settings.btn_style %}
+{% assign btn_size = section.settings.btn_size | default: settings.btn_size %}
+{% assign btn_width = section.settings.btn_width | default: settings.btn_width %}
+
+<style>
+  .auth__image .image {
+    width: 100%;
+    {% if section.settings.image_width != blank %}
+      max-width: 100%;
+      width: {{ section.settings.image_width | remove: "px" | append: "px" }};
+      margin: auto;
+    {% endif %}
+  }
+  .auth__content .form-btn {
+    color: {{ btn_text_color }};
+    border-color: {{ btn_background_color }};
+    border-radius: {{ btn_border_radius }};
+    background: {{ btn_background_color }};
+  }
+  .auth__content .btn--outline {
+    background: transparent;
+    color: {{ btn_background_color }};
+  }
+</style>
+<section kjb-settings-id="{{ 'background_color' | settings_id: section: section }}"
+class="section
+{% if section.settings.background_color != blank %} background-{{ section.settings.background_color | color_scheme_class }}{% endif %}">
+  {% if section.settings.bg_type == "video" %}
+    {% include "global_background_video" %}
+  {% endif %}
+  <div class="section__overlay"></div>
+  <div class="sizer sizer--full">
+    <div class="container">
+      <div class="row align-items-center justify-content-center ">
+        {% include "block_login" %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Login",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "show_image",
+        "label": "Show Image",
+        "default": "false"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image",
+        "width": 720,
+        "height": 410,
+        "info": "Suggested dimensions: 720 × 410"
+      },
+      {
+        "type": "text",
+        "id": "image_width",
+        "label": "Image Width",
+        "info": "You may use the format 10px or simply 10.",
+        "default": ""
+      },
+      {
+        "type": "text",
+        "id": "image_alt",
+        "label": "Image Alt Attribute",
+        "info": "Add an image alt attribute for SEO, and if the image cannot be displayed.",
+        "default": ""
+      }
+    ],
+    "groups": [
+      {
+        "name": "Button",
+        "elements": [
+          {
+            "type": "text",
+            "id": "btn_text",
+            "label": "Text",
+            "default": "Submit"
+          },
+          {
+            "type": "color",
+            "id": "btn_background_color",
+            "label": "Button Background Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "color",
+            "id": "btn_text_color",
+            "label": "Button Text Color",
+            "default": "",
+            "allow_blank": true,
+            "info": "For solid buttons only"
+          },
+          {
+            "type": "radio",
+            "id": "btn_width",
+            "label": "Button Width",
+            "default": "",
+            "allow_blank": true,
+            "info": "*full width is not compatible for inline forms",
+            "options": [
+              {
+                "value": "full",
+                "label": "Full"
+              },
+              {
+                "value": "auto",
+                "label": "Auto"
+              }
+            ]
+          },
+          {
+            "type": "radio",
+            "id": "btn_style",
+            "label": "Button Style",
+            "default": "",
+            "allow_blank": true,
+            "options": [
+              { "label": "Solid", "value": "solid" },
+              { "label": "Outline", "value": "outline" }
+            ]
+          },
+          {
+            "type": "radio",
+            "id": "btn_size",
+            "label": "Button Size",
+            "default": "",
+            "allow_blank": true,
+            "options": [
+              { "label": "Small", "value": "small" },
+              { "label": "Medium", "value": "medium" },
+              { "label": "Large", "value": "large" }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "btn_border_radius",
+            "label": "Border Radius",
+            "default": "",
+            "allow_blank": true
+          }
+        ]
+      },
+      {
+        "name": "Background",
+        "elements": [
+          {
+            "type": "select",
+            "id": "bg_type",
+            "label": "Background Media Type",
+            "default": "none",
+            "options": [
+              {
+                "value": "none",
+                "label": "None"
+              },
+              {
+                "value": "image",
+                "label": "Image"
+              },
+              {
+                "value": "video",
+                "label": "Video"
+              }
+            ]
+          },
+          {
+            "type": "video",
+            "id": "bg_video",
+            "label": "Background Video"
+          },
+          {
+            "type": "image_picker",
+            "id": "bg_image",
+            "label": "Background Image",
+            "info": "A good background image sets the tone for your website without distracting from your content. Suggested dimensions: 2880 × 1200.",
+            "fit": "max",
+            "width": 3000,
+            "height": 3000
+          },
+          {
+            "type": "radio",
+            "id": "bg_position",
+            "label": "Background Image Position",
+            "default": "center",
+            "info": "Vertical positioning of the background image.",
+            "options": [
+              {
+                "value": "top",
+                "label": "Top"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "bottom",
+                "label": "Bottom"
+              }
+            ]
+          },
+          {
+            "type": "checkbox",
+            "id": "background_fixed",
+            "label": "Fixed Background Image",
+            "default": "false",
+            "info": "Make this section's background image fixed on scroll. Does not apply to mobile devices."
+          },
+          {
+            "type": "color",
+            "label": "Background Color",
+            "id": "background_color",
+            "allow_blank": true,
+            "info": "Set a background color or apply a color overlay to your background image or video. Use the color wheel slider to adjust opacity."
+          }
+        ]
+      },
+      {
+        "name": "Language",
+        "elements": [
+          {
+            "type": "text",
+            "label": "Log In Text",
+            "id": "login_text",
+            "default": "Log In"
+          },
+          {
+            "type": "text",
+            "label": "Email Text",
+            "id": "email",
+            "default": "Email"
+          },
+          {
+            "type": "text",
+            "label": "Password Text",
+            "id": "password",
+            "default": "Password"
+          },
+          {
+            "type": "text",
+            "label": "Remember Me Text",
+            "id": "remember_me",
+            "default": "Remember Me"
+          },
+          {
+            "type": "text",
+            "label": "Forgot Password Text",
+            "id": "forgot_password",
+            "default": "Forgot Password"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

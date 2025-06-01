@@ -1,0 +1,27 @@
+<style>
+  {% if block.settings.box_shadow != "none" or block.settings.background_color  != "" %}
+    #block-{{ block.id }} .block {
+      overflow: hidden;
+    }
+  {% else %}
+    #block-{{ block.id }} .card__body {
+      padding: 24px 0;
+    }
+  {% endif %}
+</style>
+
+{% assign posts_sorted = current_site.blog.posts_published | sort: 'created_at'%}
+{% assign post_number = block.settings.post | minus: 1 %}
+{% assign post = current_site.blog.posts_published[post_number] %}
+
+<a class="card" href="{{ post.url }}">
+  {% if post.image_url %}
+    {{ post.image_url | image_tag: class: "card__image", alt: "" }}
+  {% endif %}
+  <div class="card__body">
+    <h4 class="card__title">{{ post.title | truncate: 70 }}</h4>
+    {% if block.settings.show_date %}
+      <p class="card__text">{{ post.created_at | date: "%b %d, 20%y" }}</p>
+    {% endif %}
+  </div>
+</a>

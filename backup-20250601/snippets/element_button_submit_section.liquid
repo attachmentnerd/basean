@@ -1,0 +1,29 @@
+{% assign btn_background_color = section.settings.btn_background_color | default: settings.btn_background_color %}
+{% assign btn_text_color = section.settings.btn_text_color | default: settings.btn_text_color %}
+{% assign btn_border_radius = section.settings.btn_border_radius | default: settings.btn_border_radius | remove: "px" | append: "px" %}
+{% assign btn_style = section.settings.btn_style | default: settings.btn_style %}
+{% assign btn_size = section.settings.btn_size | default: settings.btn_size %}
+{% assign btn_width = section.settings.btn_width | default: settings.btn_width %}
+
+<style>
+  .btn {
+    border-color: {{ btn_background_color }};
+    border-radius: {{ btn_border_radius }};
+    color: {{ btn_text_color }};
+    background-color: {{ btn_background_color }};
+  }
+  .btn--outline {
+    background: transparent;
+    color: {{ btn_background_color }};
+  }
+</style>
+
+<button
+  class="btn btn--{{ btn_style }} btn--{{ btn_size }} btn--{{ btn_width }} {{ appended_classes }}"
+  type="submit"
+  name="commit"
+ >
+  {%- element "section.settings.btn_text" -%}
+    {{ section.settings.btn_text }}
+  {%- endelement -%}
+ </button>

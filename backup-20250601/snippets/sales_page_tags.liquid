@@ -1,0 +1,17 @@
+{% if tags.size > 0 %}
+  <style>
+    .sales-page-tags a {
+      color: {{ section.settings.text_color_tag | default: settings.color_primary }};
+    }
+  </style>
+  <div class="col-12 sales-page-tags">
+    <a href="/store" kjb-settings-id="{{ 'sales_tag_all' | settings_id: section: section }}">{{ section.settings.sales_tag_all }}</a>
+    {% for tag in tags %}
+      {% if tags.current == tag %}
+        <a href="/store?tag={{ tag | url_encode }}" class="capitalize active">{{ tag }}</a>
+      {% else %}
+        <a href="/store?tag={{ tag | url_encode }}" class="capitalize">{{ tag }}</a>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endif %}

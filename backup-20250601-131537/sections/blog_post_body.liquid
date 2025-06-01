@@ -1,0 +1,29 @@
+<section class="section">
+  <div class="container">
+    <article>
+      <h1>{{ blog_post.title }}</h1>
+      <time>{{ blog_post.created_at | date: '%B %d, %Y' }}</time>
+      
+      {% if blog_post.image_url %}
+        <img src="{{ blog_post.image_url }}" alt="{{ blog_post.title }}" style="width: 100%; margin: var(--space-4) 0;">
+      {% endif %}
+      
+      <div class="content">
+        {{ blog_post.content }}
+      </div>
+      
+      {% if blog_post.tags.size > 0 %}
+        <div class="tags">
+          Tags: {{ blog_post.tags | join: ', ' }}
+        </div>
+      {% endif %}
+    </article>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Blog Post Body",
+  "elements": []
+}
+{% endschema %}

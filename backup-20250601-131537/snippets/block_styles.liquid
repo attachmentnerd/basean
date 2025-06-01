@@ -1,0 +1,109 @@
+{% assign padding_exception_list = "assessment, audio, blog, card, external_widget, image, offer, video, video_embed" | split: ", " %}
+{% assign exception_list = "assessment, audio, external_widget, image, video, video_embed" | split: ", " %}
+{% assign mobile_padding = "20px" %}
+{% assign desktop_padding = "30px" %}
+
+<style>
+  /* flush setting */
+  {% if block.settings.make_flush %}
+    #block-{{ block.id }}, [data-slick-id="{{ block.id }}"] { padding: 0; }
+  {% endif %}
+  {% if carousel and section.settings.full_width %}
+    #block-{{ block.id }}, [data-slick-id="{{ block.id }}"] {
+      padding: 0;
+      /* Slick carousel width fix - https://stackoverflow.com/questions/48254835/slick-slider-width-0-on-initial-page-load  */
+      width: 100vw;
+    }
+  {% endif %}
+  /* margin settings */
+  #block-{{ block.id }}, [data-slick-id="{{ block.id }}"] {
+    margin-top: {{ block.settings.margin_mobile.top | default: 0 | append: "px" }};
+    margin-right: {{ block.settings.margin_mobile.right | default: 0 | append: "px" }};
+    margin-bottom: {{ block.settings.margin_mobile.bottom | default: 0 | append: "px" }};
+    margin-left: {{ block.settings.margin_mobile.left | default: 0 | append: "px" }};
+  }
+  #block-{{ block.id }} .block, [data-slick-id="{{ block.id }}"] .block {
+    /* border settings */
+    border: {{ block.settings.border_width | default: 4 | append: "px" }} {{ block.settings.border_type }} {{ block.settings.border_color | default: "black" }};
+    border-radius: {{ block.settings.border_radius | default: 4 | append: "px" }};
+    {% if carousel and section.settings.full_width %}
+      border-radius: 0;
+    {% endif %}
+
+    /* background color */
+    {% if block.settings.background_color != "" %}
+      background-color: {{ block.settings.background_color }};
+    {% endif %}
+    /* default padding for mobile */
+    {% if block.settings.background_color != "" %}
+      padding: {{ mobile_padding }};
+    {% endif %}
+    {% if block.settings.border_type != "none" %}
+      padding: {{ mobile_padding }};
+    {% endif %}
+    {% if block.settings.box_shadow != "none" %}
+      {% unless exception_list contains block.type %}
+        padding: {{ mobile_padding }};
+      {% endunless %}
+    {% endif %}
+    /* mobile padding overrides */
+    {% if padding_exception_list contains block.type %}
+      padding: 0;
+    {% endif %}
+    {% if block.settings.padding_mobile.top != "" %}
+      padding-top: {{ block.settings.padding_mobile.top | default: 0 | append: "px" }};
+    {% endif %}
+    {% if block.settings.padding_mobile.right != "" %}
+      padding-right: {{ block.settings.padding_mobile.right | default: 0 | append: "px" }};
+    {% endif %}
+    {% if block.settings.padding_mobile.bottom != "" %}
+      padding-bottom: {{ block.settings.padding_mobile.bottom | default: 0 | append: "px" }};
+    {% endif %}
+    {% if block.settings.padding_mobile.left != "" %}
+      padding-left: {{ block.settings.padding_mobile.left | default: 0 | append: "px" }};
+    {% endif %}
+  }
+
+  @media (min-width: 768px) {
+    /* desktop margin settings */
+    #block-{{ block.id }}, [data-slick-id="{{ block.id }}"] {
+      margin-top: {{ block.settings.margin_desktop.top | default: 0 | append: "px" }};
+      margin-right: {{ block.settings.margin_desktop.right | default: 0 | append: "px" }};
+      margin-bottom: {{ block.settings.margin_desktop.bottom | default: 0 | append: "px" }};
+      margin-left: {{ block.settings.margin_desktop.left | default: 0 | append: "px" }};
+    }
+    #block-{{ block.id }} .block, [data-slick-id="{{ block.id }}"] .block {
+      /* default padding for desktop  */
+      {% if block.settings.background_color != "" %}
+        padding: {{ desktop_padding }};
+      {% endif %}
+      {% if block.settings.box_shadow != "none" %}
+        {% unless exception_list contains block.type %}
+          padding: {{ desktop_padding }};
+        {% endunless %}
+      {% endif %}
+      /* desktop padding overrides */
+      {% if padding_exception_list contains block.type %}
+        padding: 0;
+      {% endif %}
+      {% if block.settings.padding_desktop.top != "" %}
+        padding-top: {{ block.settings.padding_desktop.top | default: 0 | append: "px" }};
+      {% endif %}
+      {% if block.settings.padding_desktop.right != "" %}
+        padding-right: {{ block.settings.padding_desktop.right | default: 0 | append: "px" }};
+      {% endif %}
+      {% if block.settings.padding_desktop.bottom != "" %}
+        padding-bottom: {{ block.settings.padding_desktop.bottom | default: 0 | append: "px" }};
+      {% endif %}
+      {% if block.settings.padding_desktop.left != "" %}
+        padding-left: {{ block.settings.padding_desktop.left | default: 0 | append: "px" }};
+      {% endif %}
+    }
+  }
+  /* mobile text align */
+  @media (max-width: 767px) {
+    #block-{{ block.id }}, [data-slick-id="{{ block.id }}"] {
+      text-align: {{ block.settings.mobile_text_align }};
+    }
+  }
+</style>

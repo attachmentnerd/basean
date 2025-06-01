@@ -1,0 +1,7 @@
+{% if section.settings.progress %}
+  <div class="progress">
+    <div class="progress__outer" kjb-settings-id="{{ 'progress' | settings_id: section: section }}">
+      <div class="progress__inner" style="width: {{ percent }}%"></div>
+    </div>
+  </div>
+{% endif %}

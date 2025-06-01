@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page_title | default: current_site.title }}</title>
+  
+  {% if settings.favicon %}
+    <link rel="shortcut icon" href="{{ settings.favicon | image_url: '32x32' }}" type="image/png">
+  {% endif %}
+  
+  <!-- Kajabi Core CSS -->
+  <link rel="stylesheet" href="https://cdn.mykajabi.com/assets/core.css">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family={{ settings.font_family | default: 'Open Sans' | replace: ' ', '+' }}:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Theme CSS -->
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+  
+  <!-- CSS Variables -->
+  {% include 'css-variables' %}
+  
+  <!-- User Overrides -->
+  {{ 'overrides.scss.liquid' | asset_url | stylesheet_tag }}
+  
+  {% content_for_header %}
+</head>
+<body>
+  <div class='header' >
+  
+  <main role="main">
+    {{ content_for_layout }}
+  </main>
+  
+  <div class='footer' >
+  
+  <!-- Kajabi Core JS -->
+  <script src="https://cdn.mykajabi.com/assets/core.js"></script>
+  
+  <!-- Theme JS -->
+  {{ 'scripts.js' | asset_url | script_tag }}
+</body>
+</html>

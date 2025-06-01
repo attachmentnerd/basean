@@ -1,0 +1,48 @@
+{% assign btn_background_color = section.settings.cta_btn_background_color | default: settings.btn_background_color %}
+{% assign btn_text_color = section.settings.cta_btn_text_color | default: settings.btn_text_color %}
+{% assign btn_border_radius = section.settings.cta_btn_border_radius | default: settings.btn_border_radius | remove: "px" | append: "px" %}
+{% assign btn_style = section.settings.cta_btn_style | default: settings.btn_style %}
+{% assign btn_size = section.settings.cta_btn_size | default: settings.btn_size %}
+{% assign btn_width = section.settings.cta_btn_width | default: settings.btn_width %}
+
+<style>
+  .blog-post-cta {
+    background-color: {{ section.settings.cta_background_color }};
+    border-color: {{ section.settings.cta_border_color }};
+    border-width: {{ section.settings.cta_border_width | remove: "px" | append: "px" }};
+    text-align: {{ section.settings.cta_content_text_align }};
+  }
+  #cta-btn {
+    margin-top: 20px;
+    border-color: {{ btn_background_color }};
+    border-radius: {{ btn_border_radius }};
+    color: {{ btn_text_color }};
+    background-color: {{ btn_background_color }};
+  }
+  #cta-btn.btn--outline {
+    background: transparent;
+    color: {{ btn_background_color }};
+  }
+</style>
+
+<div class="blog-post-cta {% if section.settings.cta_background_color != blank %}background-{{ section.settings.cta_background_color | color_scheme_class }}{% endif %}" kjb-settings-id="{{ 'cta_background_color' | settings_id: section: section }}">
+  <div
+    class="blog-post-cta__content"
+    kjb-settings-id="{{ 'cta_content' | settings_id: section: section }}"
+    {% element_attributes "section.settings.cta_content" %}
+  >
+    {{ section.settings.cta_content }}
+  </div>
+  <a
+    id="cta-btn"
+    class="btn btn--{{ btn_style }} btn--{{ btn_size }} btn--{{ btn_width }}"
+    href="{{ section.settings.cta_btn_action }}"
+    {% if section.settings.cta_btn_action == "#two-step" %} data-target="#two-step" data-toggle="modal" {% endif %}
+    {% if section.settings.cta_new_tab == true %} target="_blank" rel="noopener" {% endif %}
+    kjb-settings-id="{{ 'cta_btn_background_color' | settings_id: section: section }}"
+  >
+    {% element "section.settings.cta_btn_text" %}
+      {{ section.settings.cta_btn_text }}
+    {% endelement %}
+  </a>
+</div>

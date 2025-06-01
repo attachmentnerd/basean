@@ -1,0 +1,40 @@
+<style>
+ .newsletter-listing__media img {
+     border-radius: 15px;
+ }
+</style>
+
+{% assign has_media = "" %}
+{% if newsletter_post.thumbnail_url %}
+  {% assign has_media = "newsletter-listing--has-media" %}
+{% endif %}
+
+<div class="newsletter-listing newsletter-listing--{{ section.settings.layout_style }} {{ has_media }}" kjb-settings-id="{{ 'layout_style' | settings_id: section: section }}">
+  <div class="newsletter-listing__media">
+    {% if newsletter_post.thumbnail_url %}
+      <a href="{{ newsletter_post.url }}">
+        {{ newsletter_post.thumbnail_url | image_tag: alt: newsletter_post.image_alt_text }}
+      </a>
+    {% endif %}
+  </div>
+  <div class="newsletter-listing__data">
+    <a class="h5 newsletter-listing__title" href="{{ newsletter_post.url }}">{{ newsletter_post.title }}</a>
+    <div class="newsletter-listing__content">
+      {{ newsletter_post.listing_html | strip_html | truncate: 300 }}
+    </div>
+    <span class="newsletter-listing__meta">
+      {% if newsletter_post.authors? %}
+        by {{ newsletter_post.authors }} —
+      {% endif %}
+      {{ newsletter_post.published_at | date: "%b %d, 20%y" }}
+    </span>
+
+    {% if newsletter_post.tags  %}
+      <span class="newsletter-listing__tags">
+        {% for tag in newsletter_post.tags %}
+          <a class="tag" href="{{ newsletter.url }}?tags[]={{ tag | url_encode }}">{{ tag }}</a>
+        {% endfor %}
+      </span>
+    {% endif %}
+  </div>
+</div>

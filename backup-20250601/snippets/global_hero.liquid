@@ -1,0 +1,18 @@
+{% include "section_styles" %}
+
+<div kjb-settings-id="{{ 'background_color' | settings_id: section: section }}"
+  class="section
+  background-{{ section.settings.background_color | color_scheme_class }}">
+  <div class="sizer {% if section.settings.full_height == true %}sizer--full{% endif %}">
+    {% if section.settings.bg_type == "video" %}
+      {% include "global_background_video" %}
+    {% endif %}
+    <div class="container {% if section.settings.full_width == true %}container--full{% endif %}">
+      <div class="row align-items-{{ section.settings.vertical }} justify-content-{{ section.settings.horizontal }}">
+        {% for block in section.blocks %}
+          {% include "block" type: block.type, appended_countdown_class: "countdown--standard" %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>

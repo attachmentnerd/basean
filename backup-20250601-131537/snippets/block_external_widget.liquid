@@ -1,0 +1,13 @@
+{% if block.settings.external_widget != blank %}
+  {% assign widget = current_site.find_widget[block.settings.external_widget] %}
+
+  <div class="kjb-external-widget" kjb-settings-id="{{ 'external_widget' | settings_id: section: section, block: block }}">
+    {{ widget | external_widget }}
+  </div>
+{% else %}
+  {% if editor %}
+    <div class="editor-null" kjb-settings-id="{{ 'external_widget' | settings_id: section: section, block: block }}">
+      Click here to select a widget to display.
+    </div>
+  {% endif %}
+{% endif %}

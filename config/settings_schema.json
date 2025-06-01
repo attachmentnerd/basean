@@ -1,344 +1,415 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "AttachmentNerd Base Theme",
-    "theme_version": "1.0.0",
+    "settings_validatable": true,
+    "theme_name": "AttachmentNerd Base",
+    "theme_version": "1.0.1",
     "theme_author": "AttachmentNerd",
-    "theme_documentation_url": "https://help.attachmentnerd.com",
-    "theme_support_url": "https://support.attachmentnerd.com",
-    "settings_validatable": true
+    "theme_documentation_url": "https://attachmentnerd.com/docs",
+    "theme_support_url": "https://attachmentnerd.com/support"
   },
   {
-    "name": "Brand",
+    "name": "Favicon",
     "elements": [
       {
         "type": "header",
-        "content": "Logo"
-      },
-      {
-        "type": "image_picker",
-        "id": "logo",
-        "label": "Logo image"
-      },
-      {
-        "type": "image_picker",
-        "id": "logo_white",
-        "label": "Logo image (white version)",
-        "info": "Used on dark backgrounds"
+        "content": "Favicon"
       },
       {
         "type": "image_picker",
         "id": "favicon",
-        "label": "Favicon",
-        "info": "32x32px .png recommended"
+        "label": "Favicon Image",
+        "fit": "crop",
+        "width": 32,
+        "height": 32,
+        "info": "Must be a 32x32 PNG file. Transparency is supported. Please allow some time for favicon to change."
       }
     ]
   },
   {
-    "name": "Colors",
+    "name": "Style Guide",
     "elements": [
       {
         "type": "header",
-        "content": "Brand Colors"
+        "content": "General Appearance"
+      },
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Page Background Color",
+        "allow_blank": true,
+        "info": "Lower the transparency in the color picker to reveal the background image."
+      },
+      {
+        "type": "checkbox",
+        "id": "use_background_image",
+        "label": "Use Background Image",
+        "default": "false"
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image",
+        "label": "Background Image",
+        "info": "A good background image sets the tone for your website without distracting from your content. Suggested dimensions: 2880 × 1200.",
+        "fit": "max",
+        "width": 3000,
+        "height": 3000
+      },
+      {
+        "type": "header",
+        "content": "Colors"
       },
       {
         "type": "color",
         "id": "color_primary",
-        "label": "Primary color",
-        "default": "#2563eb"
-      },
-      {
-        "type": "color",
-        "id": "color_primary_dark",
-        "label": "Primary color (dark)",
-        "default": "#1d4ed8"
-      },
-      {
-        "type": "color",
-        "id": "color_secondary",
-        "label": "Secondary color",
-        "default": "#7c3aed"
-      },
-      {
-        "type": "color",
-        "id": "color_accent",
-        "label": "Accent color",
-        "default": "#f59e0b"
+        "label": "Primary Color",
+        "default": "#0072EF"
       },
       {
         "type": "header",
-        "content": "Neutral Colors"
+        "content": "Buttons"
       },
       {
         "type": "color",
-        "id": "color_text",
-        "label": "Text color",
-        "default": "#1f2937"
+        "id": "btn_background_color",
+        "label": "Button Background Color",
+        "default": "#0072EF"
       },
       {
         "type": "color",
-        "id": "color_text_light",
-        "label": "Light text color",
-        "default": "#6b7280"
+        "id": "btn_text_color",
+        "label": "Button Text Color",
+        "default": "#ffffff",
+        "info": "For solid buttons only"
+      },
+      {
+        "type": "radio",
+        "id": "btn_width",
+        "label": "Button Width",
+        "default": "auto",
+        "options": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "auto",
+            "label": "Auto"
+          }
+        ]
+      },
+      {
+        "type": "radio",
+        "id": "btn_style",
+        "label": "Button Style",
+        "default": "solid",
+        "options": [
+          {
+            "label": "Solid",
+            "value": "solid"
+          },
+          {
+            "label": "Outline",
+            "value": "outline"
+          }
+        ]
+      },
+      {
+        "type": "radio",
+        "id": "btn_size",
+        "label": "Button Size",
+        "default": "medium",
+        "options": [
+          {
+            "label": "Small",
+            "value": "small"
+          },
+          {
+            "label": "Medium",
+            "value": "medium"
+          },
+          {
+            "label": "Large",
+            "value": "large"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "btn_border_radius",
+        "label": "Button Border Radius",
+        "default": "4"
+      },
+      {
+        "type": "header",
+        "content": "Fonts"
+      },
+      {
+        "type": "font_select",
+        "label": "Body Font",
+        "id": "font_family_body",
+        "default": "Open Sans",
+        "preset": "google_fonts",
+        "options": []
+      },
+      {
+        "type": "select",
+        "id": "font_weight_body",
+        "label": "Body Font Weight",
+        "default": "400",
+        "options": [
+          {
+            "value": "400",
+            "label": "Normal"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "line_height_body",
+        "label": "Body Line Height",
+        "default": "1.6",
+        "info": "Line-height is the vertical distance between lines of text."
+      },
+      {
+        "type": "font_select",
+        "label": "Heading Font",
+        "id": "font_family_heading",
+        "default": "Fira Sans",
+        "preset": "google_fonts",
+        "options": []
+      },
+      {
+        "type": "select",
+        "id": "font_weight_heading",
+        "label": "Heading Font Weight",
+        "default": "700",
+        "options": [
+          {
+            "value": "400",
+            "label": "Normal"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "line_height_heading",
+        "label": "Heading Line Height",
+        "default": "1.2",
+        "info": "Line-height is the vertical distance between lines of text."
+      },
+      {
+        "type": "header",
+        "content": "Font Colors"
       },
       {
         "type": "color",
-        "id": "color_background",
-        "label": "Background color",
+        "id": "color_heading",
+        "label": "Heading Font Color",
+        "default": "#161E2A",
+        "info": "Set the color for all headings in your site."
+      },
+      {
+        "type": "color",
+        "id": "color_body",
+        "label": "Body Font Color",
+        "default": "#595959",
+        "info": "Set the color for all body text in your site."
+      },
+      {
+        "type": "color",
+        "id": "color_body_secondary",
+        "label": "Secondary Body Font Color",
+        "default": "#888888",
+        "info": "Set the color for secondary body text in your site."
+      },
+      {
+        "type": "color",
+        "id": "color_placeholder",
+        "label": "Placeholder Font Color",
+        "default": "#cccccc",
+        "info": "Set the color for placeholders in forms on your site."
+      },
+      {
+        "type": "header",
+        "content": "Desktop Font Sizes"
+      },
+      {
+        "type": "select",
+        "id": "font_size_h1_desktop",
+        "label": "h1 Size Desktop",
+        "default": "48px",
+        "info": "Default: 48px",
+        "preset": "font_sizes",
+        "options": []
+      },
+      {
+        "type": "select",
+        "id": "font_size_h2_desktop",
+        "label": "h2 Size Desktop",
+        "default": "36px",
+        "info": "Default: 36px",
+        "preset": "font_sizes",
+        "options": []
+      },
+      {
+        "type": "select",
+        "id": "font_size_h3_desktop",
+        "label": "h3 Size Desktop",
+        "default": "30px",
+        "info": "Default: 30px",
+        "preset": "font_sizes",
+        "options": []
+      },
+      {
+        "type": "select",
+        "id": "font_size_h4_desktop",
+        "label": "h4 Size Desktop",
+        "default": "24px",
+        "info": "Default: 24px",
+        "preset": "font_sizes",
+        "options": []
+      },
+      {
+        "type": "select",
+        "id": "font_size_h5_desktop",
+        "label": "h5 Size Desktop",
+        "default": "20px",
+        "info": "Default: 20px",
+        "preset": "font_sizes",
+        "options": []
+      },
+      {
+        "type": "select",
+        "id": "font_size_h6_desktop",
+        "label": "h6 Size Desktop",
+        "default": "16px",
+        "info": "Default: 16px",
+        "preset": "font_sizes",
+        "options": []
+      },
+      {
+        "type": "select",
+        "id": "font_size_body_desktop",
+        "label": "Body Size Desktop",
+        "default": "18px",
+        "info": "Default: 18px",
+        "preset": "font_sizes",
+        "options": []
+      },
+      {
+        "type": "header",
+        "content": "Mobile Font Sizes"
+      },
+      {
+        "type": "select",
+        "id": "font_size_h1_mobile",
+        "label": "h1 Size Mobile",
+        "default": "36px",
+        "info": "Default: 36px",
+        "preset": "font_sizes",
+        "options": []
+      },
+      {
+        "type": "select",
+        "id": "font_size_h2_mobile",
+        "label": "h2 Size Mobile",
+        "default": "30px",
+        "info": "Default: 30px",
+        "preset": "font_sizes",
+        "options": []
+      },
+      {
+        "type": "select",
+        "id": "font_size_h3_mobile",
+        "label": "h3 Size Mobile",
+        "default": "24px",
+        "info": "Default: 24px",
+        "preset": "font_sizes",
+        "options": []
+      },
+      {
+        "type": "select",
+        "id": "font_size_h4_mobile",
+        "label": "h4 Size Mobile",
+        "default": "20px",
+        "info": "Default: 20px",
+        "preset": "font_sizes",
+        "options": []
+      },
+      {
+        "type": "select",
+        "id": "font_size_h5_mobile",
+        "label": "h5 Size Mobile",
+        "default": "18px",
+        "info": "Default: 18px",
+        "preset": "font_sizes",
+        "options": []
+      },
+      {
+        "type": "select",
+        "id": "font_size_h6_mobile",
+        "label": "h6 Size Mobile",
+        "default": "16px",
+        "info": "Default: 16px",
+        "preset": "font_sizes",
+        "options": []
+      },
+      {
+        "type": "select",
+        "id": "font_size_body_mobile",
+        "label": "Body Size Mobile",
+        "default": "16px",
+        "info": "Default: 16px",
+        "preset": "font_sizes",
+        "options": []
+      },
+      {
+        "type": "header",
+        "content": "Error Messages"
+      },
+      {
+        "type": "color",
+        "id": "error_message_text_color",
+        "label": "Error Message Text Color",
         "default": "#ffffff"
       },
       {
         "type": "color",
-        "id": "color_surface",
-        "label": "Surface color",
-        "default": "#f9fafb"
-      },
-      {
-        "type": "color",
-        "id": "color_border",
-        "label": "Border color",
-        "default": "#e5e7eb"
+        "id": "error_message_background_color",
+        "label": "Error Message Background Color",
+        "default": "#ff0000"
       }
     ]
   },
   {
-    "name": "Typography",
+    "name": "Design Tools",
     "elements": [
       {
-        "type": "font_picker",
-        "id": "font_sans",
-        "label": "Sans-serif font",
-        "default": "inter_n4"
-      },
-      {
-        "type": "font_picker",
-        "id": "font_serif",
-        "label": "Serif font",
-        "default": "crimson_text_n4"
-      },
-      {
-        "type": "range",
-        "id": "font_size_base",
-        "label": "Base font size",
-        "min": 14,
-        "max": 20,
-        "step": 1,
-        "unit": "px",
-        "default": 16
-      }
-    ]
-  },
-  {
-    "name": "Header",
-    "elements": [
-      {
-        "type": "checkbox",
-        "id": "sticky_header",
-        "label": "Enable sticky header",
-        "default": true
+        "type": "header",
+        "content": "Design Tools"
       },
       {
         "type": "checkbox",
-        "id": "show_announcement_bar",
-        "label": "Show announcement bar",
-        "default": false
-      },
-      {
-        "type": "text",
-        "id": "announcement_text",
-        "label": "Announcement text"
-      },
-      {
-        "type": "url",
-        "id": "announcement_link",
-        "label": "Announcement link"
-      }
-    ]
-  },
-  {
-    "name": "Footer",
-    "elements": [
-      {
-        "type": "textarea",
-        "id": "footer_description",
-        "label": "Footer description",
-        "default": "Empowering parents with resources, community, and support for their parenting journey."
-      },
-      {
-        "type": "text",
-        "id": "copyright_text",
-        "label": "Copyright text",
-        "default": "All rights reserved."
-      }
-    ]
-  },
-  {
-    "name": "Social media",
-    "elements": [
-      {
-        "type": "text",
-        "id": "social_facebook",
-        "label": "Facebook URL"
-      },
-      {
-        "type": "text",
-        "id": "social_twitter",
-        "label": "Twitter URL"
-      },
-      {
-        "type": "text",
-        "id": "social_instagram",
-        "label": "Instagram URL"
-      },
-      {
-        "type": "text",
-        "id": "social_youtube",
-        "label": "YouTube URL"
-      },
-      {
-        "type": "text",
-        "id": "social_linkedin",
-        "label": "LinkedIn URL"
-      },
-      {
-        "type": "text",
-        "id": "social_pinterest",
-        "label": "Pinterest URL"
-      }
-    ]
-  },
-  {
-    "name": "Products",
-    "elements": [
-      {
-        "type": "checkbox",
-        "id": "show_related_products",
-        "label": "Show related products",
-        "default": true
-      },
-      {
-        "type": "range",
-        "id": "related_products_count",
-        "label": "Number of related products",
-        "min": 2,
-        "max": 8,
-        "step": 1,
-        "default": 4
-      }
-    ]
-  },
-  {
-    "name": "Blog",
-    "elements": [
-      {
-        "type": "checkbox",
-        "id": "show_blog_sidebar",
-        "label": "Show blog sidebar",
-        "default": true
+        "id": "show_guides",
+        "label": "Show guides",
+        "default": "true",
+        "info": "Show guides around sections and blocks."
       },
       {
         "type": "checkbox",
-        "id": "show_related_posts",
-        "label": "Show related posts",
-        "default": true
-      },
-      {
-        "type": "range",
-        "id": "blog_posts_per_page",
-        "label": "Posts per page",
-        "min": 6,
-        "max": 24,
-        "step": 3,
-        "default": 12
-      }
-    ]
-  },
-  {
-    "name": "Cart",
-    "elements": [
-      {
-        "type": "checkbox",
-        "id": "show_cart_note",
-        "label": "Enable order notes",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "show_cart_recommendations",
-        "label": "Show product recommendations",
-        "default": true
-      }
-    ]
-  },
-  {
-    "name": "Trust & Security",
-    "elements": [
-      {
-        "type": "checkbox",
-        "id": "show_money_back_guarantee",
-        "label": "Show money-back guarantee",
-        "default": true
-      },
-      {
-        "type": "range",
-        "id": "guarantee_days",
-        "label": "Guarantee period (days)",
-        "min": 7,
-        "max": 90,
-        "step": 1,
-        "default": 30
-      },
-      {
-        "type": "checkbox",
-        "id": "show_payment_icons",
-        "label": "Show payment icons",
-        "default": true
-      }
-    ]
-  },
-  {
-    "name": "Newsletter",
-    "elements": [
-      {
-        "type": "text",
-        "id": "newsletter_heading",
-        "label": "Newsletter heading",
-        "default": "Stay Connected"
-      },
-      {
-        "type": "textarea",
-        "id": "newsletter_text",
-        "label": "Newsletter text",
-        "default": "Get parenting tips and exclusive offers delivered to your inbox."
-      },
-      {
-        "type": "text",
-        "id": "newsletter_consent_text",
-        "label": "Consent text",
-        "default": "By subscribing, you agree to receive emails from us. Unsubscribe anytime."
-      }
-    ]
-  },
-  {
-    "name": "Member Features",
-    "elements": [
-      {
-        "type": "checkbox",
-        "id": "show_member_dashboard",
-        "label": "Enable member dashboard",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "show_progress_tracking",
-        "label": "Show course progress",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "enable_community_features",
-        "label": "Enable community features",
-        "default": true
+        "id": "show_grid",
+        "label": "Show grid",
+        "default": "false",
+        "info": "Show grid overlay for design."
       }
     ]
   },
@@ -346,20 +417,165 @@
     "name": "Custom Code",
     "elements": [
       {
-        "type": "textarea",
-        "id": "custom_css",
-        "label": "Custom CSS"
+        "type": "header",
+        "content": "Custom CSS"
       },
       {
         "type": "textarea",
-        "id": "custom_javascript",
-        "label": "Custom JavaScript"
+        "id": "css",
+        "label": "CSS Code",
+        "default": "/* CSS Overrides go here */",
+        "info": "Do not include '<style>' tag."
+      },
+      {
+        "type": "header",
+        "content": "Custom Javascript"
       },
       {
         "type": "textarea",
-        "id": "tracking_codes",
-        "label": "Tracking codes",
-        "info": "Added to the <head> of every page"
+        "id": "js",
+        "label": "Javascript Code",
+        "default": "/* Javascript code goes here */",
+        "info": "Do not include '<script>' tag."
+      }
+    ]
+  },
+  {
+    "name": "Password Recovery",
+    "elements": [
+      {
+        "type": "header",
+        "content": "Password Recovery"
+      },
+      {
+        "type": "checkbox",
+        "id": "include_forgot_password_header",
+        "label": "Include Header",
+        "default": "true",
+        "info": "Show/hide header on the forgot password page."
+      },
+      {
+        "type": "text",
+        "id": "recover_text",
+        "label": "Recover Text",
+        "default": "Recover Password"
+      },
+      {
+        "type": "text",
+        "id": "email_text",
+        "label": "Email Text",
+        "default": "Email"
+      },
+      {
+        "type": "text",
+        "id": "recovery_text",
+        "label": "Recovery Text",
+        "default": "Send Recovery Info"
+      },
+      {
+        "type": "text",
+        "id": "login_text",
+        "label": "Log In Text",
+        "default": "Log In"
+      },
+      {
+        "type": "checkbox",
+        "id": "include_forgot_password_footer",
+        "label": "Include Footer",
+        "default": "true",
+        "info": "Show/hide footer on the forgot password page."
+      }
+    ]
+  },
+  {
+    "name": "Password Reset",
+    "elements": [
+      {
+        "type": "header",
+        "content": "Password Reset"
+      },
+      {
+        "type": "checkbox",
+        "id": "include_password_reset_header",
+        "label": "Include Header",
+        "default": "true",
+        "info": "Show/hide header on the password reset page."
+      },
+      {
+        "type": "text",
+        "id": "reset_text",
+        "label": "Reset Text",
+        "default": "Create New Password"
+      },
+      {
+        "type": "text",
+        "id": "new_password",
+        "label": "New Password Text",
+        "default": "Enter New Password"
+      },
+      {
+        "type": "text",
+        "id": "confirm_password",
+        "label": "Confirm Password Text",
+        "default": "Confirm Password"
+      },
+      {
+        "type": "text",
+        "id": "reset_btn",
+        "label": "Reset Button Text",
+        "default": "Submit"
+      },
+      {
+        "type": "checkbox",
+        "id": "include_password_reset_footer",
+        "label": "Include Footer",
+        "default": "true",
+        "info": "Show/hide footer on the password reset page."
+      }
+    ]
+  },
+  {
+    "name": "Disqus Comments",
+    "elements": [
+      {
+        "type": "header",
+        "content": "Disqus Comments"
+      },
+      {
+        "type": "checkbox",
+        "label": "Show Disqus Comments",
+        "id": "show_comments",
+        "default": "false",
+        "info": "Display disqus comments thread on the blog post page."
+      },
+      {
+        "type": "text",
+        "id": "short_code",
+        "label": "Disqus Shortname",
+        "default": "",
+        "info": "Learn all about how to sign up for Disqus and where to find your short code in this help article."
+      }
+    ]
+  },
+  {
+    "name": "Disabled Pages",
+    "elements": [
+      {
+        "type": "header",
+        "content": "Disabled Pages",
+        "info": "All pages are enabled by default. Select to disable separate pages."
+      },
+      {
+        "type": "checkbox",
+        "label": "Member Directory",
+        "id": "member_directory_disabled",
+        "default": "false"
+      },
+      {
+        "type": "checkbox",
+        "label": "Announcements",
+        "id": "announcements_disabled",
+        "default": "false"
       }
     ]
   }

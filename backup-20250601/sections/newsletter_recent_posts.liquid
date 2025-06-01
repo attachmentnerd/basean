@@ -1,0 +1,64 @@
+<style>
+  .newsletter-recent-post .newsletter-listing__content {
+    font-size: 90%;
+  }
+
+  .newsletter-recent-post .newsletter-listing__title {
+    margin-top: 10px;
+  }
+</style>
+
+{% unless newsletter or newsletter_post %}
+  {% assign no_scoped_newsletter = true %}
+  {% assign newsletter = current_site.find_newsletter["default"] %}
+{% endunless %}
+
+<div class="section">
+  <div class="container">
+    <div class="row justify-content-center">
+      {% if newsletter_post %}
+        {%  assign recent_posts = newsletter_post.recent_posts %}
+      {% else %}
+        {%  assign recent_posts = newsletter.recent_posts %}
+      {% endif %}
+
+      {% for recent_post in recent_posts %}
+        <div class="col-4 newsletter-recent-post" kjb-settings-id="{{'show_image' | settings_id: section: section }}">
+          {% if section.settings.show_image == true and recent_post.thumbnail_url %}
+            <a href="{{ recent_post.url }}">
+              {{ recent_post.thumbnail_url | image_tag }}
+            </a>
+          {% endif %}
+          <a class="h5 newsletter-listing__title" href="{{ recent_post.url }}">
+            {{ recent_post.title }}
+          </a>
+          <div class="newsletter-listing__content">
+            {{ recent_post.body | strip_html | truncate: 400 }}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% if no_scoped_newsletter %}
+  {% assign newsletter = nil %}
+{% endif %}
+
+
+{% schema %}
+{
+  "name": "Newsletter Recent Posts",
+  "type": "newsletter_recent_posts",
+  "deletable": "false",
+  "duplicatable": "false",
+  "elements": [
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show Image",
+      "default": "true"
+    }
+  ]
+}
+{% endschema %}

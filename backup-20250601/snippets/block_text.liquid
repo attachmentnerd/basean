@@ -1,0 +1,22 @@
+<style>
+  {% if block.settings.drop_cap %}
+    #block-{{ block.id }} p:first-of-type::first-letter {
+      font-size: 80px;
+      line-height: 80px;
+      float: left;
+      margin: 0 20px 0 0;
+      color: {{ block.settings.cap_color }};
+    }
+  {% endif %}
+  #block-1577982541036_0 .btn {
+    margin-top: 1rem;
+  }
+</style>
+
+{% element "block.settings.text" %}
+  {{ block.settings.text }}
+{% endelement %}
+
+{% if block.settings.use_btn %}
+  {% include "block_cta" %}
+{% endif %}

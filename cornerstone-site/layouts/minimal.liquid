@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page_title | default: current_site.title }}</title>
+  
+  {% if settings.favicon %}
+    <link rel="shortcut icon" href="{{ settings.favicon | image_url: '32x32' }}" type="image/png">
+  {% endif %}
+  
+  <!-- Kajabi Core CSS -->
+  <link rel="stylesheet" href="https://cdn.mykajabi.com/assets/core.css">
+  
+  <!-- Theme CSS -->
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+  
+  <!-- CSS Variables -->
+  {% include 'css-variables' %}
+  
+  {% content_for_header %}
+</head>
+<body class="minimal-layout">
+  <main role="main">
+    {{ content_for_layout }}
+  </main>
+  
+  <!-- Kajabi Core JS -->
+  <script src="https://cdn.mykajabi.com/assets/core.js"></script>
+</body>
+</html>

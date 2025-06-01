@@ -1,0 +1,168 @@
+<div class="features-grid">
+  <div class="container">
+    {% if section.settings.heading %}
+      <div class="features-header">
+        <h2 class="features-heading" kjb-settings-id="{{ 'heading' | settings_id: section: section }}">{{ section.settings.heading }}</h2>
+        {% if section.settings.subheading %}
+          <p class="features-subheading" kjb-settings-id="{{ 'subheading' | settings_id: section: section }}">{{ section.settings.subheading }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+    
+    <div class="features-grid-inner">
+      {% for block in section.blocks %}
+        <div class="feature-item">
+          {% if block.settings.icon %}
+            <div class="feature-icon" kjb-settings-id="{{ 'icon' | settings_id: section: section, block: block }}">
+              {% include 'icon', icon: block.settings.icon, size: 'large' %}
+            </div>
+          {% endif %}
+          
+          <h3 class="feature-title" kjb-settings-id="{{ 'title' | settings_id: section: section, block: block }}">{{ block.settings.title }}</h3>
+          
+          <p class="feature-description" kjb-settings-id="{{ 'description' | settings_id: section: section, block: block }}">{{ block.settings.description }}</p>
+          
+          {% if block.settings.link_text %}
+            <a href="{{ block.settings.link_url }}" class="feature-link" kjb-settings-id="{{ 'link_url' | settings_id: section: section, block: block }}">
+              <span kjb-settings-id="{{ 'link_text' | settings_id: section: section, block: block }}">{{ block.settings.link_text }}</span>
+              {% include 'icon', icon: 'arrow-right', size: 'small' %}
+            </a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Features Grid",
+  "elements": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why Choose Our Platform"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Everything you need to succeed"
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Columns per row",
+      "options": [
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        }
+      ],
+      "default": "3"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "elements": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "book",
+              "label": "Book"
+            },
+            {
+              "value": "users",
+              "label": "Users"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "check-circle",
+              "label": "Check Circle"
+            },
+            {
+              "value": "trending-up",
+              "label": "Trending Up"
+            }
+          ],
+          "default": "star"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Feature Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Brief description of this feature and how it benefits users."
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link text"
+        },
+        {
+          "type": "action",
+          "id": "link_url",
+          "label": "Link URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Features Grid",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "book",
+            "title": "Expert Resources",
+            "description": "Access curated content from parenting experts and child development specialists."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "users",
+            "title": "Supportive Community",
+            "description": "Connect with other parents who understand your journey and challenges."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "heart",
+            "title": "Personalized Guidance",
+            "description": "Get recommendations tailored to your family's unique needs and values."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

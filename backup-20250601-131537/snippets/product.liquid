@@ -1,0 +1,37 @@
+{% assign truncate_at = section.settings.truncate_product_body | default: 300 %}
+
+<div class="product product--{{ section.settings.layout }} box-shadow-{{ section.settings.box_shadow }} {% if section.settings.product_background_color != blank %} background-{{ section.settings.product_background_color | color_scheme_class }}{% endif %}" kjb-settings-id="{{ 'product_background_color' | settings_id: section: section }}">
+  <a href="{{ product.url }}" {% if section.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %}>
+    <div class="product__image">
+      {% if product.thumbnail_url %}
+        {{ product.thumbnail_url | image_tag }}
+      {% else %}
+        {{ 'placeholder.png' | asset_url | image_tag }}
+      {% endif %}
+    </div>
+  </a>
+  <div class="product__content">
+    <div class="product__info">
+      <a href="{{ product.url }}" {% if section.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %}>
+        <h4 class="product__title" kjb-settings-id="{{ 'color_title_text' | settings_id: section: section }}">{{ product.title | truncate: 100, '...' }}</h4>
+      </a>
+      {% if product.trackable? %}
+        {% include "element_progress" percent: product.completion.percent %}
+      {% endif %}
+      {% if section.settings.show_product_body %}
+        <p class="product__body" kjb-settings-id="{{ 'color_body_text' | settings_id: section: section }}">{{ product.description | strip_html | truncate: truncate_at, "..." }}</p>
+      {% endif %}
+    </div>
+    <div class="product__button">
+      <a
+        class="btn btn--{{ btn_style }} btn--{{ btn_size }} btn--{{ btn_width }}" href="{{ product.url }}"
+        {% if section.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %}
+        kjb-settings-id="{{ 'btn_background_color' | settings_id: section: section }}"
+      >
+        {%- element "section.settings.btn_text" -%}
+          {{ section.settings.btn_text }}
+        {%- endelement -%}
+      </a>
+    </div>
+  </div>
+</div>

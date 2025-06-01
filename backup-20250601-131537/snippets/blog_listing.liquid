@@ -1,0 +1,51 @@
+{% assign videoColor = section.settings.video_player_color | default: settings.color_primary %}
+{% assign truncate_at = section.settings.truncate | default: 300 %}
+{% assign truncate_at_number = truncate_at | times: 1 %}
+{% assign has_media = "" %}
+{% if blog_post.video or blog_post.image_url %}
+  {% assign has_media = "blog-listing--has-media" %}
+{% endif %}
+
+<div class="blog-listing blog-listing--{{ section.settings.layout_style }} {{ has_media }}">
+  {% if section.settings.blog_listing_in_panel %}
+    <div class="blog-listing__panel box-shadow-{{ section.settings.blog_listing_box_shadow }} {% if section.settings.blog_listing_background_color != blank %}background-{{ section.settings.blog_listing_background_color | color_scheme_class }}{% endif %}">
+  {% endif %}
+    <div class="blog-listing__media">
+      {% if section.settings.show_video == true %}
+        {% include "video" with blog_post.video, color: videoColor, thumbnail: blog_post.image_url, link: true %}
+      {% else %}
+        {% if blog_post.image_url %}
+          <a href="{{ blog_post.url }}">
+            {{ blog_post.image_url | image_tag: alt: blog_post.image_alt_text }}
+          </a>
+        {% endif %}
+      {% endif %}
+    </div>
+    <div class="blog-listing__data">
+      <a class="h3 blog-listing__title" href="{{ blog_post.url }}">{{ blog_post.title }}</a>
+      {% if section.settings.show_tags %}
+        <span class="blog-listing__tags" kjb-settings-id="{{ 'show_tags' | settings_id: section: section }}">
+          {% if blog_post.tags.size > 0 %}
+            {% for tag in blog_post.tags %}
+              <a class="tag" href="{{ current_site.url }}/blog?tag={{ tag | url_encode }}">{{ tag }}</a>
+            {% endfor %}
+          {% endif %}
+        </span>
+      {% endif %}
+      {% if section.settings.show_date %}
+        <span class="blog-listing__date" kjb-settings-id="{{ 'show_date' | settings_id: section: section }}">{{ blog_post.created_at | date: "%b %d, 20%y" }}</span>
+      {% endif %}
+      {% if settings.show_comments and settings.short_code != "" %}
+        <a class="blog-listing__comment-count" href="{{ blog_post.url }}#disqus_thread" data-disqus-identifier="{{ blog_post.id }}"></a>
+      {% endif %}
+      {% if section.settings.show_content %}
+        {% if truncate_at_number != 0 %}
+          <div class="blog-listing__content">{{ blog_post.content | truncate_html: truncate_at_number }}</div>
+        {% endif %}
+        <a class="blog-listing__more" href="{{ blog_post.url }}" kjb-settings-id="{{ 'read_more' | settings_id: section: section, block: block }}">{{ section.settings.read_more }}</a>
+      {% endif %}
+    </div>
+  {% if section.settings.blog_listing_in_panel %}
+    </div>
+  {% endif %}
+</div>

@@ -1,0 +1,17 @@
+{% if video %}
+  <div class="video">
+    <div class="video__wrapper">
+      {{ video | wistia_video: player_color: color, still_url: thumbnail, playerPreference: "html5" }}
+    </div>
+  </div>
+{% else %}
+  {% if thumbnail %}
+    {% if link %}
+      <a href="{{ blog_post.url }}">
+        {{ thumbnail | image_tag: alt: blog_post.image_alt_text }}
+      </a>
+    {% else %}
+      {{ thumbnail | image_tag: alt: blog_post.image_alt_text }}
+    {% endif %}
+  {% endif %}
+{% endif %}

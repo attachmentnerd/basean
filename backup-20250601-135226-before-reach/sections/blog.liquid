@@ -1,0 +1,48 @@
+<div class="section">
+  <div class="container fluid-video">
+    {% paginate blog_posts by 10 %}
+      {% for blog_post in paginate.collection %}
+        <h2><a href="{{ blog_post.url }}">{{ blog_post.title }}</a></h2>
+        <div>
+          {% if blog_post.tags.size > 0 %}
+            {% for tag in blog_post.tags %}
+              <a href="{{ current_site.url }}/blog?tag={{ tag | url_encode }}">{{ tag }}</a>
+            {% endfor %}
+          {% else %}
+            Uncategorized
+          {% endif %}
+        </div>
+        <p kjb-settings-id="{{ 'show_date' | settings_id: section: section }}">{{ blog_post.created_at | date: "%b %d, 20%y" }}</p>
+        {% assign truncate_at = section.settings.truncate | default: 1000 %}
+        {% assign truncate_at_number = truncate_at | times: 1 %}
+        <div>{{ blog_post.content | truncate_html: truncate_at_number }}</div>
+        <a href="{{ blog_post.url }}"><img src="{{ blog_post.image_url }}"/></a>
+        <a class="btn" href="{{ blog_post.url }}" kjb-settings-id="{{ 'read_more' | settings_id: section: section, block: block }}">{{ section.settings.read_more }}</a>
+      {% endfor %}
+      {% if paginate.pages > 1 %}
+        {% include "pagination" %}
+      {% endif %}
+    {% endpaginate %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Blog",
+    "elements": [
+      {
+        "type": "text",
+        "default": "",
+        "label": "Truncate At",
+        "id": "truncate",
+        "info": "Insert a custom number if you would like to override the standard 1000 character truncation."
+      },
+      {
+        "type": "text",
+        "label": "Language Read More",
+        "id": "read_more",
+        "default": "Continue Reading..."
+      }
+    ]
+  }
+{% endschema %}

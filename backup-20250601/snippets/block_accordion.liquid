@@ -1,0 +1,39 @@
+{% if block.settings.accordion_icon == "arrow" %}
+  {% assign icona = "f105" %}
+  {% assign iconb = "f107" %}
+{% else %}
+  {% assign icona = "f067" %}
+  {% assign iconb = "f068" %}
+{% endif %}
+<style>
+
+  #block-{{ block.id }} .accordion-title h5 {
+    margin: 0;
+    cursor: pointer;
+  }
+  #block-{{ block.id }} .accordion-body {
+    padding-top: 24px;
+  }
+  #block-{{ block.id }} .accordion-title.collapsed:after {
+    content: "\{{icona}}";
+    margin-left: 24px;
+  }
+  #block-{{ block.id }} .accordion-title:after {
+    content: "\{{iconb}}";
+    margin-left: 24px;
+    color: {{ block.settings.icon_color }};
+  }
+</style>
+
+<div class="accordion background-{{ block.settings.background_color | color_scheme_class }}">
+  <div class="accordion-title collapsed media align-items-center">
+    <h5 class="media__body" {% element_attributes "block.settings.heading" %}>
+      {{ block.settings.heading }}
+    </h5>
+  </div>
+  <div style="display:none;" class="accordion-collapse">
+    <div class="accordion-body" {% element_attributes "block.settings.body" %}>
+      {{ block.settings.body }}
+    </div>
+  </div>
+</div>

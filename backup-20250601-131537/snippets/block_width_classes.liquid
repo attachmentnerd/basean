@@ -1,0 +1,33 @@
+{% comment %}
+  Block Width Classes - Consistent width system for all blocks
+  Usage: {% include 'block_width_classes', width: block.settings.width %}
+{% endcomment %}
+
+{% case width %}
+  {% when '1/12' %}
+    col-lg-1
+  {% when '2/12' %}
+    col-lg-2
+  {% when '3/12' %}
+    col-lg-3
+  {% when '4/12' %}
+    col-lg-4
+  {% when '5/12' %}
+    col-lg-5
+  {% when '6/12' %}
+    col-lg-6
+  {% when '7/12' %}
+    col-lg-7
+  {% when '8/12' %}
+    col-lg-8
+  {% when '9/12' %}
+    col-lg-9
+  {% when '10/12' %}
+    col-lg-10
+  {% when '11/12' %}
+    col-lg-11
+  {% when '12/12' %}
+    col-lg-12
+  {% else %}
+    col-lg-12
+{% endcase %}

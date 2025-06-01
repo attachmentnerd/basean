@@ -1,123 +1,1013 @@
-<div class="header-container">
-  <div class="header-inner">
-    <!-- Logo -->
-    <div class="header-logo">
-      <a href="{{ routes.root_url }}" class="logo-link" kjb-settings-id="{{ 'logo_link' | settings_id: section: section }}">
-        {% if section.settings.logo %}
-          <img src="{{ section.settings.logo | image_url: 'x60' }}" 
-               alt="{{ site.name }}" 
-               class="logo-image"
-               style="max-height: {{ section.settings.logo_max_height }}px;"
-               kjb-settings-id="{{ 'logo' | settings_id: section: section }}">
-        {% else %}
-          <span class="logo-text" kjb-settings-id="{{ 'logo_text' | settings_id: section: section }}">{{ site.name }}</span>
-        {% endif %}
-      </a>
-    </div>
-    
-    <!-- Navigation -->
-    <nav class="header-nav" role="navigation" aria-label="Main navigation">
-      <ul class="nav-list">
-        {% for link in section.settings.menu.links %}
-          <li class="nav-item {% if link.links.size > 0 %}has-dropdown{% endif %}">
-            <a href="{{ link.url }}" 
-               class="nav-link {% if link.active %}is-active{% endif %}"
-               {% if link.links.size > 0 %}aria-haspopup="true" aria-expanded="false"{% endif %}>
-              {{ link.title }}
-              {% if link.links.size > 0 %}
-                {% include 'icon', icon: 'chevron-down', size: 'small' %}
-              {% endif %}
-            </a>
-            
-            {% if link.links.size > 0 %}
-              <ul class="nav-dropdown">
-                {% for child_link in link.links %}
-                  <li class="dropdown-item">
-                    <a href="{{ child_link.url }}" class="dropdown-link {% if child_link.active %}is-active{% endif %}">
-                      {{ child_link.title }}
-                    </a>
-                  </li>
-                {% endfor %}
-              </ul>
-            {% endif %}
-          </li>
-        {% endfor %}
-      </ul>
-    </nav>
-    
-    <!-- Header Actions -->
-    <div class="header-actions">
-      <!-- Search -->
-      <button class="header-action search-toggle" aria-label="Search" data-search-toggle>
-        {% include 'icon', icon: 'search' %}
-      </button>
-      
-      <!-- Account -->
-      <a href="{{ routes.account_url }}" class="header-action" aria-label="Account">
-        {% include 'icon', icon: 'user' %}
-      </a>
-      
-      <!-- Products -->
-      <a href="{{ routes.products_url }}" class="header-action" aria-label="Products">
-        {% include 'icon', icon: 'shopping-bag' %}
-      </a>
-      
-      <!-- Mobile Menu Toggle -->
-      <button class="header-action mobile-menu-toggle" aria-label="Menu" data-menu-toggle>
-        {% include 'icon', icon: 'menu' %}
-      </button>
-    </div>
-  </div>
-  
-  <!-- Search Overlay -->
-  <div class="search-overlay" data-search-overlay>
-    <form action="{{ routes.search_url }}" method="get" class="search-form">
-      <input type="search" 
-             name="q" 
-             placeholder="Search..." 
-             class="search-input" 
-             autofocus>
-      <button type="submit" class="search-submit">
-        {% include 'icon', icon: 'search' %}
-      </button>
-      <button type="button" class="search-close" data-search-close>
-        {% include 'icon', icon: 'x' %}
-      </button>
-    </form>
-  </div>
+{% assign dark_text = settings.color_body %}
+
+<style>
+  /* Default Header Styles */
+  .header {
+    {% if section.settings.position == "overlay" %}
+      background-color: {{ section.settings.background_color | default: "transparent" }};
+    {% else %}
+      background-color: {{ section.settings.background_color | default: "#FFFFFF" }};
+    {% endif %}
+    font-size: {{ section.settings.font_size_desktop }};
+  }
+  .header a,
+  .header a.link-list__link,
+  .header a.link-list__link:hover,
+  .header a.social-icons__icon,
+  .header .user__login a,
+  .header .dropdown__item a,
+  .header .dropdown__trigger:hover {
+    color: {{ section.settings.text_color | default: dark_text }};
+  }
+  .header .dropdown__trigger {
+    color: {{ section.settings.text_color | default: dark_text }} !important;
+  }
+  /* Mobile Header Styles */
+  @media (max-width: 767px) {
+    .header {
+      {% if section.settings.mobile_header_background_color != blank %}
+        background-color: {{ section.settings.mobile_header_background_color }};
+      {% endif %}
+      font-size: {{ section.settings.font_size_mobile }};
+    }
+    {% if section.settings.mobile_header_text_color != blank %}
+      .header a,
+      .header a.link-list__link,
+      .header a.social-icons__icon,
+      .header .dropdown__item a,
+      .header .user__login a,
+      .header a.link-list__link:hover,
+      .header .dropdown__trigger:hover {
+        color: {{ section.settings.mobile_header_text_color }};
+      }
+      .header .dropdown__trigger {
+        color: {{ section.settings.mobile_header_text_color }} !important;
+      }
+    {% endif %}
+    .header .hamburger__slices .hamburger__slice {
+      {% if section.settings.hamburger_color != blank %}
+        background-color: {{ section.settings.hamburger_color  }};
+      {% else %}
+        background-color: {{ section.settings.mobile_header_text_color | default: section.settings.text_color }};
+      {% endif %}
+    }
+    {% if section.settings.mobile_menu_text_alignment != blank %}
+      .header a.link-list__link, .dropdown__item a, .header__content--mobile {
+        text-align: {{ section.settings.mobile_menu_text_alignment }};
+      }
+    {% endif %}
+    .header--overlay .header__content--mobile  {
+      padding-bottom: 20px;
+    }
+  }
+  /* Sticky Styles */
+  {% if section.settings.sticky == true %}
+    .header.header--fixed {
+      background-color: {{ section.settings.background_color }};
+      {% if section.settings.mobile_header_background_color %}
+        background-color: {{ section.settings.mobile_header_background_color }};
+      {% endif %}
+      {% if section.settings.sticky_background_color %}
+        background-color: {{ section.settings.sticky_background_color }};
+      {% endif %}
+    }
+    {% if section.settings.sticky_text_color != blank %}
+      .header.header--fixed a,
+      .header.header--fixed a.link-list__link,
+      .header.header--fixed a.link-list__link:hover,
+      .header.header--fixed a.social-icons__icon,
+      .header.header--fixed .dropdown__trigger:hover,
+      .header.header--fixed .dropdown__item a,
+      .header.header--fixed .user__login a {
+        color: {{ section.settings.sticky_text_color }};
+      }
+    {% endif %}
+    {% if section.settings.sticky_text_color != blank %}
+      .header.header--fixed .dropdown__trigger {
+        color: {{ section.settings.sticky_text_color }} !important;
+      }
+    {% endif %}
+    .header.header--fixed .hamburger__slice {
+      {% if section.settings.sticky_hamburger_color != blank %}
+        background-color: {{ section.settings.sticky_hamburger_color }};
+      {% else %}
+        background-color: {{ section.settings.sticky_text_color }};
+      {% endif %}
+    }
+  {% endif %}
+</style>
+
+<div class="hidden">
+  {% for block in section.blocks %}
+    {% if block.type == "hello_bar" %}
+      {% increment hello_bar_count %}
+    {% endif %}
+  {% endfor %}
+  {% assign hamburger_blocks = "menu, cta, dropdown, social_icons, user" | split: ", " %}
+  {% assign block_types = section.blocks | map: 'type' %}
+  {% for block in block_types %}
+    {% if hamburger_blocks contains block %}
+      {% assign show_hamburger = true %}
+    {% endif %}
+  {% endfor %}
 </div>
+
+<header class="header header--{{ section.settings.position }} {% if section.settings.sticky %}sticky{% endif %}{% if section.settings.hide_on_desktop %}hidden--desktop{% endif %} {% if section.settings.hide_on_mobile %}hidden--mobile{% endif %} {% if section.settings.background_color != blank %} background-{{ section.settings.background_color | color_scheme_class }}{% endif %} {% if section.settings.close_on_scroll %}header--close-on-scroll{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
+  <div class="hello-bars">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when "hello_bar" %}
+          {% include "header_block" type: "header_block_hello_bar" class: "header__block--hello-bar header__block--show" %}
+      {% endcase %}
+    {% endfor %}
+  </div>
+  {% if hello_bar_count != section.blocks.size and section.blocks.size != 0 %}
+    <div class="header__wrap">
+      <div class="header__content header__content--desktop background-{{ section.settings.background_color | color_scheme_class }}">
+        <div class="container header__container media justify-content-{{ section.settings.horizontal }}">
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when "logo" %}
+                {% include "header_block" type: "shared_block_logo" class: "header__block--logo header__block--show header__switch-content" %}
+              {% when "menu" %}
+                {% include "header_block" type: "shared_block_menu" class: "header__switch-content header__block--menu" %}
+              {% when "cta" %}
+                {% include "header_block" type: "block_cta" class: "header__switch-content header__block--cta" %}
+              {% when "user" %}
+                {% include "header_block" type: "header_block_user" class: "header__switch-content header__block--user" %}
+              {% when "dropdown" %}
+                {% include "header_block" type: "header_block_dropdown" class: "header__switch-content header__block--dropdown" %}
+              {% when "social_icons" %}
+                {% include "header_block" type: "block_social_icons" class: "header__switch-content header__block--social-icons" %}
+            {% endcase %}
+          {% endfor %}
+          {% if show_hamburger %}
+            <div class="hamburger hidden--desktop" kjb-settings-id="{{ 'hamburger_color' | settings_id: section: section }}">
+              <div class="hamburger__slices">
+                <div class="hamburger__slice hamburger--slice-1"></div>
+                <div class="hamburger__slice hamburger--slice-2"></div>
+                <div class="hamburger__slice hamburger--slice-3"></div>
+                <div class="hamburger__slice hamburger--slice-4"></div>
+              </div>
+            </div>
+          {% endif %}
+          {% if section.settings.cart == true %}
+            {% include "header_block_cart" %}
+          {% endif %}
+        </div>
+      </div>
+      <div class="header__content header__content--mobile">
+        <div class="header__switch-content header__spacer"></div>
+      </div>
+    </div>
+  {% endif %}
+</header>
 
 {% schema %}
 {
   "name": "Header",
   "elements": [
     {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo"
-    },
-    {
-      "type": "range",
-      "id": "logo_max_height",
-      "label": "Logo max height",
-      "min": 30,
-      "max": 100,
-      "step": 5,
-      "unit": "px",
-      "default": 60
-    },
-    {
-      "type": "link_list",
-      "id": "menu",
-      "label": "Menu",
-      "default": "main-menu"
+      "type": "info",
+      "id": "cart_header",
+      "info": "Shopping Cart"
     },
     {
       "type": "checkbox",
-      "id": "sticky_header",
-      "label": "Enable sticky header",
-      "default": true
+      "id": "cart",
+      "label": "Enable Cart",
+      "default": "false"
+    },
+    {
+      "type": "info",
+      "id": "cart_info",
+      "info": "To customize and edit payment options for cart, go to [cart settings](#app-link-cart-settings)."
+    },
+    {
+      "type": "color",
+      "label": "Header Text Color",
+      "id": "text_color",
+      "default": "",
+      "allow_blank": true
+    },
+    {
+      "type": "color",
+      "label": "Header Background Color",
+      "id": "background_color",
+      "default": "#FFFFFF",
+      "allow_blank": true
+    },
+    {
+      "type": "radio",
+      "id": "position",
+      "label": "Position",
+      "default": "static",
+      "info": "Position the header as normal or an overlay of the first section.",
+      "options": [
+        { "label": "Normal", "value": "static" },
+        { "label": "Overlay", "value": "overlay" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky",
+      "label": "Enable Sticky Header",
+      "default": "false",
+      "info": "Modify the header behavior on scroll. Save for changes to effect."
+    },
+    {
+      "type": "color",
+      "id": "sticky_text_color",
+      "label": "Sticky Text Color",
+      "info": "Header text color for when the page is scrolled.",
+      "allow_blank": true
+    },
+    {
+      "type": "color",
+      "id": "sticky_background_color",
+      "label": "Sticky Background Color",
+      "info": "Header background color for when the page is scrolled.",
+      "allow_blank": true
+    }
+  ],
+  "groups": [
+    {
+      "name": "Desktop Layout",
+      "elements": [
+        {
+          "type": "checkbox",
+          "id": "hide_on_desktop",
+          "label": "Hide Header",
+          "default": "false",
+          "info": "This will hide the header on desktop."
+        },
+        {
+          "type": "select",
+          "id": "horizontal",
+          "label": "Horizontal Alignment",
+          "default": "between",
+          "info": "Horizonatal alignment only applies if all blocks have stretch disabled.",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "between",
+              "label": "Space Between"
+            },
+            {
+              "value": "around",
+              "label": "Space Around"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Mobile Layout",
+      "elements": [
+        {
+          "type": "color",
+          "label": "Header Text Color",
+          "id": "mobile_header_text_color",
+          "allow_blank": true
+        },
+        {
+          "type": "color",
+          "label": "Header Background Color",
+          "id": "mobile_header_background_color",
+          "allow_blank": true
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_mobile",
+          "label": "Hide Header",
+          "default": "false",
+          "info": "This will hide the header on mobile."
+        },
+        {
+          "type": "checkbox",
+          "id": "close_on_scroll",
+          "label": "Close Menu on Scroll",
+          "default": "true",
+          "info": "If the menu is open, it will close when a user scrolls up or down."
+        },
+        {
+          "type": "select",
+          "id": "mobile_menu_text_alignment",
+          "label": "Mobile Menu Text Alignment",
+          "default": "left",
+          "options": [
+            { "label": "Left", "value": "left" },
+            { "label": "Center", "value": "center" },
+            { "label": "Right", "value": "right" }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "hamburger_color",
+          "label": "Hamburger Icon Color",
+          "allow_blank": "true"
+        },
+        {
+          "type": "color",
+          "id": "sticky_hamburger_color",
+          "label": "Sticky Hamburger Icon Color",
+          "allow_blank": "true"
+        }
+      ]
+    },
+    {
+      "name": "Typography",
+      "elements": [
+        {
+          "type": "select",
+          "id": "font_size_desktop",
+          "label": "Font Size Desktop",
+          "default": "18px",
+          "info": "Default: 18px",
+          "preset": "font_sizes",
+          "options": []
+        },
+        {
+          "type": "select",
+          "id": "font_size_mobile",
+          "label": "Font Size Mobile",
+          "default": "16px",
+          "info": "Default: 16px",
+          "preset": "font_sizes",
+          "options": []
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "elements": [
+        {
+          "type": "header",
+          "content": "Logo"
+        },
+        {
+          "type": "radio",
+          "id": "logo_type",
+          "label": "Logo Type",
+          "default": "image",
+          "options": [
+            { "label": "Image", "value": "image" },
+            { "label": "Text", "value": "text" }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo Image",
+          "fit": "max",
+          "width": 1000,
+          "height": 1000,
+          "info": "Suggested dimensions: 360x80"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image Alt Attribute",
+          "info": "Add an image alt attribute for SEO, and if the image cannot be displayed.",
+          "default": "Header Logo"
+        },
+        {
+          "type": "text",
+          "id": "logo_width",
+          "label": "Logo Image Width",
+          "info": "You may use the format 10px or simply 10.",
+          "default": "50"
+        },
+        {
+          "type": "text",
+          "id": "logo_text",
+          "label": "Logo Text",
+          "default": "Encore"
+        },
+        {
+          "type": "color",
+          "label": "Logo Text Color",
+          "id": "logo_text_color",
+          "default": "",
+          "allow_blank": "true"
+        },
+        {
+          "type": "checkbox",
+          "id": "stretch",
+          "label": "Stretch Block",
+          "default": "false",
+          "info": "Stretch block to fill the remaining space of this section"
+        },
+        {
+          "type": "align",
+          "id": "alignment",
+          "label": "Text Alignment",
+          "default": "left",
+          "direction": "horizontal"
+        }
+      ]
+    },
+    {
+      "type": "menu",
+      "name": "Menu",
+      "elements": [
+        {
+          "type": "header",
+          "content": "Menu"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "info": "The topmost menu for the site.",
+          "default": "main-menu"
+        },
+        {
+          "type": "checkbox",
+          "id": "new_tab",
+          "label": "Open In New Tab",
+          "default": ""
+        },
+        {
+          "type": "checkbox",
+          "id": "stretch",
+          "label": "Stretch Block",
+          "default": "true",
+          "info": "Stretch block to fill the remaining space of this section"
+        },
+        {
+          "type": "align",
+          "id": "alignment",
+          "label": "Text Alignment",
+          "default": "right",
+          "direction": "horizontal"
+        }
+      ]
+    },
+    {
+      "type": "dropdown",
+      "name": "Dropdown Menu",
+      "elements": [
+        {
+          "type": "header",
+          "content": "Dropdown Menu"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Dropdown Text Color",
+          "default": "#595959"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Dropdown Background Color",
+          "default": "#FFFFFF",
+          "info": "Choose color of dropdown menu for desktop."
+        },
+        {
+          "type": "text",
+          "id": "trigger",
+          "label": "Dropdown Text",
+          "default": "Dropdown"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_icon",
+          "label": "Show Icon",
+          "default": "true"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "info": "The topmost menu for the site.",
+          "default": "main-menu"
+        },
+        {
+          "type": "checkbox",
+          "id": "new_tab",
+          "label": "Open In New Tab",
+          "default": ""
+        },
+        {
+          "type": "select",
+          "id": "dropdown_menu_alignment",
+          "label": "Dropdown Menu Alignment",
+          "default": "left",
+          "options": [
+            { "label": "Left", "value": "left" },
+            { "label": "Center", "value": "center" },
+            { "label": "Right", "value": "right" }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "stretch",
+          "label": "Stretch Block",
+          "default": "false",
+          "info": "Stretch block to fill the remaining space of this section"
+        },
+        {
+          "type": "align",
+          "id": "alignment",
+          "label": "Text Alignment",
+          "default": "left",
+          "direction": "horizontal"
+        }
+      ]
+    },
+    {
+      "type": "user",
+      "name": "User Menu",
+      "elements": [
+        {
+          "type": "header",
+          "content": "User Dropdown"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#595959"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "text",
+          "id": "language_login",
+          "label": "Log In Text",
+          "default": "Log In"
+        },
+        {
+          "type": "text",
+          "id": "language_logout",
+          "label": "Logout Text",
+          "default": "Logout"
+        },
+        {
+          "type": "text",
+          "id": "language_settings",
+          "label": "Settings Text",
+          "default": "Settings"
+        },
+        {
+          "type": "text",
+          "id": "language_library",
+          "label": "Library Text",
+          "default": "My Library"
+        },
+        {
+          "type": "select",
+          "id": "user_dropdown_menu_alignment",
+          "label": "Dropdown Menu Alignment",
+          "default": "left",
+          "options": [
+            { "label": "Left", "value": "left" },
+            { "label": "Center", "value": "center" },
+            { "label": "Right", "value": "right" }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "stretch",
+          "label": "Stretch Block",
+          "default": "false",
+          "info": "Stretch block to fill the remaining space of this section"
+        },
+        {
+          "type": "align",
+          "id": "alignment",
+          "label": "Text Alignment",
+          "default": "left",
+          "direction": "horizontal"
+        }
+      ]
+    },
+    {
+      "type": "cta",
+      "name": "Call to Action",
+      "elements": [
+        {
+          "type": "header",
+          "content": "Call To Action"
+        },
+        {
+          "type": "text",
+          "id": "btn_text",
+          "label": "Text",
+          "default": "Call To Action"
+        },
+        {
+          "type": "action",
+          "id": "btn_action",
+          "label": "Button Action",
+          "anchor": true,
+          "two_step": true,
+          "default": ""
+        },
+        {
+          "type": "checkbox",
+          "id": "new_tab",
+          "label": "Open In New Tab",
+          "default": ""
+        },
+        {
+          "type": "color",
+          "id": "btn_background_color",
+          "label": "Button Background Color",
+          "default": "",
+          "allow_blank": true
+        },
+        {
+          "type": "color",
+          "id": "btn_text_color",
+          "label": "Button Text Color",
+          "default": "",
+          "allow_blank": true,
+          "info": "For solid buttons only"
+        },
+        {
+          "type": "radio",
+          "id": "btn_width",
+          "label": "Button Width",
+          "default": "",
+          "allow_blank": true,
+          "options": [
+            {
+              "value": "full",
+              "label": "Full"
+            },
+            {
+              "value": "auto",
+              "label": "Auto"
+            }
+          ]
+        },
+        {
+          "type": "radio",
+          "id": "btn_style",
+          "label": "Button Style",
+          "default": "",
+          "allow_blank": true,
+          "options": [
+            { "label": "Solid", "value": "solid" },
+            { "label": "Outline", "value": "outline" }
+          ]
+        },
+        {
+          "type": "radio",
+          "id": "btn_size",
+          "label": "Button Size",
+          "default": "",
+          "allow_blank": true,
+          "options": [
+            { "label": "Small", "value": "small" },
+            { "label": "Medium", "value": "medium" },
+            { "label": "Large", "value": "large" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "btn_border_radius",
+          "label": "Border Radius",
+          "default": "",
+          "allow_blank": true
+        },
+        {
+          "type": "checkbox",
+          "id": "stretch",
+          "label": "Stretch Block",
+          "default": "false",
+          "info": "Stretch block to fill the remaining space of this section"
+        },
+        {
+          "type": "align",
+          "id": "alignment",
+          "label": "Text Alignment",
+          "default": "left",
+          "direction": "horizontal"
+        }
+      ]
+    },
+    {
+      "type": "hello_bar",
+      "name": "Hello Bar",
+      "elements": [
+        {
+          "type": "header",
+          "content": "Hello Bar"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "DO NOT MISS OUT! AMAZING THINGS ARE COMING!"
+        },
+        {
+          "type": "color",
+          "label": "Text Color",
+          "id": "text_color",
+          "allow_blank": true
+        },
+        {
+          "type": "action",
+          "id": "action",
+          "label": "Action",
+          "anchor": true,
+          "two_step": true,
+          "default": ""
+        },
+        {
+          "type": "checkbox",
+          "id": "new_tab",
+          "label": "Open In New Tab",
+          "default": ""
+        }
+      ],
+      "groups": [
+        {
+          "name": "Background",
+          "elements": [
+            {
+              "type": "color",
+              "label": "Background Color",
+              "id": "background_color",
+              "allow_blank": true
+            }
+          ]
+        },
+        {
+          "name": "Alignment",
+          "elements": [
+            {
+              "type": "align",
+              "id": "horizontal",
+              "label": "Text Alignment",
+              "default": "center",
+              "direction": "horizontal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "social_icons",
+      "name": "Social Icons",
+      "elements": [
+        {
+          "type": "header",
+          "content": "Social Icons"
+        },
+        {
+          "type": "checkbox",
+          "id": "new_tab",
+          "label": "Open In New Tab",
+          "default": "false"
+        },
+        {
+          "type": "color",
+          "label": "Social Icon Color",
+          "id": "social_icons_text_color",
+          "allow_blank": true,
+          "info": "Change the color for the social icons."
+        },
+        {
+          "type": "color",
+          "label": "Social Icon Background Color",
+          "id": "social_icons_background_color",
+          "allow_blank": true,
+          "info": "Change the background color for the social icon containers."
+        },
+        {
+          "type": "select",
+          "id": "social_icon_background_style",
+          "label": "Social Icon Background Style",
+          "default": "",
+          "options": [
+            { "label": "Round", "value": "round" },
+            { "label": "Square", "value": "square" },
+            { "label": "None", "value": "" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "social_icon_size",
+          "label": "Social Icon Size",
+          "default": "",
+          "options": [
+            { "label": "Small", "value": "" },
+            { "label": "Medium", "value": "med" },
+            { "label": "Large", "value": "lg" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "horizontal",
+          "label": "Horizontal Alignment (desktop)",
+          "default": "space-around",
+          "info": "Select the horizontal alignment of blocks in this section.",
+          "options": [
+            {
+              "value": "flex-start",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "flex-end",
+              "label": "Right"
+            },
+            {
+              "value": "space-between",
+              "label": "Space Between"
+            },
+            {
+              "value": "space-around",
+              "label": "Space Around"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "stretch",
+          "label": "Stretch Block",
+          "default": "false",
+          "info": "Stretch block to fill the remaining space of this section"
+        },
+        {
+        "type": "text",
+        "id": "social_icon_link_facebook",
+        "label": "Facebook",
+        "default": "https://www.facebook.com/kajabi"
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_twitter",
+          "label": "Twitter",
+          "default": "https://www.twitter.com/kajabi"
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_instagram",
+          "label": "Instagram",
+          "default": "https://www.instagram.com/kajabi"
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_youtube",
+          "label": "YouTube",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_pinterest",
+          "label": "Pinterest",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_vimeo",
+          "label": "Vimeo",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_github",
+          "label": "Github",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_itunes",
+          "label": "iTunes",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_linkedin",
+          "label": "LinkedIn",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_soundcloud",
+          "label": "Soundcloud",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_yelp",
+          "label": "Yelp",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_tumblr",
+          "label": "Tumblr",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_slack",
+          "label": "Slack",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_flickr",
+          "label": "Flickr",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_dribbble",
+          "label": "Dribbble",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_tiktok",
+          "label": "TikTok",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_medium",
+          "label": "Medium",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_spotify",
+          "label": "Spotify",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_podcasts",
+          "label": "Podcasts",
+          "default": ""
+        }
+      ],
+      "groups": [
+        {
+          "name": "Mobile Settings",
+          "elements": [
+            {
+              "type": "select",
+              "id": "mobile_horizontal",
+              "label": "Horizontal Alignment (mobile)",
+              "default": "left",
+              "info": "Select the horizontal alignment of blocks in this section.",
+              "options": [
+                {
+                  "value": "flex-start",
+                  "label": "Left"
+                },
+                {
+                  "value": "center",
+                  "label": "Center"
+                },
+                {
+                  "value": "flex-end",
+                  "label": "Right"
+                },
+                {
+                  "value": "space-between",
+                  "label": "Space Between"
+                },
+                {
+                  "value": "space-around",
+                  "label": "Space Around"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }
+
 {% endschema %}

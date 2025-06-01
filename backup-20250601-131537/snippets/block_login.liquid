@@ -1,0 +1,77 @@
+<div class="col-6 text-center">
+  <div class="auth__content">
+    {% if section.settings.show_image %}
+      <div class="auth__image" kjb-settings-id="{{ 'image' | settings_id: section: section }}">
+        {{ section.settings.image | image_picker_url: 'placeholder.png' | image_tag: alt: section.settings.image_alt, class: "image" }}
+      </div>
+    {% endif %}
+    <h1
+      class="auth__title"
+      kjb-settings-id="{{ 'login_text' | settings_id: section: section }}"
+      {% element_attributes "section.settings.login_text" %}
+    >
+      {{ section.settings.login_text }}
+    </h1>
+    {% form 'new_member_session', current_site_user %}
+      {% if form.notice %}
+        <div class="auth__message alert alert--danger">{{ form.notice }}</div>
+      {% endif %}
+      {% if form.errors.messages['form'] %}
+        <div class="auth__message alert alert--danger">{{ form.errors.messages['form'] }}</div>
+      {% endif %}
+      <div class="form-group">
+        <label
+          class="auth__label"
+          for="member_email"
+          kjb-settings-id="{{ 'email' | settings_id: section: section }}"
+          {% element_attributes "section.settings.email" %}
+        >
+          {{ section.settings.email }}
+        </label>
+        <input class="form-control auth__field" spellcheck="false" autocorrect="off" autofocus="autofocus" type="text" name="member[email]" id="member_email" value="{{form.email}}" />
+      </div>
+      <div class="form-group">
+        <label
+          class="auth__label"
+          for="member_password"
+          kjb-settings-id="{{ 'password' | settings_id: section: section }}"
+          {% element_attributes "section.settings.password" %}
+        >
+          {{ section.settings.password }}
+        </label>
+        <input class="form-control auth__field" type="password" name="member[password]" id="member_password" />
+      </div>
+      <div class="form-group">
+        <label kjb-settings-id="{{ 'remember_me' | settings_id: section: section }}">
+          <input
+            class="boolean optional"
+            type="checkbox"
+            value="1"
+            name="member[remember_me]"
+            id="member_remember_me"
+          />
+            <span class="auth__label" {% element_attributes "section.settings.remember_me" %}>{{ section.settings.remember_me }}</span>
+        </label>
+      </div>
+      <button
+        id="form-button"
+        class="form-btn btn--{{ btn_style }} btn--{{ btn_width }} btn--{{ btn_size }}"
+        type="submit"
+        kjb-settings-id="{{ 'btn_text' | settings_id: section: section, block: block }}"
+      >
+        {%- element "section.settings.btn_text" -%}
+          {{ section.settings.btn_text }}
+        {%- endelement -%}
+      </button>
+    {% endform %}
+    <div class="auth__link">
+      <a
+        href="/password/new"
+        kjb-settings-id="{{ 'forgot_password' | settings_id: section: section }}"
+        {% element_attributes "section.settings.forgot_password" %}
+      >
+        {{ section.settings.forgot_password }}
+      </a>
+    </div>
+  </div>
+</div>

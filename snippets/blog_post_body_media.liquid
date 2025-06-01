@@ -1,0 +1,4 @@
+<div class="blog-post-body__media">
+  {% assign videoColor = section.settings.video_player_color | default: settings.color_primary %}
+  {% include "video" with blog_post.video, color: videoColor, thumbnail: blog_post.image_url, link: false %}
+</div>

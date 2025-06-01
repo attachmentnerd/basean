@@ -1,0 +1,135 @@
+{% assign image_settings_id = 'image' | settings_id: section: section, block: block %}
+
+<style>
+  #block-{{ block.id }} .block,
+  [data-slick-id="{{ block.id }}"] .block {
+    display: flex;
+    justify-content: {{ block.settings.image_align_mobile }};
+  }
+  #block-{{ block.id }} .image,
+  [data-slick-id="{{ block.id }}"] .image {
+    width: 100%;
+    overflow: hidden;
+    {% if block.settings.image_width != "" %}
+      width: {{ block.settings.image_width | remove: "px" | append: "px" }};
+    {% endif %}
+    border-radius: {{ block.settings.image_border_radius | default: 4 | append: "px" }};
+    {% if carousel and section.settings.full_width %}
+      border-radius: 0;
+    {% endif %}
+  }
+  #block-{{ block.id }} .image__image,
+  [data-slick-id="{{ block.id }}"] .image__image {
+    width: 100%;
+    {% if block.settings.image_width != "" %}
+      width: {{ block.settings.image_width | remove: "px" | append: "px" }};
+    {% endif %}
+  }
+  #block-{{ block.id }} .image__overlay,
+  [data-slick-id="{{ block.id }}"] .image__overlay {
+    {% if carousel or block.settings.always_show_on_mobile %}
+      opacity: 1;
+    {% else %}
+      opacity: 0;
+    {% endif %}
+    background-color: {{ block.settings.overlay_background_color }};
+    border-radius: {{ block.settings.image_border_radius | default: 4 | append: "px" }};
+    {% if carousel and section.settings.full_width %}
+      border-radius: 0;
+    {% endif %}
+  }
+  {% if carousel %}
+    [data-slick-id="{{ block.id }}"] .image__overlay {
+      padding: 20px;
+    }
+    @media (min-width: 768px) {
+      [data-slick-id="{{ block.id }}"] .image__overlay {
+        padding: 100px;
+      }
+    }
+  {% endif %}
+  #block-{{ block.id }} .image__overlay-text,
+  [data-slick-id="{{ block.id }}"] .image__overlay-text {
+    color: {{ block.settings.overlay_text_color }} !important;
+  }
+  @media (min-width: 768px) {
+    #block-{{ block.id }} .block,
+    [data-slick-id="{{ block.id }}"] .block {
+        display: flex;
+        justify-content: {{ block.settings.image_align_desktop }};
+    }
+    #block-{{ block.id }} .image__overlay,
+    [data-slick-id="{{ block.id }}"] .image__overlay {
+      {% unless carousel %}
+        opacity: 0;
+      {% endunless %}
+    }
+    #block-{{ block.id }} .image__overlay:hover {
+      opacity: 1;
+    }
+  }
+  {% if block.settings.image_first %}
+    @media (max-width: 767px) {
+      #block-{{ block.id }} {
+        -webkit-box-ordinal-group: 0;
+        -ms-flex-order: -1;
+        order: -1;
+      }
+    }
+  {% endif %}
+</style>
+
+<div class="image">
+  {% if block.settings.gallery %}
+    {% if block.settings.enable_overlay %}
+      <a href="{{ block.settings.image | image_picker_url: 'placeholder.png' }}">
+    {% else %}
+      <a href="{{ block.settings.image | image_picker_url: 'placeholder.png' }}" data-fancybox="{{section.id}}" data-caption="{{ block.settings.image_caption }}">
+    {% endif %}
+      {{ block.settings.image | image_picker_url: 'placeholder.png' | image_tag: class: "image__image", alt: block.settings.image_alt }}
+    </a>
+    {% if block.settings.enable_overlay %}
+      <a href="{{ block.settings.image | image_picker_url: 'placeholder.png' }}" data-fancybox="{{section.id}}" data-caption="{{ block.settings.image_caption }}" class="image__overlay background-{{ block.settings.overlay_background_color | color_scheme_class }}">
+        <h4 class="image__overlay-text" {% element_attributes "block.settings.overlay_text" %}>
+          {{ block.settings.overlay_text }}
+        </h4>
+      </a>
+    {% endif %}
+  {% else %}
+    {% if block.settings.img_action != blank %}
+      <a class="image__link" href="{{ block.settings.img_action }}" {% if block.settings.img_action == "#cta-popup" %} data-target="#cta-popup-{{ block.id }}" {% endif %} {% if block.settings.img_action == "#two-step" %} data-target="#two-step" data-toggle="modal" {% endif %} {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %}>
+    {% endif %}
+        {{ block.settings.image | image_picker_url: 'placeholder.png' | image_tag: class: "image__image", alt: block.settings.image_alt, kjb_settings_id: image_settings_id }}
+    {% if block.settings.img_action != blank %}
+      </a>
+    {% endif %}
+    {% if block.settings.enable_overlay %}
+      {% if block.settings.img_action != blank %}
+        <a href="{{ block.settings.img_action }}" {% if block.settings.img_action == "#two-step" %} data-target="#two-step" data-toggle="modal" {% endif %} {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %} class="image__overlay background-{{ block.settings.overlay_background_color | color_scheme_class }}">
+      {% else %}
+        <div class="image__overlay background-{{ block.settings.overlay_background_color | color_scheme_class }}" kjb-settings-id="{{ 'overlay_text' | settings_id: section: section, block: block }}">
+      {% endif %}
+      {% if carousel %}
+          <div class="image__overlay-text background-{{ block.settings.overlay_background_color | color_scheme_class }}">
+            {{ block.settings.overlay_text | truncate: 150 }}
+          </div>
+      {% else %}
+        <h4 
+          class="image__overlay-text" 
+          kjb-settings-id="{{ 'overlay_text' | settings_id: section: section, block: block }}" 
+          {% element_attributes "block.settings.overlay_text" %}
+        >
+          {{ block.settings.overlay_text }}
+        </h4>
+      {% endif %}
+      {% if block.settings.img_action != blank %}
+        </a>
+      {% else %}
+        </div>
+      {% endif %}
+    {% endif %}
+  {% endif %}
+</div>
+{% if editor or block.settings.img_action == "#cta-popup" %}
+  {% include "cta_popup", block: block %}
+{% endif %}

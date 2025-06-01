@@ -1,0 +1,30 @@
+{% assign still_image = "" | image_picker_url: "video_still.png" %}
+<style>
+  #block-{{ block.id }} .responsive-video,
+  [data-slick-id="{{ block.id }}"] .responsive-video {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+    margin: 0;
+  }
+  #block-{{ block.id }} iframe,
+  #block-{{ block.id }} object,
+  #block-{{ block.id }} embed,
+  [data-slick-id="{{ block.id }}"] iframe,
+  [data-slick-id="{{ block.id }}"] object,
+  [data-slick-id="{{ block.id }}"] embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<div class="responsive-video">
+  {{ block.settings.code }}
+  <!-- used as a spacer for embed only carousels -->
+  {{ still_image | image_tag: style: "visibility: hidden;", alt: "Video Poster Image" }}
+</div>

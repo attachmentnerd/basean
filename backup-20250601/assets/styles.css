@@ -1,0 +1,172 @@
+/* ==============================================
+   ATTACHMENTNERD THEME STYLES
+   Clean, Simple, Compatible
+   ============================================== */
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Header Styling - Primary Source */
+.header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 100;
+}
+
+/* All header text should be white */
+.header a,
+.header .link-list__link,
+.header .user__name,
+.header .dropdown__trigger {
+  color: white;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.header a:hover,
+.header .link-list__link:hover,
+.header .dropdown__trigger:hover {
+  color: rgba(255,255,255,0.8);
+}
+
+/* Dropdown menu styling */
+.header .dropdown__menu {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  padding: 0.5rem 0;
+}
+
+.header .dropdown__menu a {
+  color: #333;
+  padding: 0.5rem 1rem;
+  display: block;
+}
+
+.header .dropdown__menu a:hover {
+  color: #667eea;
+  background: #f5f5f5;
+}
+
+/* Sticky header styles */
+.header.header--fixed {
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.header.header--fixed a,
+.header.header--fixed .link-list__link,
+.header.header--fixed .user__name,
+.header.header--fixed .dropdown__trigger {
+  color: #333;
+}
+
+.header.header--fixed a:hover,
+.header.header--fixed .link-list__link:hover,
+.header.header--fixed .dropdown__trigger:hover {
+  color: #667eea;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 1rem 0;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.75rem; }
+
+p {
+  margin: 0 0 1rem 0;
+}
+
+/* Links */
+a {
+  color: #667eea;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #764ba2;
+}
+
+/* Layout */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.section {
+  padding: 4rem 0;
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #764ba2;
+  transform: translateY(-1px);
+}
+
+/* Forms */
+.form-control {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e1e5e9;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+/* Utilities */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+  
+  .section {
+    padding: 2rem 0;
+  }
+  
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.5rem; }
+}
+
+/* End of Styles */

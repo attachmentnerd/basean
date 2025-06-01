@@ -1,0 +1,169 @@
+<div class="hero hero--{{ section.settings.height }} {% if section.settings.overlay %}has-overlay{% endif %}">
+  {% if section.settings.background_image %}
+    <div class="hero-background">
+      <img src="{{ section.settings.background_image | image_url: 'master' }}" 
+           alt="{{ section.settings.heading }}" 
+           class="hero-image"
+           loading="eager"
+           kjb-settings-id="{{ 'background_image' | settings_id: section: section }}">
+    </div>
+  {% endif %}
+  
+  <div class="container">
+    <div class="hero-content hero-content--{{ section.settings.text_align }}">
+      {% if section.settings.subheading %}
+        <p class="hero-subheading" kjb-settings-id="{{ 'subheading' | settings_id: section: section }}">{{ section.settings.subheading }}</p>
+      {% endif %}
+      
+      <h1 class="hero-heading" kjb-settings-id="{{ 'heading' | settings_id: section: section }}">{{ section.settings.heading }}</h1>
+      
+      {% if section.settings.description %}
+        <div class="hero-description rte" kjb-settings-id="{{ 'description' | settings_id: section: section }}">
+          {{ section.settings.description }}
+        </div>
+      {% endif %}
+      
+      {% if section.settings.button_text %}
+        <div class="hero-actions">
+          <a href="{{ section.settings.button_link }}" class="btn btn--primary btn--large" kjb-settings-id="{{ 'button_link' | settings_id: section: section }}">
+            <span kjb-settings-id="{{ 'button_text' | settings_id: section: section }}">{{ section.settings.button_text }}</span>
+          </a>
+          
+          {% if section.settings.secondary_button_text %}
+            <a href="{{ section.settings.secondary_button_link }}" class="btn btn--secondary btn--large" kjb-settings-id="{{ 'secondary_button_link' | settings_id: section: section }}">
+              <span kjb-settings-id="{{ 'secondary_button_text' | settings_id: section: section }}">{{ section.settings.secondary_button_text }}</span>
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<style>
+  #section-{{ section.id }} .hero {
+    {% if section.settings.background_color %}
+      background-color: {{ section.settings.background_color }};
+    {% endif %}
+    {% if section.settings.text_color %}
+      color: {{ section.settings.text_color }};
+    {% endif %}
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Hero",
+  "elements": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Welcome to Your Parenting Journey"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "EMPOWERING PARENTS"
+    },
+    {
+      "type": "rich_text",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Join thousands of parents who are transforming their approach to raising confident, resilient children.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Get Started"
+    },
+    {
+      "type": "action",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_text",
+      "label": "Secondary button text"
+    },
+    {
+      "type": "action",
+      "id": "secondary_button_link",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "checkbox",
+      "id": "overlay",
+      "label": "Add overlay",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Section height",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        },
+        {
+          "value": "full",
+          "label": "Full screen"
+        }
+      ],
+      "default": "large"
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero"
+    }
+  ]
+}
+{% endschema %}

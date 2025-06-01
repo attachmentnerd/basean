@@ -1,0 +1,66 @@
+<style>
+  #block-{{ block.id }} .event__title {
+    color: {{ block.settings.title_color }};
+    font-size: {{ block.settings.title_size_mobile | remove: "px" | append: "px" }};
+  }
+  #block-{{ block.id }} .event__description {
+    color: {{ block.settings.description_color }};
+  }
+  #block-{{ block.id }} .event__date {
+    color: {{ block.settings.date_color }};
+    font-size: {{ block.settings.date_size_mobile | remove: "px" | append: "px" }};
+  }
+  @media (min-width: 768px) {
+    #block-{{ block.id }} .event__title {
+      font-size: {{ block.settings.title_size | remove: "px" | append: "px" }};
+    }
+    #block-{{ block.id }} .event__date {
+      font-size: {{ block.settings.date_size | remove: "px" | append: "px" }};
+    }
+  }
+</style>
+
+{% assign event = current_site.find_event[block.settings.event] %}
+
+{% if block.settings.event != "" %}
+  <div class="event" kjb-settings-id="{{ 'event' | settings_id: section: section, block: block }}"
+  data-event-time="{{ current_site.find_event[block.settings.event].occurs_at | date: '%Y-%jT%T%:z' }}">
+    {% if block.settings.title != "" %}
+      <h2 
+        class="event__title" 
+        kjb-settings-id="{{ 'title' | settings_id: section: section, block: block }}" 
+        {% element_attributes "block.settings.title" %}
+      >
+        {{ block.settings.title }}
+      </h2>
+    {% endif %}
+    {% if block.settings.event != "" %}
+      {% if block.settings.format != "none" %}
+        <p class="event__date"
+        kjb-settings-id="{{ 'format' | settings_id: section: section, block: block }}"
+        data-format="{{ block.settings.format }}"
+        data-show-year="{{ block.settings.show_year }}"
+        data-show-time="{{ block.settings.show_time }}"
+        data-show-timezone="{{ block.settings.show_timezone }}"></p>
+      {% endif %}
+    {% endif %}
+    {% if block.settings.description != "" %}
+      <p 
+        class="event__description" 
+        kjb-settings-id="{{ 'description' | settings_id: section: section, block: block }}"
+        {% element_attributes "block.settings.description" %}
+      >
+        {{ block.settings.description }}
+      </p>
+    {% endif %}
+    {% if block.settings.use_btn %}
+      {% include "block_cta" %}
+    {% endif %}
+  </div>
+{% else %}
+  {% if editor %}
+    <div class="editor-null" kjb-settings-id="{{ 'event' | settings_id: section: section, block: block }}">
+      Click here to select a event to display.
+    </div>
+  {% endif %}
+{% endif %}

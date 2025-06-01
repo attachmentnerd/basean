@@ -1,0 +1,67 @@
+<style>
+  #block-{{ block.id }} .countdown__boxed .countdown__number {
+    background-color: {{ block.settings.number_background_color }};
+  }
+  #block-{{ block.id }} .countdown__number {
+    color: {{ block.settings.number_color }};
+    border-radius: {{ block.settings.number_border_radius | remove: "px" | times: 1 | append: "px" }};
+    box-shadow-{{ block.settings.number_box_shadow }}
+  }
+  #block-{{ block.id }} .countdown__label {
+    color: {{ block.settings.label_color }};
+  }
+  #block-{{ block.id }} .countdown__item {
+    text-align: {{ block.settings.text_align }};
+  }
+  @media (max-width: 767px) {
+    #block-{{ block.id }} .countdown__item {
+      text-align: {{ block.settings.mobile_text_align }};
+    }
+  }
+</style>
+
+{% assign event = current_site.find_event[block.settings.event] %}
+
+{% if block.settings.event != "" %}
+  <div class="event" kjb-settings-id="{{ 'event' | settings_id: section: section, block: block }}"
+  data-event-time="{{ current_site.find_event[block.settings.event].occurs_at | date: "%Y-%jT%T%:z" }}"
+  data-offset-number="{{ block.settings.offset_number }}"
+  data-offset-period="{{ block.settings.offset_period }}">
+    <div class="row countdown {{ appended_countdown_class }} {% if block.settings.style != blank %}countdown__{{block.settings.style}}{% endif %}  text-{{ block.settings.text_align }}"
+      data-end-action="{{ block.settings.end_action }}"
+      data-end-action-use="{{ block.settings.enable_end_action }}"
+      data-remove-section-on-complete="{{ block.settings.remove_section_on_complete }}"
+      kjb-settings-id="{{ 'days' | settings_id: section: section, block: block }}">
+      <div class="countdown__column">
+        <div class="countdown__item">
+          <h2 class="countdown__number days background-{{ block.settings.number_background_color | color_scheme_class }}">00</h2>
+          <p class="countdown__label" kjb-settings-id="{{ 'days' | settings_id: section: section, block: block }}" {% element_attributes "block.settings.days" %}>{{ block.settings.days }}</p>
+        </div>
+      </div>
+      <div class="countdown__column">
+        <div class="countdown__item">
+          <h2 class="countdown__number hours background-{{ block.settings.number_background_color | color_scheme_class }}">00</h2>
+          <p class="countdown__label" kjb-settings-id="{{ 'hours' | settings_id: section: section, block: block }}" {% element_attributes "block.settings.hours" %}>{{ block.settings.hours }}</p>
+        </div>
+      </div>
+      <div class="countdown__column">
+        <div class="countdown__item">
+          <h2 class="countdown__number minutes background-{{ block.settings.number_background_color | color_scheme_class }}">00</h2>
+          <p class="countdown__label" kjb-settings-id="{{ 'minutes' | settings_id: section: section, block: block }}" {% element_attributes "block.settings.minutes" %}>{{ block.settings.minutes }}</p>
+        </div>
+      </div>
+      <div class="countdown__column">
+        <div class="countdown__item">
+          <h2 class="countdown__number seconds background-{{ block.settings.number_background_color | color_scheme_class }}">00</h2>
+          <p class="countdown__label" kjb-settings-id="{{ 'seconds' | settings_id: section: section, block: block }}" {% element_attributes "block.settings.seconds" %}>{{ block.settings.seconds }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% else %}
+  {% if editor %}
+    <div class="editor-null" kjb-settings-id="{{ 'event' | settings_id: section: section, block: block }}">
+      Click here to select a event to count down to.
+    </div>
+  {% endif %}
+{% endif %}

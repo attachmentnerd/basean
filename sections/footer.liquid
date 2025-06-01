@@ -1,194 +1,468 @@
-<div class="footer">
-  <div class="container">
-    <div class="footer-main">
-      <!-- Brand Column -->
-      <div class="footer-brand">
-        <a href="{{ routes.root_url }}" class="footer-logo" kjb-settings-id="{{ 'footer_logo_link' | settings_id: section: section }}">
-          {% if section.settings.footer_logo %}
-            <img src="{{ section.settings.footer_logo | image_url: 'x50' }}" alt="{{ shop.name }}" class="footer-logo-image" kjb-settings-id="{{ 'footer_logo' | settings_id: section: section }}">
-          {% else %}
-            <span class="footer-logo-text" kjb-settings-id="{{ 'footer_logo_text' | settings_id: section: section }}">{{ shop.name }}</span>
-          {% endif %}
-        </a>
-        
-        {% if section.settings.footer_description %}
-          <p class="footer-description" kjb-settings-id="{{ 'footer_description' | settings_id: section: section }}">{{ section.settings.footer_description }}</p>
-        {% endif %}
-        
-        {% if section.settings.show_social %}
-          <div class="footer-social">
-            {% if settings.social_facebook %}
-              <a href="{{ settings.social_facebook }}" class="social-link" aria-label="Facebook">
-                {% include 'icon', icon: 'facebook' %}
-              </a>
-            {% endif %}
-            {% if settings.social_twitter %}
-              <a href="{{ settings.social_twitter }}" class="social-link" aria-label="Twitter">
-                {% include 'icon', icon: 'twitter' %}
-              </a>
-            {% endif %}
-            {% if settings.social_instagram %}
-              <a href="{{ settings.social_instagram }}" class="social-link" aria-label="Instagram">
-                {% include 'icon', icon: 'instagram' %}
-              </a>
-            {% endif %}
-            {% if settings.social_youtube %}
-              <a href="{{ settings.social_youtube }}" class="social-link" aria-label="YouTube">
-                {% include 'icon', icon: 'youtube' %}
-              </a>
-            {% endif %}
-            {% if settings.social_linkedin %}
-              <a href="{{ settings.social_linkedin }}" class="social-link" aria-label="LinkedIn">
-                {% include 'icon', icon: 'linkedin' %}
-              </a>
-            {% endif %}
-          </div>
-        {% endif %}
-      </div>
-      
-      <!-- Footer Menus -->
+{% if current_site.display_powered_by_link? == false %}
+  <style>
+    #section-footer {
+      -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+      flex-grow: 1;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+    }
+    .footer {
+      -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+      flex-grow: 1;
+    }
+  </style>
+{% endif %}
+<style>
+  .footer {
+    background-color: {{ section.settings.background_color }};
+  }
+  .footer, .footer__block {
+    font-size: {{ section.settings.font_size_mobile }};
+    color: {{ section.settings.text_color }};
+  }
+  .footer .logo__text {
+    color: {{ section.settings.logo_text_color }};
+  }
+  .footer .link-list__links {
+    width: 100%;
+  }
+  .footer a.link-list__link {
+    color: {{ section.settings.text_color }};
+  }
+  .footer .link-list__link:hover {
+    color: {{ section.settings.text_color }};
+  }
+  .copyright {
+    color: {{ section.settings.copyright_text_color }};
+  }
+  @media (min-width: 768px) {
+    .footer, .footer__block {
+      font-size: {{ section.settings.font_size_desktop }};
+    }
+  }
+  .powered-by a {
+    color: {{ section.settings.powered_by_text_color }} !important;
+  }
+  {% if section.settings.vertical_layout == true %}
+    .powered-by {
+      text-align: center;
+      padding-top: 0;
+    }
+  {% endif %}
+</style>
+
+<footer class="footer {% if section.settings.vertical_layout == true %}footer--stacked{% endif %} {% if section.settings.background_color != blank %} background-{{ section.settings.background_color | color_scheme_class }}{% endif %} {% if section.settings.hide_on_desktop %}hidden--desktop{% endif %} {% if section.settings.hide_on_mobile %}hidden--mobile{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
+  <div class="footer__content">
+    <div class="container footer__container media">
       {% for block in section.blocks %}
         {% case block.type %}
-          {% when 'menu' %}
-            <div class="footer-menu">
-              <h3 class="footer-menu-title" kjb-settings-id="{{ 'title' | settings_id: section: section, block: block }}">{{ block.settings.title }}</h3>
-              <ul class="footer-menu-list">
-                {% for link in block.settings.menu.links %}
-                  <li class="footer-menu-item">
-                    <a href="{{ link.url }}" class="footer-menu-link">{{ link.title }}</a>
-                  </li>
-                {% endfor %}
-              </ul>
-            </div>
-            
-          {% when 'newsletter' %}
-            <div class="footer-newsletter">
-              <h3 class="footer-menu-title" kjb-settings-id="{{ 'title' | settings_id: section: section, block: block }}">{{ block.settings.title }}</h3>
-              <p class="newsletter-description" kjb-settings-id="{{ 'description' | settings_id: section: section, block: block }}">{{ block.settings.description }}</p>
-              
-              <form action="{{ routes.newsletter_url }}" method="post" class="newsletter-form">
-                <div class="form-field">
-                  <input type="email" 
-                         name="email" 
-                         placeholder="{{ block.settings.placeholder }}"
-                         kjb-settings-id="{{ 'placeholder' | settings_id: section: section, block: block }}" 
-                         class="newsletter-input" 
-                         required>
-                  <button type="submit" class="newsletter-button">
-                    {% include 'icon', icon: 'arrow-right' %}
-                  </button>
-                </div>
-              </form>
-            </div>
+          {% when "logo" %}
+            {% include "footer_block" type:"shared_block_logo" %}
+          {% when "link_list" %}
+            {% include "block" type: "link_list", placement: "section" %}
+          {% when "copyright" %}
+            {% include "footer_block" type:"footer_block_copyright" %}
+          {% when "social_icons" %}
+            {% include "footer_block" type:"footer_block_social_icons" %}
         {% endcase %}
       {% endfor %}
     </div>
-    
-    <!-- Footer Bottom -->
-    <div class="footer-bottom">
-      <div class="footer-copyright">
-        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. <span kjb-settings-id="{{ 'copyright_text' | settings_id: section: section }}">{{ section.settings.copyright_text }}</span>
-      </div>
-      
-      <nav class="footer-legal">
-        {% if section.settings.footer_legal_menu %}
-          {% for link in section.settings.footer_legal_menu.links %}
-            <a href="{{ link.url }}" class="legal-link">{{ link.title }}</a>
-          {% endfor %}
-        {% endif %}
-      </nav>
-      
-      {% if section.settings.show_payment_icons %}
-        <div class="footer-payments">
-          {% include 'payment-icons' %}
-        </div>
-      {% endif %}
-    </div>
+    {% include "global_powered_by" %}
   </div>
-</div>
+
+</footer>
 
 {% schema %}
 {
   "name": "Footer",
   "elements": [
     {
-      "type": "image_picker",
-      "id": "footer_logo",
-      "label": "Footer logo"
+      "type": "color",
+      "label": "Footer Text Color",
+      "id": "text_color",
+      "default": "",
+      "allow_blank": true
     },
     {
-      "type": "textarea",
-      "id": "footer_description",
-      "label": "Footer description",
-      "default": "Empowering parents with resources, community, and support for their parenting journey."
+      "type": "color",
+      "label": "Copyright Text Color",
+      "id": "copyright_text_color",
+      "default": "",
+      "allow_blank": true
     },
     {
-      "type": "checkbox",
-      "id": "show_social",
-      "label": "Show social icons",
-      "default": true
+      "type": "color",
+      "label": "Powered by Kajabi Text Color",
+      "id": "powered_by_text_color",
+      "default": "",
+      "allow_blank": true
     },
     {
-      "type": "text",
-      "id": "copyright_text",
-      "label": "Copyright text",
-      "default": "All rights reserved."
-    },
-    {
-      "type": "link_list",
-      "id": "footer_legal_menu",
-      "label": "Legal menu"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_payment_icons",
-      "label": "Show payment icons",
-      "default": true
+      "type": "color",
+      "label": "Footer Background Color",
+      "id": "background_color",
+      "default": ""
     }
   ],
-  "blocks": [
+  "groups": [
     {
-      "type": "menu",
-      "name": "Menu",
+      "name": "Desktop Layout",
       "elements": [
         {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Quick Links"
+          "type": "checkbox",
+          "id": "hide_on_desktop",
+          "label": "Hide Footer",
+          "default": "false",
+          "info": "This will hide the footer on desktop."
         },
         {
-          "type": "link_list",
-          "id": "menu",
-          "label": "Menu"
+          "type": "checkbox",
+          "id": "vertical_layout",
+          "label": "Vertical Layout",
+          "default": "false",
+          "info": "Switch to a stacked layout."
         }
       ]
     },
     {
-      "type": "newsletter",
-      "name": "Newsletter",
-      "limit": 1,
+      "name": "Mobile Layout",
       "elements": [
         {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Stay Connected"
+          "type": "checkbox",
+          "id": "hide_on_mobile",
+          "label": "Hide Footer",
+          "default": "false",
+          "info": "This will hide the footer on mobile."
+        }
+      ]
+    },
+    {
+      "name": "Typography",
+      "elements": [
+        {
+          "type": "select",
+          "id": "font_size_desktop",
+          "label": "Font Size Desktop",
+          "default": "18px",
+          "info": "Default: 18px",
+          "preset": "font_sizes",
+          "options": []
+        },
+        {
+          "type": "select",
+          "id": "font_size_mobile",
+          "label": "Font Size Mobile",
+          "default": "16px",
+          "info": "Default: 16px",
+          "preset": "font_sizes",
+          "options": []
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "elements": [
+        {
+          "type": "header",
+          "content": "Logo"
+        },
+        {
+          "type": "radio",
+          "id": "logo_type",
+          "label": "Logo Type",
+          "default": "image",
+          "options": [
+            { "label": "Image", "value": "image" },
+            { "label": "Text", "value": "text" }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo Image",
+          "fit": "max",
+          "width": 1000,
+          "height": 1000,
+          "info": "Suggested dimensions: 360x80"
         },
         {
           "type": "text",
-          "id": "description",
-          "label": "Description",
-          "default": "Get parenting tips and exclusive offers delivered to your inbox."
+          "id": "image_alt",
+          "label": "Image Alt Attribute",
+          "info": "Add an image alt attribute for SEO, and if the image cannot be displayed.",
+          "default": "Footer Logo"
         },
         {
           "type": "text",
-          "id": "placeholder",
-          "label": "Input placeholder",
-          "default": "Enter your email"
+          "id": "logo_width",
+          "label": "Logo Image Width",
+          "info": "You may use the format 10px or simply 10.",
+          "default": "50"
+        },
+        {
+          "type": "text",
+          "id": "logo_text",
+          "label": "Logo Text",
+          "default": "Encore"
+        },
+        {
+          "type": "color",
+          "label": "Logo Text Color",
+          "id": "logo_text_color",
+          "default": "",
+          "allow_blank": true
+        }
+      ]
+    },
+    {
+      "type": "link_list",
+      "name": "Link List",
+      "groups": [
+        {
+          "name": "Desktop Layout",
+          "elements": [
+            {
+              "type": "align",
+              "id": "text_align",
+              "label": "Text Alignment",
+              "default": "right",
+              "direction": "horizontal"
+            }
+          ]
+        },
+        {
+          "name": "Mobile Layout",
+          "elements": [
+            {
+              "type": "align",
+              "id": "mobile_text_align",
+              "label": "Mobile Text Alignment",
+              "default": "center",
+              "direction": "horizontal"
+            }
+          ]
+        }
+      ],
+      "elements": [
+        {
+          "type": "header",
+          "content": "Link List"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "info": "Secondary navigation for your site",
+          "default": "main-menu"
+        },
+        {
+          "type": "checkbox",
+          "id": "new_tab",
+          "label": "Open In New Tab",
+          "default": "false"
+        },
+        {
+          "type": "color",
+          "id": "link_color",
+          "label": "Link Color",
+          "allow_blank": "true"
+        },
+        {
+          "type": "radio",
+          "id": "vertical",
+          "label": "Vertical Alignment",
+          "default": "row",
+          "options": [
+            {
+              "value": "row",
+              "label": "Row"
+            },
+            {
+              "value": "column",
+              "label": "Column"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "copyright",
+      "name": "Copyright",
+      "elements": [
+        {
+          "type": "header",
+          "content": "Copyright"
+        },
+        {
+          "type": "text",
+          "id": "copyright",
+          "label": "Copyright",
+          "default": "Kajabi"
+        }
+      ]
+    },
+    {
+      "type": "social_icons",
+      "name": "Social Icons",
+      "elements": [
+        {
+          "type": "header",
+          "content": "Social Icons"
+        },
+        {
+          "type": "checkbox",
+          "id": "new_tab",
+          "label": "Open In New Tab",
+          "default": "false"
+        },
+        {
+          "type": "color",
+          "label": "Social Icon Color",
+          "id": "social_icons_text_color",
+          "allow_blank": true,
+          "info": "Change the color for the social icons."
+        },
+        {
+          "type": "color",
+          "label": "Social Icon Background Color",
+          "id": "social_icons_background_color",
+          "allow_blank": true,
+          "info": "Change the background color for the social icon containers."
+        },
+        {
+          "type": "select",
+          "id": "social_icon_background_style",
+          "label": "Social Icon Background Style",
+          "default": "",
+          "options": [
+            { "label": "Round", "value": "round" },
+            { "label": "Square", "value": "square" },
+            { "label": "None", "value": "" }
+          ]
+        },
+        {
+        "type": "text",
+        "id": "social_icon_link_facebook",
+        "label": "Facebook",
+        "default": "https://www.facebook.com/kajabi"
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_twitter",
+          "label": "Twitter",
+          "default": "https://www.twitter.com/kajabi"
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_instagram",
+          "label": "Instagram",
+          "default": "https://www.instagram.com/kajabi"
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_youtube",
+          "label": "YouTube",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_pinterest",
+          "label": "Pinterest",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_vimeo",
+          "label": "Vimeo",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_github",
+          "label": "Github",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_itunes",
+          "label": "iTunes",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_linkedin",
+          "label": "LinkedIn",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_soundcloud",
+          "label": "Soundcloud",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_yelp",
+          "label": "Yelp",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_tumblr",
+          "label": "Tumblr",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_slack",
+          "label": "Slack",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_flickr",
+          "label": "Flickr",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_dribbble",
+          "label": "Dribbble",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_tiktok",
+          "label": "TikTok",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_medium",
+          "label": "Medium",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_spotify",
+          "label": "Spotify",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "social_icon_link_podcasts",
+          "label": "Podcasts",
+          "default": ""
         }
       ]
     }
   ]
 }
+
 {% endschema %}

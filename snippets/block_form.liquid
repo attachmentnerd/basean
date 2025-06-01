@@ -1,0 +1,85 @@
+{% assign btn_background_color = block.settings.btn_background_color | default: settings.btn_background_color %}
+{% assign btn_text_color = block.settings.btn_text_color | default: settings.btn_text_color %}
+{% assign btn_border_radius = block.settings.btn_border_radius | default: settings.btn_border_radius | remove: "px" | append: "px" %}
+{% assign btn_style = block.settings.btn_style | default: settings.btn_style %}
+{% assign btn_size = block.settings.btn_size | default: settings.btn_size %}
+{% assign btn_width = block.settings.btn_width | default: settings.btn_width %}
+
+{% if block.settings.input_label == "label" %}
+  {% assign use_label = true %}
+  {% assign use_placeholder = false %}
+{% else %}
+  {% assign use_label = false %}
+  {% assign use_placeholder = true %}
+{% endif %}
+
+<style>
+  #block-{{ block.id }} .form-btn {
+    border-color: {{ btn_background_color }};
+    border-radius: {{ btn_border_radius }};
+    background: {{ btn_background_color }};
+    color: {{ btn_text_color }};
+  }
+  #block-{{ block.id }} .btn--outline {
+    color: {{ btn_background_color }};
+    background: transparent;
+  }
+  #block-{{ block.id }} .disclaimer-text {
+    font-size: 16px;
+    margin-top: 1.25rem;
+    margin-bottom: 0;
+    color: {{ block.settings.disclaimer_text_color }};
+  }
+</style>
+
+{% assign f = current_site.find_form[block.settings.form] %}
+
+<div class="form">
+  <div
+    kjb-settings-id="{{ 'text' | settings_id: section: section, block: block }}"
+    {% element_attributes "block.settings.text" %}
+  >
+    {{ block.settings.text }}
+  </div>
+  {% if f %}
+    {% form f %}
+      <div class="{% if block.settings.inline and f.fields.size <= 3 %}fields-wrapper{% endif %}">
+        <input type="hidden" name="thank_you_url" value="{{ block.settings.thank_you }}">
+        {% for field in f.fields %}
+          {{ field | form_input: class: "form-group", input_class: "form-control", label: use_label, placeholder: use_placeholder }}
+        {% endfor %}
+        <div>
+          {% if use_label and block.settings.inline %}
+            <label for="btn">&nbsp;</label>
+          {% endif %}
+          <button
+            id="form-button"
+            class="form-btn btn--{{ btn_style }} btn--{{ btn_width }} btn--{{ btn_size }}"
+            type="submit"
+            role="button"
+            kjb-settings-id="{{ 'btn_text' | settings_id: section: section, block: block }}"
+          >
+            {%- element "block.settings.btn_text" -%}
+              {{ block.settings.btn_text }}
+            {%- endelement -%}
+          </button>
+        </div>
+      </div>
+    {% endform %}
+    {% if block.settings.disclaimer_text != blank %}
+      <p
+        class="disclaimer-text"
+        kjb-settings-id="{{ 'disclaimer_text' | settings_id: section: section, block: block }}"
+        {% element_attributes "block.settings.disclaimer_text" %}
+      >
+        {{ block.settings.disclaimer_text }}
+      </p>
+    {% endif %}
+  {% else %}
+    {% if editor %}
+      <div class="editor-null" kjb-settings-id="{{ 'form' | settings_id: section: section, block: block }}">
+        Click here to select a form to display.
+      </div>
+    {% endif %}
+  {% endif %}
+</div>

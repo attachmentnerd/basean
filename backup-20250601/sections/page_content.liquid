@@ -1,0 +1,185 @@
+<style>
+  {% if section.settings.bg_type == "image" %}
+    #section-{{ section.id }} {
+      background-image: url({{ section.settings.bg_image | image_picker_url: "background.jpg" }});
+      background-position: {{ section.settings.bg_position }};
+    }
+  {% endif %}
+  .page {
+    background-color: {{ section.settings.background_color }};
+  }
+  .page .sizer {
+    padding-top: {{ section.settings.padding_mobile.top | default: 40 | append: "px" }};
+    padding-bottom: {{ section.settings.padding_mobile.bottom | default: 40 | append: "px" }};
+  }
+  .page .container {
+    max-width: calc(900px + {{ section.settings.padding_mobile.right | default: 10 | append: "px" }} + {{ section.settings.padding_mobile.left | default: 10 | append: "px" }});
+    padding-right: {{ section.settings.padding_mobile.right | default: 10 | append: "px" }};
+    padding-left: {{ section.settings.padding_mobile.left | default: 10 | append: "px" }};
+  }
+  .page__title {
+    color: {{ section.settings.color_title }} !important;
+  }
+  @media (min-width: 768px) {
+    {% if section.settings.bg_type == "image" %}
+      #section-{{ section.id }} {
+        {% if section.settings.background_fixed %}
+          background-attachment: fixed;
+        {% endif %}
+      }
+    {% endif %}
+    .page .sizer {
+      padding-top: {{ section.settings.padding_desktop.top | default: 40 | append: "px" }};
+      padding-bottom: {{ section.settings.padding_desktop.bottom | default: 40 | append: "px" }};
+    }
+    .page .container {
+      max-width: calc(900px + {{ section.settings.padding_desktop.right | default: 40 | append: "px" }} + {{ section.settings.padding_desktop.left | default: 40 | append: "px" }});
+      padding-right: {{ section.settings.padding_desktop.right | default: 40 | append: "px" }};
+      padding-left: {{ section.settings.padding_desktop.left | default: 40 | append: "px" }};
+    }
+  }
+</style>
+
+<section class="page {% if section.settings.background_color != blank %} background-{{ section.settings.background_color | color_scheme_class }}{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
+  <div class="sizer">
+    {% if section.settings.bg_type == "video" %}
+      {% include "global_background_video" %}
+    {% endif %}
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h1 class="h2 page__title">{{ page.title }}</h1>
+          <div class="page__content">{{ page.content }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Page",
+    "deletable": "false",
+    "duplicatable": "false",
+    "elements": [
+      {
+        "type": "color",
+        "id": "color_title",
+        "label": "Title Text Color",
+        "default": "",
+        "allow_blank": "true"
+      }
+    ],
+    "groups": [
+      {
+        "name": "Background",
+        "elements": [
+          {
+            "type": "select",
+            "id": "bg_type",
+            "label": "Background Media Type",
+            "default": "none",
+            "options": [
+              {
+                "value": "none",
+                "label": "None"
+              },
+              {
+                "value": "image",
+                "label": "Image"
+              },
+              {
+                "value": "video",
+                "label": "Video"
+              }
+            ]
+          },
+          {
+            "type": "video",
+            "id": "bg_video",
+            "label": "Background Video"
+          },
+          {
+            "type": "image_picker",
+            "id": "bg_image",
+            "label": "Background Image",
+            "info": "Suggested dimensions: 2880 × 1200. Learn more about how to properly use background images [here](premier_hero_bg_image).",
+            "fit": "max",
+            "width": 3000,
+            "height": 3000
+          },
+          {
+            "type": "radio",
+            "id": "bg_position",
+            "label": "Background Image Position",
+            "default": "center",
+            "info": "Vertical positioning of the background image.",
+            "options": [
+              {
+                "value": "top",
+                "label": "Top"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "bottom",
+                "label": "Bottom"
+              }
+            ]
+          },
+          {
+            "type": "checkbox",
+            "id": "background_fixed",
+            "label": "Fixed Background Image",
+            "default": "false",
+            "info": "Make this section's background image fixed on scroll. Does not apply to mobile devices."
+          },
+          {
+            "type": "color",
+            "label": "Background Color",
+            "id": "background_color",
+            "default": "",
+            "allow_blank": true,
+            "info": "Will be used as overlay if settings for background image selected. Use Opacity slider. Learn more about working with image overlays [here](image_overlay)"
+          }
+        ]
+      },
+      {
+        "name": "Desktop Layout",
+        "elements": [
+          {
+            "type": "spacer",
+            "id": "padding_desktop",
+            "label": "Desktop Section Padding",
+            "info": "Adjust padding inside of the section. Hold shift to increment/decrement by 10.",
+            "placeholder": {
+              "top": "40",
+              "right": "40",
+              "bottom": "40",
+              "left": "40"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Mobile Layout",
+        "elements": [
+          {
+            "type": "spacer",
+            "id": "padding_mobile",
+            "label": "Mobile Section Padding",
+            "info": "Adjust padding inside of the section",
+            "placeholder": {
+              "top": "40",
+              "right": "10",
+              "bottom": "40",
+              "left": "10"
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

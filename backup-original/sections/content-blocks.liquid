@@ -1,0 +1,254 @@
+<section class="content-blocks">
+  <div class="container">
+    {% if section.settings.title or section.settings.description %}
+      <header class="section-header">
+        {% if section.settings.title %}
+          <h2 class="section-title">{{ section.settings.title }}</h2>
+        {% endif %}
+        {% if section.settings.description %}
+          <p class="section-description">{{ section.settings.description }}</p>
+        {% endif %}
+      </header>
+    {% endif %}
+    
+    <div class="blocks-grid blocks-grid--{{ section.settings.columns }}">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'text_block' %}
+            <div class="content-block content-block--text">
+              {% if block.settings.icon %}
+                <div class="block-icon">
+                  {% include 'icon', icon: block.settings.icon, size: 'large' %}
+                </div>
+              {% endif %}
+              
+              <h3 class="block-title">{{ block.settings.title }}</h3>
+              
+              <div class="block-content rte">
+                {{ block.settings.content }}
+              </div>
+              
+              {% if block.settings.button_text %}
+                <a href="{{ block.settings.button_link }}" class="btn btn--text">
+                  {{ block.settings.button_text }}
+                  {% include 'icon', icon: 'arrow-right', size: 'small' %}
+                </a>
+              {% endif %}
+            </div>
+            
+          {% when 'image_block' %}
+            <div class="content-block content-block--image">
+              {% if block.settings.image %}
+                <div class="block-image">
+                  <img src="{{ block.settings.image | image_url: '600x' }}" 
+                       alt="{{ block.settings.title }}" 
+                       loading="lazy">
+                </div>
+              {% endif %}
+              
+              <div class="block-body">
+                <h3 class="block-title">{{ block.settings.title }}</h3>
+                
+                <div class="block-content rte">
+                  {{ block.settings.content }}
+                </div>
+                
+                {% if block.settings.button_text %}
+                  <a href="{{ block.settings.button_link }}" class="btn btn--secondary">
+                    {{ block.settings.button_text }}
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+            
+          {% when 'video_block' %}
+            <div class="content-block content-block--video">
+              <div class="block-video">
+                {% if block.settings.video_url contains 'youtube.com' or block.settings.video_url contains 'youtu.be' %}
+                  {% assign video_id = block.settings.video_url | split: 'v=' | last | split: '&' | first %}
+                  <iframe src="https://www.youtube.com/embed/{{ video_id }}" 
+                          frameborder="0" 
+                          allowfullscreen
+                          class="video-embed"></iframe>
+                {% elsif block.settings.video_url contains 'vimeo.com' %}
+                  {% assign video_id = block.settings.video_url | split: '/' | last %}
+                  <iframe src="https://player.vimeo.com/video/{{ video_id }}" 
+                          frameborder="0" 
+                          allowfullscreen
+                          class="video-embed"></iframe>
+                {% endif %}
+              </div>
+              
+              <h3 class="block-title">{{ block.settings.title }}</h3>
+              
+              {% if block.settings.content %}
+                <div class="block-content rte">
+                  {{ block.settings.content }}
+                </div>
+              {% endif %}
+            </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Content Blocks",
+  "elements": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title"
+    },
+    {
+      "type": "text",
+      "id": "description",
+      "label": "Section description"
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Columns",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        },
+        {
+          "value": "3",
+          "label": "3 columns"
+        },
+        {
+          "value": "4",
+          "label": "4 columns"
+        }
+      ],
+      "default": "3"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text_block",
+      "name": "Text block",
+      "elements": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Feature Title"
+        },
+        {
+          "type": "rich_text",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Describe your feature or service in detail. What makes it special?</p>"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "", "label": "None" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "star", "label": "Star" },
+            { "value": "check-circle", "label": "Check Circle" },
+            { "value": "users", "label": "Users" },
+            { "value": "book", "label": "Book" },
+            { "value": "video", "label": "Video" },
+            { "value": "message-circle", "label": "Message" }
+          ],
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text"
+        },
+        {
+          "type": "action",
+          "id": "button_link",
+          "label": "Button link"
+        }
+      ]
+    },
+    {
+      "type": "image_block",
+      "name": "Image block",
+      "elements": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Image Block"
+        },
+        {
+          "type": "rich_text",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Add compelling content about your image.</p>"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text"
+        },
+        {
+          "type": "action",
+          "id": "button_link",
+          "label": "Button link"
+        }
+      ]
+    },
+    {
+      "type": "video_block",
+      "name": "Video block",
+      "elements": [
+        {
+          "type": "text",
+          "id": "video_url",
+          "label": "Video URL",
+          "info": "YouTube or Vimeo URL"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Video Title"
+        },
+        {
+          "type": "rich_text",
+          "id": "content",
+          "label": "Content"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Content Blocks",
+      "blocks": [
+        {
+          "type": "text_block"
+        },
+        {
+          "type": "text_block"
+        },
+        {
+          "type": "text_block"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

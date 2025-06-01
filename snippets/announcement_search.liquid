@@ -1,0 +1,27 @@
+<style>
+  .filter__field {
+    color: {{ section.settings.color_filter_options }};
+  }
+  .filter__icon {
+    color: {{ section.settings.color_filter_options }};
+  }
+</style>
+
+<div class="announcement-search">
+  <div class="filter">
+    <select class="filter__field" name="search-value">
+      <option value="">{{ section.settings.text_select_product }}</option>
+      {% for product in products %}
+        <option value="{{ product.id }}">
+          {{ product.title }}
+        </option>
+      {% endfor %}
+    </select>
+    <div class="filter__icon"><i class="fa fa-caret-down"></i></div>
+  </div>
+  <form class="search" method="get" role="search" kjb-settings-id="{{ 'text_search_placeholder' | settings_id: section: section, block: block }}">
+    <input class="form-control search__control" type="search" name="search" placeholder="{{ section.settings.text_search_placeholder }}">
+    <input class="hidden form-control search__control announcement-search__product-id" type="search" name="product" value="">
+    {% include "element_button_submit_search", appended_classes: "hidden--submit" %}
+  </form>
+</div>

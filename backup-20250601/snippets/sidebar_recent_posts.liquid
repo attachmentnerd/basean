@@ -1,0 +1,44 @@
+<style>
+  .sidebar-recent-posts--{{ block.id }} {
+    text-align: {{ block.settings.recent_posts_text_align }};
+  }
+  .sidebar-recent-posts--{{ block.id }} .sidebar-recent-posts__heading {
+    color: {{ block.settings.color_recent_posts_heading }};
+  }
+  .sidebar-recent-posts--{{ block.id }} .sidebar-recent-posts__title {
+    color: {{ block.settings.color_recent_posts_title }};
+  }
+  .sidebar-recent-posts--{{ block.id }} .tag {
+    color: {{ block.settings.color_recent_posts_tag_text }};
+    background-color: {{ block.settings.color_recent_posts_tag_background }};
+  }
+  .sidebar-recent-posts--{{ block.id }} .sidebar-recent-posts__date {
+    color: {{ block.settings.color_recent_posts_date }};
+  }
+</style>
+
+
+<div class="sidebar-recent-posts sidebar-recent-posts--{{ block.id }}">
+  <p 
+    class="h5 sidebar-recent-posts__heading" 
+    kjb-settings-id="{{ 'heading' | settings_id: section: section, block: block }}" 
+    {% element_attributes "block.settings.heading" %}
+  >
+    {{ block.settings.heading }}
+  </p>
+  {% for blog_post_sidebar in current_site.blog.posts_published limit:3 %}
+    <div class="sidebar-recent-posts__item">
+      <a class="h6 sidebar-recent-posts__title" href="{{ blog_post_sidebar.url }}">{{ blog_post_sidebar.title }}</a>
+      {% if block.settings.show_tags %}
+        <div class="sidebar-recent-posts__tags" kjb-settings-id="{{ 'show_tags' | settings_id: section: section, block: block }}">
+          {% for tag in blog_post_sidebar.tags %}
+            <a class="tag sidebar-recent-posts__tag" href="{{ current_site.url }}/blog?tag={{ tag | url_encode }}">{{ tag }}</a>
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% if block.settings.show_date %}
+        <span class="sidebar-recent-posts__date" kjb-settings-id="{{ 'show_date' | settings_id: section: section, block: block }}">{{ blog_post_sidebar.created_at | date: "%b %d, 20%y" }}</span>
+      {% endif %}
+    </div>
+  {% endfor %}
+</div>

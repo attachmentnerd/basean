@@ -1,0 +1,191 @@
+{% assign image_settings_id = 'image' | settings_id: section: section, block: block %}
+{% assign secondary_btn_background_color = block.settings.secondary_btn_background_color | default: settings.btn_background_color %}
+{% assign secondary_btn_text_color = block.settings.secondary_btn_text_color | default: settings.btn_text_color %}
+{% assign secondary_btn_border_radius = block.settings.secondary_btn_border_radius | default: settings.btn_border_radius | remove: "px" | append: "px" %}
+{% assign secondary_btn_style = block.settings.secondary_btn_style | default: settings.btn_style %}
+{% assign secondary_btn_size = block.settings.secondary_btn_size | default: settings.btn_size %}
+{% assign secondary_btn_width = block.settings.secondary_btn_width | default: settings.btn_width %}
+{% assign secondary_popup_id = "secondary-cta-popup-" | append: block.id %}
+
+ <style>
+   /* Remove custom padding */
+  #block-{{ block.id }} .block {
+  padding: 0;
+  }
+  {% if block.settings.list_icon != "default" %}
+  #block-{{ block.id }} .pricing__content ul li:before {
+    content: "\{{ block.settings.list_icon }}";
+    color: {{ block.settings.icon_color }};
+  }
+  {% endif %}
+  #block-{{ block.id }} .pricing__name {
+    color: {{ block.settings.price_name_color | default: settings.color_primary }};
+  }
+  #block-{{ block.id }} .pricing__price {
+    color: {{ block.settings.price_color }};
+  }
+  {% if block.settings.price_caption_color != blank %}
+    #block-{{ block.id }} .pricing__heading {
+      color: {{ block.settings.price_caption_color }};
+      font-weight: 700;
+    }
+  {% endif %}
+  /* Secondary CTA Button Styles */
+  #block-{{ block.id }} .btn.secondary {
+    margin-top: 10px;
+    color: {{ secondary_btn_text_color }};
+    border-color: {{ secondary_btn_background_color }};
+    border-radius: {{ secondary_btn_border_radius }};
+    background-color: {{ secondary_btn_background_color }};
+  }
+  #block-{{ block.id }} .btn--outline.secondary {
+    background: transparent;
+    color: {{ secondary_btn_background_color }};
+  }
+</style>
+
+{% if editor %}
+  {% assign default_image = 'placeholder.png' %}
+{% endif %}
+
+<div class="pricing">
+  {% if block.settings.show_image == true %}
+    {{ block.settings.image | image_picker_url: default_image | image_tag: class: "pricing__image", alt: block.settings.image_alt, kjb_settings_id: image_settings_id }}
+  {% endif %}
+  <div class="pricing__body">
+    {% if block.settings.name != blank %}
+      <h4 
+        class="pricing__name" 
+        kjb-settings-id="{{ 'name' | settings_id: section: section, block: block }}" 
+        {% element_attributes "block.settings.name" %}
+      >
+        {{ block.settings.name }}
+      </h4>
+    {% endif %}
+    {% if block.settings.price != blank %}
+      <div class="pricing__info">
+        <h2 
+          class="pricing__price" 
+          kjb-settings-id="{{ 'price' | settings_id: section: section, block: block }}" 
+          {% element_attributes "block.settings.price" %}
+        >
+          {{ block.settings.price}}
+        </h2>
+      </div>
+    {% endif %}
+    {% if block.settings.heading != blank %}
+        <p 
+          class="pricing__heading" 
+          kjb-settings-id="{{ 'heading' | settings_id: section: section, block: block }}" 
+          {% element_attributes "block.settings.heading" %}
+        >
+          {{ block.settings.heading }}
+        </p>
+    {% endif %}
+    {% if block.settings.text != blank %}
+      <div 
+        class="pricing__content {% if block.settings.list_icon != "default" %}custom-icon{% endif %}" 
+        kjb-settings-id="{{ 'text' | settings_id: section: section, block: block }}" 
+        {% element_attributes "block.settings.text" %}
+      >
+        {{ block.settings.text }}
+      </div>
+    {% endif %}
+    {% if block.settings.show_cta %}
+      {% include "block_cta" %}
+    {% endif %}
+    {% if block.settings.show_secondary_cta == true %}
+      <a class="btn secondary btn--{{ secondary_btn_style }} btn--{{ secondary_btn_size }} btn--{{ secondary_btn_width }}" href="{{ block.settings.secondary_btn_action }}" {% if block.settings.secondary_btn_action == "#two-step" %} data-target="#two-step" data-toggle="modal" {% endif %} {% if block.settings.secondary_btn_action == "#cta-popup" %} data-target="#{{ secondary_popup_id }}" {% endif %} {% if block.settings.secondary_new_tab == true %} target="_blank" rel="noopener" {% endif %} kjb-settings-id="{{ 'secondary_btn_background_color' | settings_id: section: section, block: block }}" role="button">
+        {% if secondary_button_text_override %}
+          {{ secondary_button_text_override }}
+        {% else %}
+          {%- element "block.settings.secondary_btn_text" -%}
+            {{ block.settings.secondary_btn_text }}
+          {%- endelement -%}
+        {% endif %}
+      </a>
+    {% endif %}
+  </div>
+</div>
+{% if editor or block.settings.btn_action == "#cta-popup" %}
+  {% include "cta_popup", block: block %}
+{% endif %}
+
+{% if editor or block.settings.secondary_btn_action == "#cta-popup" %}
+  <style>
+    #{{ secondary_popup_id }} .modal__content {
+      background: {{ block.settings.secondary_cta_popup_background_color }};
+      text-align: {{ block.settings.secondary_cta_popup_text_align }};
+    }
+    #{{ secondary_popup_id }} .modal__body {
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 0;
+    }
+    #{{ secondary_popup_id }} .modal__body > *:last-child {
+      margin-bottom: 0;
+    }
+    #{{ secondary_popup_id }} .modal__body,
+    #{{ secondary_popup_id }} .modal__body h1,
+    #{{ secondary_popup_id }} .modal__body h2,
+    #{{ secondary_popup_id }} .modal__body h3,
+    #{{ secondary_popup_id }} .modal__body h4,
+    #{{ secondary_popup_id }} .modal__body h5,
+    #{{ secondary_popup_id }} .modal__body h6 {
+      color: {{ block.settings.secondary_cta_popup_text_color }};
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      (function($) {
+      var $html = $("html");
+      var $body = $("body");
+      var $container = $('#block-{{ block.id }}');
+      var $trigger = $("[data-target='#{{ secondary_popup_id }}']", $container);
+      var $ctaPopup = $("#{{ secondary_popup_id }}");
+      var $closeX = $(".close-x");
+      var $content = $ctaPopup.find(".modal__content");
+      function open() {
+        $ctaPopup.addClass("modal--open");
+        $html.addClass("stop-scroll--html");
+        $body.addClass("stop-scroll--body");
+        $ctaPopup.on("click", close);
+        $closeX.on("click", close);
+        $content.on("click", function(event) {
+          event.stopPropagation();
+        });
+      }
+    
+      function close() {
+        $ctaPopup.removeClass("modal--open");
+        $html.removeClass("stop-scroll--html");
+        $body.removeClass("stop-scroll--body");
+      }
+    
+      $trigger.on("click", open);
+    
+      })(jQuery);
+    });
+  </script>
+  <div class="modal cta-popup background-{% if block.settings.secondary_cta_popup_background_color != blank  %}{{ block.settings.secondary_cta_popup_background_color | color_scheme_class }}{% else %}light{% endif %}" id="{{ secondary_popup_id }}">
+    <div class="modal__content" kjb-settings-id="{{ 'cta_popup_edit' | settings_id: section: section, block: block }}">
+      <div class="close-x">
+        <div class="close-x__part"></div>
+        <div class="close-x__part"></div>
+      </div>
+      <div class="modal__body">
+        {% element "block.settings.secondary_cta_popup_text" %}
+          {{ block.settings.secondary_cta_popup_text | default: "Add your text here." }}
+        {% endelement %}
+      </div>
+    </div>
+  </div>
+  {% if editor %}
+    {% if block.settings.secondary_cta_popup_edit == true %}
+      <script>
+        var el = document.getElementById("{{ secondary_popup_id }}");
+        el.classList.add("modal--open");
+      </script>
+    {% endif %}
+  {% endif %}
+{% endif %}

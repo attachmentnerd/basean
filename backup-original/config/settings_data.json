@@ -1,0 +1,27 @@
+{
+  "current": {
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "logo": "",
+          "menu": "main-menu",
+          "announcement_bar_enabled": false,
+          "announcement_text": "",
+          "announcement_link": ""
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "menu": "footer",
+          "show_social": true,
+          "newsletter_heading": "Stay Updated",
+          "newsletter_text": "Subscribe to our newsletter for parenting tips and resources.",
+          "copyright_text": "© 2024 AttachmentNerd. All rights reserved."
+        }
+      }
+    },
+    "content_for_index": []
+  }
+}

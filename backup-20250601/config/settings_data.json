@@ -1,0 +1,118 @@
+{
+  "current": {
+    "sections": {
+      "header": {
+        "name": "Header",
+        "type": "header",
+        "blocks": {
+          "logo": {
+            "type": "logo",
+            "settings": {
+              "logo": "",
+              "image_alt": "AttachmentNerd",
+              "logo_text": "AttachmentNerd",
+              "logo_type": "text",
+              "logo_width": "150",
+              "logo_text_color": "#ffffff",
+              "stretch": false,
+              "alignment": "left"
+            }
+          },
+          "menu": {
+            "type": "menu",
+            "settings": {
+              "menu": "main-menu",
+              "new_tab": false,
+              "stretch": true,
+              "alignment": "center"
+            }
+          },
+          "user": {
+            "type": "user",
+            "settings": {
+              "stretch": false,
+              "alignment": "right",
+              "language_login": "Log In",
+              "language_logout": "Log Out",
+              "language_library": "My Library",
+              "language_settings": "Settings",
+              "text_color": "#595959",
+              "background_color": "#FFFFFF",
+              "user_dropdown_menu_alignment": "right"
+            }
+          }
+        },
+        "block_order": [
+          "logo",
+          "menu",
+          "user"
+        ],
+        "settings": {
+          "sticky": false,
+          "position": "static",
+          "horizontal": "between",
+          "text_color": "#ffffff",
+          "background_color": "#667eea",
+          "hide_on_mobile": false,
+          "hide_on_desktop": false,
+          "close_on_scroll": true,
+          "font_size_mobile": "16px",
+          "font_size_desktop": "18px",
+          "mobile_menu_text_alignment": "left",
+          "hamburger_color": "#ffffff",
+          "sticky_text_color": "",
+          "sticky_background_color": "",
+          "sticky_hamburger_color": ""
+        }
+      },
+      "footer": {
+        "name": "Footer",
+        "type": "footer",
+        "blocks": {
+          "logo": {
+            "type": "logo",
+            "settings": {
+              "logo": "",
+              "image_alt": "Footer Logo",
+              "logo_text": "AttachmentNerd",
+              "logo_type": "text",
+              "logo_width": "120",
+              "logo_text_color": "#333333"
+            }
+          },
+          "menu": {
+            "type": "link_list",
+            "settings": {
+              "menu": "footer",
+              "new_tab": false,
+              "vertical": "row",
+              "link_color": "#666666",
+              "link_text": "Quick Links"
+            }
+          },
+          "copyright": {
+            "type": "copyright",
+            "settings": {
+              "copyright": "AttachmentNerd"
+            }
+          }
+        },
+        "block_order": [
+          "logo",
+          "menu",
+          "copyright"
+        ],
+        "settings": {
+          "text_color": "#666666",
+          "background_color": "#f8f9fa",
+          "hide_on_mobile": false,
+          "hide_on_desktop": false,
+          "padding_mobile": 40,
+          "padding_desktop": 60,
+          "mobile_vertical": "center",
+          "desktop_vertical": "flex-start"
+        }
+      }
+    }
+  }
+}

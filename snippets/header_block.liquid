@@ -1,0 +1,16 @@
+<style>
+@media (min-width: 768px) {
+  #block-{{ block.id }} {
+    text-align: {{ block.settings.alignment }};
+  }
+} 
+</style>
+
+<div 
+  id="block-{{ block.id }}" 
+  class="header__block {{ class }} {% if block.settings.stretch == true %}stretch{% endif %}" 
+  kjb-settings-id="{{ 'stretch' | settings_id: section: section, block: block }}"
+  {% block_attributes %}
+>
+  {% include type %}
+</div>

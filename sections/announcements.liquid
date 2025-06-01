@@ -1,0 +1,559 @@
+<style>
+  {% if section.settings.bg_type == "image" %}
+    #section-{{ section.id }} {
+      background-image: url({{ section.settings.bg_image | image_picker_url: "background.jpg" }});
+      background-position: {{ section.settings.bg_position }};
+    }
+  {% endif %}
+  .announcements {
+    background-color: {{ section.settings.background_color }};
+  }
+  .announcements .sizer {
+    padding-top: {{ section.settings.padding_mobile.top | default: 40 | append: "px" }};
+    padding-bottom: {{ section.settings.padding_mobile.bottom | default: 40 | append: "px" }};
+  }
+  .announcements .container {
+    max-width: calc(1260px + {{ section.settings.padding_mobile.right | default: 10 | append: "px" }} + {{ section.settings.padding_mobile.left | default: 10 | append: "px" }});
+    padding-right: {{ section.settings.padding_mobile.right | default: 10 | append: "px" }};
+    padding-left: {{ section.settings.padding_mobile.left | default: 10 | append: "px" }};
+  }
+  .announcements__title {
+    color: {{ section.settings.color_heading_text }} !important;
+  }
+  {% if section.settings.equal_height %}
+    .announcements__announcements {
+      -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+      align-items: stretch;
+    }
+    .announcement {
+      height: 100%;
+    }
+  {% endif %}
+  .announcement {
+    border: {{ section.settings.border_width | default: 1 | append: "px" }} {{ section.settings.border_type }} {{ section.settings.border_color | default: "black" }};
+    border-radius: {{ section.settings.border_radius | default: 4 | append: "px" }};
+    background-color: {{ section.settings.announcement_background_color }};
+  }
+  .announcement__product {
+    color: {{ section.settings.color_product_text }};
+  }
+  .announcement__title {
+    color: {{ section.settings.color_title_text }} !important;
+  }
+  .announcement__date {
+    color: {{ section.settings.color_date_text }};
+  }
+  .announcement__body {
+    color: {{ section.settings.color_body_text }};
+  }
+  .announcement__link {
+    color: {{ section.settings.color_read_more_text }};
+  }
+  @media (min-width: 768px) {
+    {% if section.settings.bg_type == "image" %}
+      #section-{{ section.id }} {
+        {% if section.settings.background_fixed %}
+          background-attachment: fixed;
+        {% endif %}
+      }
+    {% endif %}
+    .announcements .sizer {
+      padding-top: {{ section.settings.padding_desktop.top | default: 100 | append: "px" }};
+      padding-bottom: {{ section.settings.padding_desktop.bottom | default: 100 | append: "px" }};
+    }
+    .announcements .container {
+      max-width: calc(1260px + {{ section.settings.padding_desktop.right | default: 40 | append: "px" }} + {{ section.settings.padding_desktop.left | default: 40 | append: "px" }});
+      padding-right: {{ section.settings.padding_desktop.right | default: 40 | append: "px" }};
+      padding-left: {{ section.settings.padding_desktop.left | default: 40 | append: "px" }};
+    }
+  }
+  .pag__link {
+    color: {{ section.settings.color_pagination_default }};
+  }
+  .pag__link--current {
+    color: {{ section.settings.color_pagination_selected }};
+  }
+  .pag__link--disabled {
+    color: {{ section.settings.color_pagination_disabled }};
+  }
+</style>
+
+<section class="announcements {% if section.settings.background_color != blank %} background-{{ section.settings.background_color | color_scheme_class }}{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
+  <div class="sizer">
+    {% if section.settings.bg_type == "video" %}
+      {% include "global_background_video" %}
+    {% endif %}
+    <div class="container">
+      <div class="row announcements__announcements">
+        <div class="col-12 announcements__col">
+          <div class="announcements__header">
+            <h3 
+              class="announcements__title" 
+              kjb-settings-id="{{ 'text_heading' | settings_id: section: section }}" 
+              {% element_attributes "section.settings.text_heading" %}
+            >
+              {{ section.settings.text_heading }}
+            </h3>
+            {% include "announcement_search" %}
+          </div>
+        </div>
+        {% paginate announcements by section.settings.pagination_amount %}
+          {% for announcement in paginate.collection %}
+            <div class="col-{{ section.settings.layout }} announcements__col">
+              {% include "announcement" %}
+            </div>
+          {% else %}
+            <div class="col-12 announcements__col">
+              <p 
+                class="announcements__no-results" 
+                kjb-settings-id="{{ 'text_no_results' | settings_id: section: section }}" 
+                {% element_attributes "section.settings.text_no_results" %}
+              >
+                {{ section.settings.text_no_results }}
+              </p>
+            </div>
+          {% endfor %}
+          {% if paginate.pages > 1 %}
+            {% include "pagination" %}
+          {% endif %}
+        {% endpaginate %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Announcements",
+    "deletable": "false",
+    "duplicatable": "false",
+    "elements": [
+      {
+        "type": "text",
+        "id": "text_heading",
+        "label": "Heading Text",
+        "default": "Announcements"
+      },
+      {
+        "type": "color",
+        "id": "color_heading_text",
+        "label": "Heading Text Color",
+        "default": "",
+        "allow_blank": "true"
+      },
+      {
+        "type": "color",
+        "id": "color_filter_options",
+        "label": "Search Menu Text Color",
+        "default": "",
+        "allow_blank": "true"
+      },
+      {
+        "type": "text",
+        "id": "text_select_product",
+        "label": "Search Menu Select Product Text",
+        "default": "Select Product"
+      },
+      {
+        "type": "text",
+        "id": "text_no_results",
+        "label": "No Search Results Text",
+        "default": "No Results"
+      },
+      {
+        "type": "text",
+        "id": "text_search_placeholder",
+        "label": "Search Placeholder Text",
+        "default": "Search..."
+      },
+      {
+        "type": "select",
+        "id": "layout",
+        "label": "Layout Style",
+        "default": "list",
+        "options": [
+          {
+            "value": "12",
+            "label": "List"
+          },
+          {
+            "value": "6",
+            "label": "2 Column Grid"
+          },
+          {
+            "value": "4",
+            "label": "3 Column Grid"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "equal_height",
+        "label": "Equal Height Items",
+        "default": "true"
+      },
+      {
+        "type": "range",
+        "id": "pagination_amount",
+        "label": "Announcements Per Page",
+        "default": "12",
+        "min": "2",
+        "max": "24"
+      },
+      {
+        "type": "header",
+        "content": "Search Button Appearance",
+        "info": "This button shows on mobile devices only."
+      },
+      {
+        "type": "text",
+        "id": "btn_text",
+        "label": "Button Text",
+        "default": "Submit"
+      },
+      {
+        "type": "color",
+        "id": "btn_background_color",
+        "label": "Button Background Color",
+        "default": "",
+        "allow_blank": true
+      },
+      {
+        "type": "color",
+        "id": "btn_text_color",
+        "label": "Button Text Color",
+        "default": "",
+        "allow_blank": true,
+        "info": "For solid buttons only"
+      },
+      {
+        "type": "radio",
+        "id": "btn_width",
+        "label": "Button Width",
+        "default": "full",
+        "allow_blank": true,
+        "options": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "auto",
+            "label": "Auto"
+          }
+        ]
+      },
+      {
+        "type": "radio",
+        "id": "btn_style",
+        "label": "Button Style",
+        "default": "solid",
+        "allow_blank": true,
+        "options": [
+          { "label": "Solid", "value": "solid" },
+          { "label": "Outline", "value": "outline" }
+        ]
+      },
+      {
+        "type": "radio",
+        "id": "btn_size",
+        "label": "Button Size",
+        "default": "medium",
+        "allow_blank": true,
+        "options": [
+          { "label": "Small", "value": "small" },
+          { "label": "Medium", "value": "medium" },
+          { "label": "Large", "value": "large" }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "btn_border_radius",
+        "label": "Border Radius",
+        "default": "",
+        "allow_blank": true
+      },
+      {
+        "type": "header",
+        "content": "Announcement Appearance"
+      },
+      {
+        "type": "color",
+        "label": "Background Color",
+        "id": "announcement_background_color",
+        "allow_blank": true,
+        "default": "#fff"
+      },
+      {
+        "type": "color",
+        "label": "Product Text Color",
+        "id": "color_product_text",
+        "allow_blank": true,
+        "default": ""
+      },
+      {
+        "type": "color",
+        "label": "Title Text Color",
+        "id": "color_title_text",
+        "allow_blank": true,
+        "default": ""
+      },
+      {
+        "type": "color",
+        "label": "Date Text Color",
+        "id": "color_date_text",
+        "allow_blank": true,
+        "default": ""
+      },
+      {
+        "type": "color",
+        "label": "Body Text Color",
+        "id": "color_body_text",
+        "allow_blank": true,
+        "default": ""
+      },
+      {
+        "type": "checkbox",
+        "id": "show_announcement_body",
+        "label": "Show Announcement Body",
+        "default": "true"
+      },
+      {
+        "type": "text",
+        "id": "truncate_announcement_body",
+        "label": "Truncate At",
+        "default": "",
+        "info": "Insert a custom number if you would like to override the standard 300 character truncation."
+      },
+      {
+        "type": "text",
+        "id": "text_read_more",
+        "label": "Read More Text",
+        "default": "Read More"
+      },
+      {
+        "type": "color",
+        "id": "color_read_more_text",
+        "label": "Read More Text Color",
+        "default": "",
+        "allow_blank": "true"
+      },
+      {
+        "type": "select",
+        "id": "border_type",
+        "label": "Border Type",
+        "default": "",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "solid",
+            "label": "Solid"
+          },
+          {
+            "value": "dotted",
+            "label": "Dotted"
+          },
+          {
+            "value": "dashed",
+            "label": "Dashed"
+          },
+          {
+            "value": "double",
+            "label": "Double"
+          },
+          {
+            "value": "ridge",
+            "label": "Ridge"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "border_width",
+        "label": "Border Width",
+        "default": "1",
+        "min": "0",
+        "max": "10"
+      },
+      {
+        "type": "color",
+        "id": "border_color",
+        "label": "Border Color",
+        "default": "",
+        "allow_blank": "true"
+      },
+      {
+        "type": "range",
+        "id": "border_radius",
+        "label": "Border Radius",
+        "default": "4",
+        "min": "0",
+        "max": "50"
+      },
+      {
+        "type": "select",
+        "id": "box_shadow",
+        "label": "Box Shadow",
+        "default": "medium",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Pagination Appearance"
+      },
+      {
+        "type": "color",
+        "label": "Pagination Default Color",
+        "id": "color_pagination_default",
+        "allow_blank": true,
+        "default": ""
+      },
+      {
+        "type": "color",
+        "label": "Pagination Selected Color",
+        "id": "color_pagination_selected",
+        "allow_blank": true,
+        "default": ""
+      },
+      {
+        "type": "color",
+        "label": "Pagination Disabled Color",
+        "id": "color_pagination_disabled",
+        "allow_blank": true,
+        "default": ""
+      }
+    ],
+    "groups": [
+      {
+        "name": "Background",
+        "elements": [
+          {
+            "type": "select",
+            "id": "bg_type",
+            "label": "Background Media Type",
+            "default": "none",
+            "options": [
+              {
+                "value": "none",
+                "label": "None"
+              },
+              {
+                "value": "image",
+                "label": "Image"
+              },
+              {
+                "value": "video",
+                "label": "Video"
+              }
+            ]
+          },
+          {
+            "type": "video",
+            "id": "bg_video",
+            "label": "Background Video"
+          },
+          {
+            "type": "image_picker",
+            "id": "bg_image",
+            "label": "Background Image",
+            "info": "A good background image sets the tone for your website without distracting from your content. Suggested dimensions: 2880 × 1200.",
+            "fit": "max",
+            "width": 3000,
+            "height": 3000
+          },
+          {
+            "type": "radio",
+            "id": "bg_position",
+            "label": "Background Image Position",
+            "default": "center",
+            "info": "Vertical positioning of the background image.",
+            "options": [
+              {
+                "value": "top",
+                "label": "Top"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "bottom",
+                "label": "Bottom"
+              }
+            ]
+          },
+          {
+            "type": "checkbox",
+            "id": "background_fixed",
+            "label": "Fixed Background Image",
+            "default": "false",
+            "info": "Make this section's background image fixed on scroll. Does not apply to mobile devices."
+          },
+          {
+            "type": "color",
+            "label": "Background Color",
+            "id": "background_color",
+            "default": "",
+            "allow_blank": true,
+            "info": "Set a background color or apply a color overlay to your background image or video. Use the color wheel slider to adjust opacity."
+          }
+        ]
+      },
+      {
+        "name": "Desktop Layout",
+        "elements": [
+          {
+            "type": "spacer",
+            "id": "padding_desktop",
+            "label": "Desktop Section Padding",
+            "info": "Adjust padding inside of the section. Hold shift to increment/decrement by 10.",
+            "placeholder": {
+              "top": "100",
+              "right": "40",
+              "bottom": "100",
+              "left": "40"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Mobile Layout",
+        "elements": [
+          {
+            "type": "spacer",
+            "id": "padding_mobile",
+            "label": "Mobile Section Padding",
+            "info": "Adjust padding inside of the section",
+            "placeholder": {
+              "top": "40",
+              "right": "10",
+              "bottom": "40",
+              "left": "10"
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

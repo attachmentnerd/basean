@@ -1,0 +1,111 @@
+{% if block.settings.coaching_program != blank and block.settings.offer != blank %}
+  {% assign coaching_program = current_site.find_coaching_program[block.settings.coaching_program] %}
+  {% assign offer = current_site.find_offer[block.settings.offer] %}
+
+  {% assign link_to_program_details = block.settings.link_to_program_details %}
+
+  {% assign thumbnail_settings_id = 'thumbnail_image' | settings_id: section: section, block: block %}
+
+  {% assign btnId = "btn_text" | settings_id: section: section, block: block %}
+  {% assign btn_background_color = block.settings.cta_color_override | default: settings.btn_background_color %}
+  {% assign btn_text_color = block.settings.text_color_override | default: settings.btn_text_color %}
+  {% assign outline_btn_text_color = block.settings.text_color_override | default: settings.color_primary %}
+  {% assign btn_style = block.settings.btn_style %}
+  {% assign btn_size = block.settings.btn_size %}
+  {% assign btn_width = block.settings.btn_width %}
+
+  <style>
+    #block-{{ block.id }} .kjb-coaching-scheduling-widget .scheduling-widget-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      max-width: calc(1260px + {{ block.settings.padding_mobile.right | default: 20 | append: "px" }} + {{ block.settings.padding_mobile.left | default: 20 | append: "px" }});
+    }
+
+    #block-{{ block.id }} .kjb-coaching-scheduling-widget .btn {
+      background-color: {{ btn_background_color }};
+      border-color: {{ btn_background_color }};
+      color: {{ btn_text_color }};
+    }
+
+    #block-{{ block.id }} .kjb-coaching-scheduling-widget .btn--outline {
+      background: transparent;
+      border-color: {{ btn_background_color }};
+      color: {{ outline_btn_text_color }};
+    }
+  </style>
+
+  <div class="kjb-coaching-scheduling-widget" kjb-settings-id="{{ 'coaching_program' | settings_id: section: section, block: block }}">
+    <div class="scheduling-widget-container">
+      {% if block.settings.show_thumbnail %}
+        {% if link_to_program_details %}
+          {% if coaching_program.thumbnail_url %}
+            {{ coaching_program.thumbnail_url | image_tag: class: "coaching-scheduling-widget__thumbnail" }}
+          {% endif %}
+        {% else  %}
+          {% if block.settings.thumbnail_image %}
+            {{ block.settings.thumbnail_image | image_picker_url: 'placeholder.png' | image_tag: class: "coaching-scheduling-widget__thumbnail", kjb_settings_id: thumbnail_settings_id, alt: "" }}
+          {% endif %}
+        {% endif %}
+      {% endif %}
+      <div>
+        {% if link_to_program_details %}
+          <h4>{{ coaching_program.title }}</h4>
+        {% else  %}
+          <h4
+            kjb-settings-id="{{ 'title_text' | settings_id: section: section, block: block }}"
+            {% element_attributes "block.settings.title_text" %}
+          >
+            {{ block.settings.title_text }}
+          </h4>
+        {% endif %}
+        <div class="coaching-scheduling-widget__details">
+          {% if block.settings.show_duration %}
+            <div class="coaching-scheduling-widget__duration" kjb-settings-id="{{ 'show_duration' | settings_id: section: section, block: block }}">
+              <i class="far fa-clock"></i>
+              <h6>{{ coaching_program.kajabi_calendar_duration_in_minutes }} min</h6>
+            </div>
+          {% endif  %}
+          {% if block.settings.show_duration and block.settings.show_price %}
+            <h6>•</h6>
+          {% endif  %}
+          {% if block.settings.show_price %}
+            <div class="coaching-scheduling-widget__price" kjb-settings-id="{{ 'show_price' | settings_id: section: section, block: block }}">
+              <i class="fa fa-tag"></i>  
+              <h6>{{ offer | display_price }}</h6>
+            </div>
+          {% endif  %}
+        </div>
+      </div>
+      {% if link_to_program_details %}
+        <p>{{ coaching_program.description }}</p>
+      {% else  %}
+        <p
+          kjb-settings-id="{{ 'description_text' | settings_id: section: section, block: block }}"
+          {% element_attributes "block.settings.description_text" %}
+        >
+          {{ block.settings.description_text }}
+        </p>
+      {% endif %}
+      <div style="text-align: center;">
+        <button
+          id="{{ btnId }}"
+          class="btn btn--{{ btn_style }} btn--{{ btn_size }} btn--{{ btn_width }} coaching-scheduling-widget-cta-button"
+          kjb-settings-id="{{ 'cta_text' | settings_id: section: section, block: block }}"
+          role="button"
+        >
+          {% element "block.settings.cta_text" %}
+            {{ block.settings.cta_text }}
+          {% endelement %}
+        </button>
+      </div>
+    </div>
+  </div>
+  {{ coaching_program | coaching_scheduling_widget: offer: offer }}
+{% else %}
+  {% if editor %}
+    <div class="editor-null" kjb-settings-id="{{ 'coaching_program' | settings_id: section: section, block: block }}">
+      Click here to select a coaching program and offer for this scheduling widget.
+    </div>
+  {% endif %}
+{% endif %}

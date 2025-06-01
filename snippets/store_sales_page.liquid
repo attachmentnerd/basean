@@ -1,0 +1,25 @@
+<div class="col-4">
+  <a href="{{ block.settings.card_action }}" id="block-{{ block.id }}" class="card store-card section-{{ block.settings.background_color | color_scheme_class }}"
+    kjb-settings-id="{{ 'background_color' | settings_id: section: section, block: block }}"
+    {% if block.settings.link_target %}target="_blank"{% endif %}>
+    {% if sales_page.thumbnail_url %}
+      {{ sales_page.thumbnail_url | image_tag }}
+    {% else %}
+      {{ 'placeholder.png' | asset_url | image_tag }}
+    {% endif %}
+    <div class="store-card__body">
+      <h5 class="store-card__title" style="color:{{ block_text_color }};">{{ sales_page.title }}</h5>
+      <h5 class="store-card__price" style="color:{{ block_text_color }};">{{ sales_page.price }}</h5>
+      <a
+        href="{{ sales_page.url }}"
+        class="btn"
+        id="{{ 'btn_text' | settings_id: section: section }}"
+        kjb-settings-id="{{ 'btn_text' | settings_id: section: section }}"
+      >
+        {%- element "section.settings.btn_text" -%}
+          {{ section.settings.btn_text }}
+        {%- endelement -%}
+      </a>
+    </div>
+  </a>
+</div>

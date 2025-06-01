@@ -1,0 +1,15 @@
+<style>
+  .newsletter-subscribe-container {
+    min-height: calc(100vh - 220px);
+  }
+</style>
+
+{% if settings.content_for_newsletter_subscribe_kjb_internal.size > 1 %}
+  {% dynamic_sections_for "newsletter_subscribe_kjb_internal" %}
+{% else %}
+  <div class="newsletter-subscribe-container row align-items-center">
+    <div class="col-12">
+      {% dynamic_sections_for "newsletter_subscribe_kjb_internal" %}
+    </div>
+  </div>
+{% endif %}

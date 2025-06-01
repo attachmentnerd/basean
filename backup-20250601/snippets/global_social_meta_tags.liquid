@@ -1,0 +1,15 @@
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ canonical_url }}">
+<meta name="twitter:card" content="summary_large_image">
+{% if page_title %}
+<meta property="og:title" content="{{ page_title }}">
+<meta name="twitter:title" content="{{ page_title }}">
+{% endif %}
+{% if page_description %}
+<meta property="og:description" content="{{ page_description | escape }}">
+<meta name="twitter:description" content="{{ page_description | escape }}">
+{% endif %}
+{% if page_image_url %}
+<meta property="og:image" content="{{ page_image_url }}">
+<meta name="twitter:image" content="{{ page_image_url }}">
+{% endif %}

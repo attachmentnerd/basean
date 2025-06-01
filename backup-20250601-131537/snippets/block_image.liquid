@@ -1,0 +1,118 @@
+{% comment %}
+  Image Block - Displays an image with optional overlay, link, and gallery functionality
+{% endcomment %}
+
+{% capture block_content %}
+  <div class="block-image" id="block-{{ block.id }}">
+    <style>
+      #block-{{ block.id }} .block-image__container {
+        text-align: {{ block.settings.image_align_mobile | default: 'center' }};
+      }
+      
+      #block-{{ block.id }} .block-image__wrapper {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+        max-width: {{ block.settings.image_max_width | default: '100%' }};
+        border-radius: {{ block.settings.image_border_radius | default: '0' }}px;
+        overflow: hidden;
+      }
+      
+      #block-{{ block.id }} .block-image__img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      
+      {% if block.settings.enable_overlay %}
+        #block-{{ block.id }} .block-image__overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: {{ block.settings.overlay_background_color | default: 'rgba(0,0,0,0.5)' }};
+          color: {{ block.settings.overlay_text_color | default: '#ffffff' }};
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+          opacity: {% if carousel or block.settings.always_show_on_mobile %}1{% else %}0{% endif %};
+          transition: opacity var(--transition);
+        }
+        
+        #block-{{ block.id }} .block-image__wrapper:hover .block-image__overlay {
+          opacity: 1;
+        }
+      {% endif %}
+      
+      @media (min-width: 768px) {
+        #block-{{ block.id }} .block-image__container {
+          text-align: {{ block.settings.image_align_desktop | default: 'center' }};
+        }
+        
+        {% unless carousel %}
+          #block-{{ block.id }} .block-image__overlay {
+            opacity: 0;
+          }
+        {% endunless %}
+      }
+      
+      {% if block.settings.image_first %}
+        @media (max-width: 767px) {
+          #block-{{ block.id }} {
+            order: -1;
+          }
+        }
+      {% endif %}
+    </style>
+    
+    <div class="block-image__container">
+      <div class="block-image__wrapper">
+        {% assign has_link = false %}
+        {% if block.settings.gallery %}
+          {% assign has_link = true %}
+          <a href="{{ block.settings.image | image_picker_url: 'placeholder.png' }}" 
+             data-fancybox="{{ section.id }}" 
+             data-caption="{{ block.settings.image_caption }}">
+        {% elsif block.settings.img_action != blank %}
+          {% assign has_link = true %}
+          <a href="{{ block.settings.img_action }}" 
+             class="block-image__link"
+             {% if block.settings.img_action == "#cta-popup" %}data-target="#cta-popup-{{ block.id }}"{% endif %}
+             {% if block.settings.img_action == "#two-step" %}data-target="#two-step" data-toggle="modal"{% endif %}
+             {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
+        {% endif %}
+        
+        <img src="{{ block.settings.image | image_picker_url: 'placeholder.png' }}" 
+             alt="{{ block.settings.image_alt | escape }}"
+             class="block-image__img"
+             kjb-settings-id="{{ 'image' | settings_id: section: section, block: block }}">
+        
+        {% if block.settings.enable_overlay %}
+          <div class="block-image__overlay">
+            <div class="block-image__overlay-content">
+              <h4 class="block-image__overlay-text" kjb-settings-id="{{ 'overlay_text' | settings_id: section: section, block: block }}">
+                {{ block.settings.overlay_text }}
+              </h4>
+            </div>
+          </div>
+        {% endif %}
+        
+        {% if has_link %}
+          </a>
+        {% endif %}
+      </div>
+      
+      {% if block.settings.image_caption %}
+        <p class="block-image__caption">{{ block.settings.image_caption }}</p>
+      {% endif %}
+    </div>
+    
+    {% if editor or block.settings.img_action == "#cta-popup" %}
+      {% include "cta_popup", block: block %}
+    {% endif %}
+  </div>
+{% endcapture %}
+
+{% include 'block_wrapper', block: block, content: block_content, additional_classes: 'block-image-wrapper' %}

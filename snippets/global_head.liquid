@@ -1,0 +1,56 @@
+<head>
+    {% csrf_meta_tags %}
+    <title>
+      {% if page_title %}
+        {{ page_title }}
+      {% else %}
+        {{ current_site.title }}
+      {% endif %}
+    </title>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge, chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}" />
+    {% endif %}
+    {% include "global_social_meta_tags" %}
+    {% if settings.favicon and settings.favicon != "" %}
+      <link href="{{ settings.favicon | image_picker_url: 'favicon.png' }}?v=2" rel="shortcut icon" />
+    {% else %}
+      <link href="{{ current_site.favicon_image | image_picker_url: 'favicon.png' }}?v=2" rel="shortcut icon" />
+    {% endif %}
+    <link rel="canonical" href="{{ canonical_url }}" />
+
+    <!-- Google Fonts ====================================================== -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    {{ settings | settings_google_font_url | async_style_link }}
+
+    <!-- Kajabi CSS ======================================================== -->
+    {{ "core.css" | kajabi_asset_url | async_style_link }}
+
+    {% comment %}
+    <!-- Optional Bootstrap CSS - Remove the liquid comment tags to enable -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    {% endcomment %}
+
+    <!-- Font Awesome Icons -->
+    {{ "https://use.fontawesome.com/releases/v5.15.2/css/all.css" | async_style_link: crossorigin: "anonymous" }}
+
+    {{ "styles.css" | asset_url | stylesheet_tag }}
+
+    <!-- Customer CSS ====================================================== -->
+    <!-- If you're using custom css that affects the first render of the page, replace async_style_link below with styesheet_tag -->
+    {{ "overrides.css" | asset_url | async_style_link }}
+    {% include "global_custom_css" %}
+
+    <!-- Kajabi Editor Only CSS ============================================ -->
+    {% if editor %}
+      {% include "editor_guides" %}
+      {% include "editor_grid" %}
+      {% include "editor_reveal" %}
+    {% endif %}
+
+    <!-- Header hook ======================================================= -->
+    {% content_for_header %}
+
+  </head>

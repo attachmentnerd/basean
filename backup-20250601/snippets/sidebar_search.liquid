@@ -1,0 +1,27 @@
+<style>
+  .sidebar-search__icon i {
+    color: {{ block.settings.search_icon_color }};
+  }
+  .sidebar-search--{{ block.id }} ::-webkit-input-placeholder {
+    color: {{ block.settings.search_text_color }};
+  }
+  .sidebar-search--{{ block.id }} ::-moz-placeholder {
+    color: {{ block.settings.search_text_color }};
+  }
+  .sidebar-search--{{ block.id }} :-ms-input-placeholder {
+    color: {{ block.settings.search_text_color }};
+  }
+  .sidebar-search--{{ block.id }} :-moz-placeholder {
+    color: {{ block.settings.search_text_color }};
+  }
+  .sidebar-search--{{ block.id }} .sidebar-search__input {
+    color: {{ block.settings.search_text_color }};
+  }
+</style>
+
+<div class="sidebar-search sidebar-search--{{ block.id }}" kjb-settings-id="{{ 'search_text' | settings_id: section: section, block: block }}">
+  <form class="sidebar-search__form" action="{{ current_site.blog_search_url }}" method="get" role="search">
+    <span class="sidebar-search__icon"><i class="fa fa-search"></i></span>
+    <input class="form-control sidebar-search__input" type="search" name="q" placeholder="{{ block.settings.search_text }}">
+  </form>
+</div>

@@ -1,0 +1,20 @@
+{% comment %}
+  Block Wrapper - Common wrapper for all blocks with consistent width and spacing
+  
+  Parameters:
+  - block: The block object
+  - content: The block content (passed as a capture)
+  - additional_classes: Optional additional CSS classes
+{% endcomment %}
+
+{% assign block_width = block.settings.width | default: '12/12' %}
+{% assign block_padding_top = block.settings.padding_top | default: '0' %}
+{% assign block_padding_bottom = block.settings.padding_bottom | default: '0' %}
+{% assign block_margin_top = block.settings.margin_top | default: '0' %}
+{% assign block_margin_bottom = block.settings.margin_bottom | default: '0' %}
+
+<div class="{% include 'block_width_classes', width: block_width %} {{ additional_classes }}"
+     style="padding-top: {{ block_padding_top }}px; padding-bottom: {{ block_padding_bottom }}px; margin-top: {{ block_margin_top }}px; margin-bottom: {{ block_margin_bottom }}px;"
+     kjb-settings-id="{{ block.id | settings_id: section: section, block: block }}">
+  {{ content }}
+</div>

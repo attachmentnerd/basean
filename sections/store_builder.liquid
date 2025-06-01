@@ -1,0 +1,301 @@
+{% if section.blocks.size > 0 %}
+  {% include "section_styles" %}
+  <div kjb-settings-id="{{ 'background_color' | settings_id: section: section }}"
+    class="section background-{{ section.settings.background_color | color_scheme_class }}">
+    <div class="sizer">
+      <div class="container">
+        <div class="row align-items-{{ section.settings.vertical }} justify-content-{{ section.settings.horizontal }}">
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when 'section_heading' %}
+                {% include "offers_heading" %}
+              {% when 'offer_card' %}
+                {% include "offer_card" %}
+              {% when 'custom_card' %}
+                {% include "custom_card" %}
+            {% endcase %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Store Builder",
+    "blocks": [
+      {
+        "type": "section_heading",
+        "name": "Section Heading",
+        "elements": [
+          {
+            "type": "header",
+            "content": "Section Heading"
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Section Title"
+          },
+          {
+            "type": "header",
+            "content": "Block Appearance",
+            "style": "subheading"
+          },
+          {
+            "type": "radio",
+            "id": "alignment",
+            "label": "Text Alignment",
+            "default": "left",
+            "options": [
+              {"value": "left", "label": "Left"},
+              {"value": "center", "label": "Centered"},
+              {"value": "right", "label": "Right"}
+            ]
+          },
+          {
+            "type": "color",
+            "label": "Text Color Override",
+            "id": "text_color",
+            "allow_blank": true
+          }
+        ]
+      },
+      {
+        "type": "offer_card",
+        "name": "Offer Card",
+        "elements": [
+          {
+            "type": "header",
+            "content": "Offer Card"
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "type": "offer",
+            "id": "offer_id",
+            "label": "Offer"
+          },
+          {
+            "type": "checkbox",
+            "id": "link_target",
+            "label": "Open In New Window",
+            "default": "false"
+          },
+          {
+            "type": "header",
+            "content": "Block Appearance",
+            "style": "subheading"
+          },
+          {
+            "type": "color",
+            "label": "Background Color Override",
+            "id": "background_color",
+            "allow_blank": true,
+            "default": "#FFFFFF"
+          },
+          {
+            "type": "color",
+            "label": "Text Color Override",
+            "id": "text_color",
+            "allow_blank": true
+          }
+        ]
+      },
+      {
+        "type": "custom_card",
+        "name": "Custom Card",
+        "elements": [
+          {
+            "type": "header",
+            "content": "Custom Card"
+          },
+          {
+            "type": "action",
+            "id": "card_action",
+            "label": "Card Action",
+            "anchor": true,
+            "two_step": true,
+            "default": "http://www.kajabi.com"
+          },
+          {
+            "type": "checkbox",
+            "id": "link_target",
+            "label": "Open In New Window",
+            "default": "false"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "fit": "crop",
+            "width": 1280,
+            "height": 720,
+            "info": "Suggested dimensions: 1280 x 720"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Title Goes Here"
+          },
+          {
+            "type": "textarea",
+            "label": "Description",
+            "id": "description",
+            "default": "Lorem ipsum dolor sit amet, do bibendum iaculis, sodales sit aenean. Posuere fermentum eleifend placerat, euismod nulla interdum, id corporis nam turpis, ipsum nibh integer nunc nam urna, ligula sit nec consequat."
+          },
+          {
+            "type": "text",
+            "id": "price",
+            "label": "Price",
+            "default": "$9.99"
+          },
+          {
+            "type": "header",
+            "content": "Block Appearance",
+            "style": "subheading"
+          },
+          {
+            "type": "color",
+            "label": "Background Color Override",
+            "id": "background_color",
+            "allow_blank": true,
+            "default": "#FFFFFF"
+          },
+          {
+            "type": "color",
+            "label": "Text Color Override",
+            "id": "text_color",
+            "allow_blank": true
+          }
+        ]
+      }
+    ],
+    "elements": [
+      {
+        "type": "color",
+        "label": "Background Color Override",
+        "id": "background_color",
+        "default": "#dfdfdd",
+        "allow_blank": true
+      },
+      {
+        "type": "color",
+        "label": "Text Color Override",
+        "id": "text_color",
+        "allow_blank": true
+      },
+      {
+        "type": "radio",
+        "id": "alignment",
+        "label": "Text Alignment",
+        "default": "left",
+        "options": [
+          {"value": "left", "label": "Left"},
+          {"value": "center", "label": "Centered"},
+          {"value": "right", "label": "Right"}
+        ]
+      }
+    ],
+    "groups": [
+      {
+        "name": "Desktop Layout",
+        "elements": [
+          {
+            "type": "spacer",
+            "id": "padding_desktop",
+            "label": "Desktop Section Padding",
+            "info": "Adjust padding inside of the section. Hold shift to increment/decrement by 10.",
+            "placeholder": {
+              "top": "100",
+              "right": "40",
+              "bottom": "100",
+              "left": "40"
+            }
+          },
+          {
+            "type": "select",
+            "id": "vertical",
+            "label": "Vertical Alignment",
+            "default": "top",
+            "info": "Select the vertical alignment of store cards.",
+            "options": [
+              {
+                "value": "start",
+                "label": "Top"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "end",
+                "label": "Bottom"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "horizontal",
+            "label": "Horizontal Alignment",
+            "default": "left",
+            "info": "Select the horizontal alignment of store cards.",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              },
+              {
+                "value": "between",
+                "label": "Space Between"
+              },
+              {
+                "value": "around",
+                "label": "Space Around"
+              }
+            ]
+          },
+          {
+            "type": "checkbox",
+            "id": "equal_height",
+            "label": "Equal Height Blocks",
+            "default": "false",
+            "info": "Make this section's blocks equal height."
+          }
+        ]  
+      },
+      {
+        "name": "Mobile Layout",
+        "elements": [
+          {
+            "type": "spacer",
+            "id": "padding_mobile",
+            "label": "Mobile Section Padding",
+            "info": "Adjust padding inside of the section",
+            "placeholder": {
+              "top": "40",
+              "right": "10",
+              "bottom": "40",
+              "left": "10"
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

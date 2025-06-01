@@ -1,0 +1,32 @@
+{% assign btn_background_color = block.settings.btn_background_color | default: settings.btn_background_color %}
+{% assign btn_text_color = block.settings.btn_text_color | default: settings.btn_text_color %}
+{% assign btn_border_radius = block.settings.btn_border_radius | default: settings.btn_border_radius | remove: "px" | append: "px" %}
+{% assign btn_style = block.settings.btn_style | default: settings.btn_style %}
+{% assign btn_size = block.settings.btn_size | default: settings.btn_size %}
+{% assign btn_width = block.settings.btn_width | default: settings.btn_width %}
+
+<style>
+  #btn-{{ block.id }} {
+    border-color: {{ btn_background_color }};
+    border-radius: {{ btn_border_radius }};
+    color: {{ btn_text_color }};
+    background-color: {{ btn_background_color }};
+  }
+  #btn-{{ block.id }}.btn--outline {
+    background: transparent;
+    color: {{ btn_background_color }};
+  }
+</style>
+
+<a
+  id="btn-{{ block.id }}"
+  class="btn btn--{{ btn_style }} btn--{{ btn_size }} btn--{{ btn_width }}"
+  href="{{ block.settings.btn_action }}"
+  {% if block.settings.btn_action == "#two-step" %} data-target="#two-step" data-toggle="modal" {% endif %}
+  {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %}
+  kjb-settings-id="{{ 'btn_background_color' | settings_id: section: section, block: block }}"
+>
+  {%- element "block.settings.btn_text" -%}
+    {{ block.settings.btn_text }}
+  {%- endelement -%}
+</a>

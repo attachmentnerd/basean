@@ -1,0 +1,97 @@
+{% comment %}
+  Common Block Schema Settings
+  Include this in your block schemas to add consistent width and spacing controls
+  
+  Usage in schema:
+  {
+    "type": "text_block",
+    "name": "Text Block",
+    "settings": [
+      // Your block-specific settings here
+      {% include 'block_schema_common' %}
+    ]
+  }
+{% endcomment %}
+
+{
+  "type": "header",
+  "content": "Layout",
+  "style": "subheading"
+},
+{
+  "type": "select",
+  "id": "width",
+  "label": "Block Width",
+  "default": "12/12",
+  "options": [
+    { "value": "1/12", "label": "1/12 (8.33%)" },
+    { "value": "2/12", "label": "2/12 (16.67%)" },
+    { "value": "3/12", "label": "3/12 (25%)" },
+    { "value": "4/12", "label": "4/12 (33.33%)" },
+    { "value": "5/12", "label": "5/12 (41.67%)" },
+    { "value": "6/12", "label": "6/12 (50%)" },
+    { "value": "7/12", "label": "7/12 (58.33%)" },
+    { "value": "8/12", "label": "8/12 (66.67%)" },
+    { "value": "9/12", "label": "9/12 (75%)" },
+    { "value": "10/12", "label": "10/12 (83.33%)" },
+    { "value": "11/12", "label": "11/12 (91.67%)" },
+    { "value": "12/12", "label": "12/12 (100%)" }
+  ]
+},
+{
+  "type": "header",
+  "content": "Spacing",
+  "style": "subheading"
+},
+{
+  "type": "select",
+  "id": "padding_top",
+  "label": "Top Padding",
+  "default": "20",
+  "options": [
+    { "value": "0", "label": "None" },
+    { "value": "10", "label": "Small (10px)" },
+    { "value": "20", "label": "Medium (20px)" },
+    { "value": "40", "label": "Large (40px)" },
+    { "value": "60", "label": "Extra Large (60px)" }
+  ]
+},
+{
+  "type": "select",
+  "id": "padding_bottom",
+  "label": "Bottom Padding",
+  "default": "20",
+  "options": [
+    { "value": "0", "label": "None" },
+    { "value": "10", "label": "Small (10px)" },
+    { "value": "20", "label": "Medium (20px)" },
+    { "value": "40", "label": "Large (40px)" },
+    { "value": "60", "label": "Extra Large (60px)" }
+  ]
+},
+{
+  "type": "select",
+  "id": "margin_top",
+  "label": "Top Margin",
+  "default": "0",
+  "options": [
+    { "value": "0", "label": "None" },
+    { "value": "10", "label": "Small (10px)" },
+    { "value": "20", "label": "Medium (20px)" },
+    { "value": "40", "label": "Large (40px)" },
+    { "value": "60", "label": "Extra Large (60px)" }
+  ]
+},
+{
+  "type": "select",
+  "id": "margin_bottom",
+  "label": "Bottom Margin",
+  "default": "0",
+  "options": [
+    { "value": "0", "label": "None" },
+    { "value": "10", "label": "Small (10px)" },
+    { "value": "20", "label": "Medium (20px)" },
+    { "value": "40", "label": "Large (40px)" },
+    { "value": "60", "label": "Extra Large (60px)" }
+  ]
+}

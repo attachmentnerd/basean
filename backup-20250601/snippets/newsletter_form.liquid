@@ -1,0 +1,52 @@
+{% assign btn_background_color = section.settings.form_btn_background_color | default: settings.btn_background_color %}
+{% assign btn_text_color = section.settings.form_btn_text_color | default: settings.btn_text_color %}
+{% assign btn_style = section.settings.form_btn_style | default: settings.btn_style %}
+{% assign btn_width = section.settings.form_btn_width | default: settings.btn_width %}
+{% assign btn_size = section.settings.form_btn_size | default: settings.btn_size %}
+{% assign btn_border_radius = section.settings.form_btn_border_radius | default: settings.btn_border_radius %}
+{% assign btn_text = section.settings.form_btn_text | default: 'Subscribe' %}
+
+<style>
+  #section-{{ section.id}} .newsletter-form .form-control {
+    border-radius: {{ btn_border_radius | remove: "px" | append: "px" }};
+  }
+  .newsletter-form .form-control--small {
+    font-size: 90%;
+    padding: 9.5px 10px;
+  }
+  #section-{{ section.id}} .newsletter-form .btn--outline {
+    background: transparent;
+    color: {{ btn_background_color }};
+  }
+  #section-{{ section.id}} .newsletter-form .form-btn {
+    border-radius: {{ btn_border_radius | remove: "px" | append: "px" }};
+    white-space: nowrap;
+  }
+  #section-{{ section.id}} .newsletter-form .btn--solid {
+    background: {{ btn_background_color }};
+    color: {{ btn_text_color }};
+  }
+</style>
+
+<div class="newsletter-form">
+  {% if newsletter.form %}
+    {% form newsletter.form %}
+      <div class="fields-wrapper">
+        {% for field in newsletter.form.fields %}
+          {% assign sized_input_class = "form-control form-control--" | append: btn_size %}
+          {{ field | form_input: class: "form-group", input_class: sized_input_class, label: false, placeholder: true }}
+        {% endfor %}
+        <div>
+          <button 
+            id="form-button" 
+            class="form-btn btn--{{ btn_style }} btn--{{ btn_width }} btn--{{ btn_size }}" 
+            type="submit" 
+            role="button" 
+          >
+            {%- element "section.settings.form_btn_text" -%}{{ btn_text }}{%- endelement -%}
+          </button>
+        </div>
+      </div>
+    {% endform %}
+  {% endif %}
+</div>

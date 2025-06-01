@@ -1,0 +1,50 @@
+{% comment %}
+  The `[data-social-share-modal]` element is moved and appended to the end of the `<body>` on document load
+  to ensure it is not affected by overflow rules or animations applied to the block.
+{% endcomment %}
+<div class="social-share-modal social-share-modal--{{ block.id }}" data-social-share-modal="{{ block.id }}">
+  <div class="social-share-modal__backdrop" data-social-share-backdrop></div>
+  <div class="social-share-modal__menu" data-social-share-menu>
+    <div class="social-share-modal__label">
+      Share to&hellip;
+    </div>
+    <ul class="social-share-modal__list">
+      <li class="social-share-modal__item">
+        <button class="social-share-modal__item-link" data-social-share-trigger="twitter">
+          <i class="fab fa-twitter"></i>
+          Share to Twitter
+        </button>
+      </li>
+      <li class="social-share-modal__item">
+        <button class="social-share-modal__item-link" data-social-share-trigger="facebook">
+          <i class="fab fa-facebook-f"></i>
+          Share to Facebook
+        </button>
+      </li>
+      <li class="social-share-modal__item">
+        <button class="social-share-modal__item-link" data-social-share-trigger="linkedin">
+          <i class="fab fa-linkedin-in"></i>
+          Share to LinkedIn
+        </button>
+      </li>
+      <li class="social-share-modal__item social-share-modal__item--border-top">
+        <button class="social-share-modal__item-link" data-social-share-trigger="email">
+          <i class="fas fa-envelope"></i>
+          Send as email
+        </button>
+      </li>
+      <li class="social-share-modal__item">
+        <button class="social-share-modal__item-link" data-social-share-trigger="copy">
+          <i class="fas fa-link"></i>
+          Copy link
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="social-share social-share--{{ block.id }}" data-social-share-block-container="{{ block.id }}" kjb-settings-id="{{ 'social_share' | settings_id: section: section, block: block }}">
+  <div class="social-share__button" data-social-share-trigger="menu">
+    {% include "element_button" %}
+  </div>
+</div>

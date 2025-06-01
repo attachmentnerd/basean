@@ -1,0 +1,22 @@
+{% assign show_avatar_settings_id = 'show_avatar' | settings_id: section: section %}
+
+<div class="member box-shadow-{{ section.settings.box_shadow }} background-{{ section.settings.member_background_color | color_scheme_class }}">
+  {% if section.settings.show_avatar %}
+    {{ member | avatar_url | image_tag: class: "member__avatar", kjb_settings_id: show_avatar_settings_id }}
+  {% endif %}
+  <h4 class="member__name" kjb-settings-id="{{ 'color_name_text' | settings_id: section: section }}">{{ member.name }}</h4>
+  {% unless member.location == nil %}
+    <div class="member__info">
+      <p class="member__location" kjb-settings-id="{{ 'color_location_text' | settings_id: section: section }}">{{ member.location }}</p>
+    </div>
+  {% endunless %}
+  <div class="member__socials">
+    {% if member.socials.size > 0 %}
+      {% for social in member.socials %}
+        <a href="{{ social.link }}" class="member__social" {% if section.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %} kjb-settings-id="{{ 'color_social_icon' | settings_id: section: section }}">
+          <i class="member__social-icon fab fa-{{ social.platform }}"></i>
+        </a>
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>

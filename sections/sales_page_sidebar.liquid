@@ -1,0 +1,396 @@
+<div class="sidebar sidebar--sales-page">
+  {% include "offer_pricing" %}
+  {% for block in section.blocks %}
+    {% case block.type %}
+      {% when "sidebar_instructor" %}
+        {% include "sidebar_instructor" %}
+      {% when "sidebar_custom" %}
+        {% include "sidebar_custom" %}
+      {% when "sidebar_image" %}
+        {% include "sidebar_image" %}
+    {% endcase %}
+  {% endfor %}
+</div>
+
+{% schema %}
+  {
+    "name": "Sales Page Sidebar",
+    "blocks": [
+      {
+        "type": "sidebar_instructor",
+        "name": "Instructor",
+        "elements": [
+          {
+            "type": "header",
+            "content": "Instructor"
+          },
+          {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading",
+            "default": "Instructor"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Headshot",
+            "fit": "crop",
+            "width": 300,
+            "height": 300,
+            "info": "Suggested dimensions 300px x 300px"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_img",
+            "label": "Show Headshot",
+            "default": "true"
+          },
+          {
+            "type": "checkbox",
+            "id": "round_image",
+            "label": "Use Round Image",
+            "default": "true"
+          },
+          {
+            "type": "text",
+            "id": "image_alt",
+            "label": "Image Alt Attribute",
+            "info": "Add an image alt attribute for SEO, and if the image cannot be displayed.",
+            "default": ""
+          },
+          {
+            "type": "text",
+            "id": "name",
+            "label": "Instructor Name",
+            "default": "John Doe",
+            "info": "Leave this blank to use the info set in Site Details."
+          },
+          {
+            "type": "checkbox",
+            "id": "show_name",
+            "label": "Show Name",
+            "default": "true"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Instructor Title",
+            "default": "Author",
+            "info": "Leave this blank to use the info set in Site Details."
+          },
+          {
+            "type": "checkbox",
+            "id": "show_title",
+            "label": "Show Title",
+            "default": "true"
+          },
+          {
+            "type": "textarea",
+            "id": "bio",
+            "label": "Bio",
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui."
+          },
+          {
+            "type": "color",
+            "id": "color_author_heading",
+            "label": "Instructor Heading Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "color",
+            "id": "color_author_name",
+            "label": "Instructor Name Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "color",
+            "id": "color_author_title",
+            "label": "Instructor Title Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "color",
+            "id": "color_author_bio",
+            "label": "Instructor Bio Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "align",
+            "id": "author_text_align",
+            "label": "Text Alignment",
+            "default": "center",
+            "direction": "horizontal"
+          }
+        ]
+      },
+      {
+        "type": "sidebar_image",
+        "name": "Image",
+        "elements": [
+          {
+            "type": "header",
+            "content": "Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "width": 2300,
+            "height": 2300,
+            "info": "Suggested dimensions: 1856 × 1044"
+          },
+          {
+            "type": "action",
+            "id": "img_action",
+            "label": "Image Action",
+            "anchor": true,
+            "two_step": true,
+            "default": ""
+          },
+          {
+            "type": "checkbox",
+            "id": "new_tab",
+            "label": "Open In New Tab",
+            "default": ""
+          },
+          {
+            "type": "text",
+            "id": "image_alt",
+            "label": "Image Alt Attribute",
+            "info": "Add an image alt attribute for SEO, and if the image cannot be displayed.",
+            "default": ""
+          }
+        ]
+      },
+      {
+        "type": "sidebar_custom",
+        "name": "Custom Block",
+        "elements": [
+          {
+            "type": "header",
+            "content": "Custom Block"
+          },
+          {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading",
+            "default": "Custom Content Goes Here"
+          },
+          {
+            "type": "color",
+            "id": "color_custom_heading",
+            "label": "Heading Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "checkbox",
+            "id": "show_img",
+            "label": "Show Image",
+            "default": "true"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": "Suggested dimensions 600px x 300px"
+          },
+          {
+            "type": "text",
+            "id": "image_alt",
+            "label": "Image Alt Attribute",
+            "info": "Add an image alt attribute for SEO, and if the image cannot be displayed.",
+            "default": ""
+          },
+          {
+            "type": "rich_text",
+            "id": "content",
+            "label": "Content",
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui."
+          },
+          {
+            "type": "checkbox",
+            "id": "show_cta",
+            "label": "Show CTA",
+            "default": "true"
+          },
+          {
+            "type": "text",
+            "id": "btn_text",
+            "label": "Text",
+            "default": "Call To Action"
+          },
+          {
+            "type": "action",
+            "id": "btn_action",
+            "label": "Button Action",
+            "anchor": true,
+            "two_step": true,
+            "default": ""
+          },
+          {
+            "type": "checkbox",
+            "id": "new_tab",
+            "label": "Open In New Tab",
+            "default": ""
+          },
+          {
+            "type": "color",
+            "id": "btn_background_color",
+            "label": "Button Background Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "color",
+            "id": "btn_text_color",
+            "label": "Button Text Color",
+            "default": "",
+            "allow_blank": true,
+            "info": "For solid buttons only"
+          },
+          {
+            "type": "radio",
+            "id": "btn_width",
+            "label": "Button Width",
+            "default": "",
+            "allow_blank": true,
+            "options": [
+              {
+                "value": "full",
+                "label": "Full"
+              },
+              {
+                "value": "auto",
+                "label": "Auto"
+              }
+            ]
+          },
+          {
+            "type": "radio",
+            "id": "btn_style",
+            "label": "Button Style",
+            "default": "",
+            "allow_blank": true,
+            "options": [
+              { "label": "Solid", "value": "solid" },
+              { "label": "Outline", "value": "outline" }
+            ]
+          },
+          {
+            "type": "radio",
+            "id": "btn_size",
+            "label": "Button Size",
+            "default": "",
+            "allow_blank": true,
+            "options": [
+              { "label": "Small", "value": "small" },
+              { "label": "Medium", "value": "medium" },
+              { "label": "Large", "value": "large" }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "btn_border_radius",
+            "label": "Border Radius",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "align",
+            "id": "custom_text_align",
+            "label": "Text Alignment",
+            "default": "left",
+            "direction": "horizontal"
+          }
+        ]
+      }
+    ],
+    "elements": [
+      {
+        "type": "text",
+        "label": "Offer Pricing Title",
+        "id": "title",
+        "default": "Pricing Options"
+      },
+      {
+        "type": "color",
+        "label": "Offer Pricing Selected Color",
+        "id": "selected_color",
+        "allow_blank": true
+      },
+      {
+        "type": "text",
+        "id": "btn_text",
+        "label": "Button Text",
+        "default": "Submit"
+      },
+      {
+        "type": "color",
+        "id": "btn_background_color",
+        "label": "Button Background Color",
+        "default": "",
+        "allow_blank": true
+      },
+      {
+        "type": "color",
+        "id": "btn_text_color",
+        "label": "Button Text Color",
+        "default": "",
+        "allow_blank": true,
+        "info": "For solid buttons only"
+      },
+      {
+        "type": "radio",
+        "id": "btn_width",
+        "label": "Button Width",
+        "default": "",
+        "allow_blank": true,
+        "options": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "auto",
+            "label": "Auto"
+          }
+        ]
+      },
+      {
+        "type": "radio",
+        "id": "btn_style",
+        "label": "Button Style",
+        "default": "",
+        "allow_blank": true,
+        "options": [
+          { "label": "Solid", "value": "solid" },
+          { "label": "Outline", "value": "outline" }
+        ]
+      },
+      {
+        "type": "radio",
+        "id": "btn_size",
+        "label": "Button Size",
+        "default": "",
+        "allow_blank": true,
+        "options": [
+          { "label": "Small", "value": "small" },
+          { "label": "Medium", "value": "medium" },
+          { "label": "Large", "value": "large" }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "btn_border_radius",
+        "label": "Border Radius",
+        "default": "",
+        "allow_blank": true
+      }
+    ]
+  }
+{% endschema %}

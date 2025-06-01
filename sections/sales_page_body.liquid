@@ -1,0 +1,27 @@
+{% assign videoColor = section.settings.video_player_color | default: settings.color_primary %}
+
+<section class="sales-page-body">
+  <div kjb-settings-id="{{ 'video_player_color' | settings_id: section: section }}">
+    <div class="sales-page-body__video">
+      {% include "video" with sales_page.video, color: videoColor, thumbnail: sales_page.thumbnail_url %}
+    </div>
+    <h1 class="sales-page-body__title">{{ sales_page.title }}</h1>
+    <div class="sales-page-body__body">
+      {{ sales_page.body }}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Sales Page Body",
+    "elements": [
+      {
+        "type": "color",
+        "label": "Video Player Color",
+        "id": "video_player_color",
+        "allow_blank": true
+      }
+    ]
+  }
+{% endschema %}

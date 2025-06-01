@@ -1,0 +1,4 @@
+{% assign bg_video = current_site.find_video[section.settings.bg_video] %}
+{% assign bg_videoID = bg_video.wistia_id | default: "aifhr9jyfk" %}
+
+<div id="wistia_{{ section.id }}_{{ bg_videoID }}" class="backgroundVideo" data-src="{{ bg_videoID }}" data-img="{{ section.settings.bg_image | image_picker_url: 'background.jpg' }}"></div>

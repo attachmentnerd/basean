@@ -1,0 +1,1661 @@
+<style>
+  {% if section.settings.bg_type == "image" %}
+    #section-{{ section.id }} {
+      background-image: url({{ section.settings.bg_image | image_picker_url: "background.jpg" }});
+      background-position: {{ section.settings.bg_position }};
+    }
+  {% endif %}
+  .blog-post-body {
+    background-color: {{ section.settings.background_color }};
+  }
+  .blog-post-body .sizer {
+    padding-top: {{ section.settings.padding_mobile.top | default: 40 | append: "px" }};
+    padding-bottom: {{ section.settings.padding_mobile.bottom | default: 40 | append: "px" }};
+  }
+  .blog-post-body .container {
+    max-width: calc(1260px + {{ section.settings.padding_mobile.right | default: 10 | append: "px" }} + {{ section.settings.padding_mobile.left | default: 10 | append: "px" }});
+    padding-right: {{ section.settings.padding_mobile.right | default: 10 | append: "px" }};
+    padding-left: {{ section.settings.padding_mobile.left | default: 10 | append: "px" }};
+  }
+  .blog-post-body__panel {
+    background-color: {{ section.settings.blog_post_body_background_color }};
+    border-color: {{ section.settings.blog_post_body_border_color }};
+    border-radius: {{ section.settings.blog_post_body_border_radius | remove: "px" | append: "px" }};
+    border-style: {{ section.settings.blog_post_body_border_type }};
+    border-width: {{ section.settings.blog_post_body_border_width | remove: "px" | append: "px" }} ;
+  }
+  .blog-post-body__title {
+    color: {{ section.settings.color_title_text }} !important;
+  }
+  .blog-post-body__date {
+    color: {{ section.settings.color_date_text }};
+  }
+  .tag {
+    color: {{ section.settings.color_tag_text }};
+    background-color: {{ section.settings.color_tag_background }};
+  }
+  .tag:hover {
+    color: {{ section.settings.color_tag_text }};
+    background-color: {{ section.settings.color_tag_background }};
+  }
+  .blog-post-body__content {
+    color: {{ section.settings.color_content_text }};
+  }
+  @media (min-width: 768px) {
+    {% if section.settings.bg_type == "image" %}
+      #section-{{ section.id }} {
+        {% if section.settings.background_fixed %}
+          background-attachment: fixed;
+        {% endif %}
+      }
+    {% endif %}
+    .blog-post-body .sizer {
+      padding-top: {{ section.settings.padding_desktop.top | default: 40 | append: "px" }};
+      padding-bottom: {{ section.settings.padding_desktop.bottom | default: 40 | append: "px" }};
+    }
+    .blog-post-body .container {
+      max-width: calc(1260px + {{ section.settings.padding_desktop.right | default: 40 | append: "px" }} + {{ section.settings.padding_desktop.left | default: 40 | append: "px" }});
+      padding-right: {{ section.settings.padding_desktop.right | default: 40 | append: "px" }};
+      padding-left: {{ section.settings.padding_desktop.left | default: 40 | append: "px" }};
+    }
+  }
+</style>
+
+<section class="blog-post-body {% if section.settings.background_color != blank %}background-{{ section.settings.background_color | color_scheme_class }}{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
+  <div class="sizer">
+    {% if section.settings.bg_type == "video" %}
+      {% include "global_background_video" %}
+    {% endif %}
+    <div class="container">
+      <div class="row">
+        {% if section.settings.show_sidebar_desktop %}
+          <div class="col-lg-9">
+        {% else %}
+          <div class="col-lg-12">
+        {% endif %}
+          {% if section.settings.blog_post_body_in_panel %}
+            <div class="blog-post-body__panel box-shadow-{{ section.settings.blog_post_body_box_shadow }} {% if section.settings.blog_post_body_background_color != blank %}background-{{ section.settings.blog_post_body_background_color | color_scheme_class }}{% endif %}">
+          {% endif %}
+            {% unless section.settings.header_on_top %}
+              {% include "blog_post_body_media" %}
+            {% endunless %}
+            <div class="blog-post-body__info">
+              <h1 class="blog-post-body__title">{{ blog_post.title }}</h1>
+              {% if section.settings.show_tags %}
+                <span class="blog-post-body__tags" kjb-settings-id="{{ 'show_tags' | settings_id: section: section }}">
+                  {% if blog_post.tags.size > 0 %}
+                    {% for tag in blog_post.tags %}
+                      <a class="tag" href="{{ current_site.url }}/blog?tag={{ tag | url_encode }}">{{ tag }}</a>
+                    {% endfor %}
+                  {% endif %}
+                </span>
+              {% endif %}
+              {% if section.settings.show_date %}
+                <span class="blog-post-body__date" kjb-settings-id="{{ 'show_date' | settings_id: section: section }}">{{ blog_post.created_at | date: "%b %d, 20%y" }}</span>
+              {% endif %}
+              {% if settings.show_comments and settings.short_code != "" %}
+                <a class="blog-post-body__comment-count" href="{{ blog_post.url }}#disqus_thread" data-disqus-identifier="{{ blog_post.id }}"></a>
+              {% endif %}
+            </div>
+            {% if section.settings.header_on_top %}
+              {% include "blog_post_body_media" %}
+            {% endif %}
+            <div class="blog-post-body__content">
+              {{ blog_post.content }}
+            </div>
+            {% if section.settings.show_cta %}
+              {% include "blog_post_body_cta" %}
+            {% endif %}
+            {% if section.settings.show_opt_in %}
+              {% include "blog_post_body_opt_in" %}
+            {% endif %}
+            {% include "disqus" %}
+          {% if section.settings.blog_post_body_in_panel %}
+            </div>
+          {% endif %}
+        </div>
+        {% include "blog_sidebar" %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Blog Post Body",
+    "deletable": "false",
+    "duplicatable": "false",
+    "elements": [
+      {
+        "type": "checkbox",
+        "id": "header_on_top",
+        "label": "Header on Top",
+        "default": "true"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_date",
+        "label": "Show Date",
+        "default": "true"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_tags",
+        "label": "Show Tags",
+        "default": "true"
+      },
+      {
+        "type": "header",
+        "content": "Style Overrides"
+      },
+      {
+        "type": "color",
+        "id": "video_player_color",
+        "label": "Video Player Color",
+        "allow_blank": true,
+        "default": ""
+      },
+      {
+        "type": "color",
+        "id": "color_title_text",
+        "label": "Title Text Color",
+        "allow_blank": true,
+        "default": ""
+      },
+      {
+        "type": "color",
+        "id": "color_tag_text",
+        "label": "Tag Text Color",
+        "allow_blank": true,
+        "default": ""
+      },
+      {
+        "type": "color",
+        "id": "color_tag_background",
+        "label": "Tag Background Color",
+        "allow_blank": true,
+        "default": ""
+      },
+      {
+        "type": "color",
+        "id": "color_date_text",
+        "label": "Date Text Color",
+        "allow_blank": true,
+        "default": ""
+      },
+      {
+        "type": "color",
+        "id": "color_content_text",
+        "label": "Content Text Color",
+        "allow_blank": true,
+        "default": ""
+      },
+      {
+        "type": "header",
+        "content": "Sidebar"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_sidebar_desktop",
+        "label": "Show Sidebar on Desktop",
+        "default": "true"
+      },
+      {
+        "type": "checkbox",
+        "id": "sidebar_on_right",
+        "label": "Desktop Sidebar on Right",
+        "default": "true"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_sidebar_mobile",
+        "label": "Show Sidebar on Mobile",
+        "default": "true"
+      },
+      {
+        "type": "checkbox",
+        "id": "sidebar_on_bottom",
+        "label": "Mobile Sidebar on Bottom",
+        "default": "true"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "sidebar_instructor",
+        "name": "Author",
+        "elements": [
+          {
+            "type": "header",
+            "content": "Author"
+          },
+          {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading",
+            "default": "Author"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Headshot",
+            "fit": "crop",
+            "width": 300,
+            "height": 300,
+            "info": "Suggested dimensions 300px x 300px"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_img",
+            "label": "Show Headshot",
+            "default": "true"
+          },
+          {
+            "type": "checkbox",
+            "id": "round_image",
+            "label": "Use Round Image",
+            "default": "true"
+          },
+          {
+            "type": "text",
+            "id": "image_alt",
+            "label": "Image Alt Attribute",
+            "info": "Add an image alt attribute for SEO, and if the image cannot be displayed.",
+            "default": ""
+          },
+          {
+            "type": "text",
+            "id": "name",
+            "label": "Author Name",
+            "default": "John Doe",
+            "info": "Leave this blank to use the info set in Site Details."
+          },
+          {
+            "type": "checkbox",
+            "id": "show_name",
+            "label": "Show Name",
+            "default": "true"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Author Title",
+            "default": "Author",
+            "info": "Leave this blank to use the info set in Site Details."
+          },
+          {
+            "type": "checkbox",
+            "id": "show_title",
+            "label": "Show Title",
+            "default": "true"
+          },
+          {
+            "type": "textarea",
+            "id": "bio",
+            "label": "Bio",
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui."
+          },
+          {
+            "type": "color",
+            "id": "color_author_heading",
+            "label": "Author Heading Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "color",
+            "id": "color_author_name",
+            "label": "Author Name Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "color",
+            "id": "color_author_title",
+            "label": "Author Title Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "color",
+            "id": "color_author_bio",
+            "label": "Author Bio Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "align",
+            "id": "author_text_align",
+            "label": "Text Alignment",
+            "default": "center",
+            "direction": "horizontal"
+          }
+        ]
+      },
+      {
+        "type": "sidebar_categories",
+        "name": "Categories",
+        "elements": [
+          {
+            "type": "header",
+            "content": "Categories"
+          },
+          {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading",
+            "default": "Categories"
+          },
+          {
+            "type": "text",
+            "id": "all_tags",
+            "label": "All Categories Language",
+            "default": "All Categories"
+          },
+          {
+            "type": "radio",
+            "id": "categories_layout",
+            "label": "Categories Layout",
+            "default": "list",
+            "allow_blank": true,
+            "options": [
+              { "label": "List", "value": "list" },
+              { "label": "Dropdown", "value": "dropdown" }
+            ]
+          },
+          {
+            "type": "color",
+            "id": "color_categories_heading",
+            "label": "Categories Heading Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "color",
+            "id": "color_categories_link",
+            "label": "Categories Link Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "align",
+            "id": "categories_text_align",
+            "label": "Text Alignment",
+            "default": "left",
+            "direction": "horizontal"
+          }
+        ]
+      },
+      {
+        "type": "sidebar_image",
+        "name": "Image",
+        "elements": [
+          {
+            "type": "header",
+            "content": "Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": "Suggested dimensions: 600 × 400"
+          },
+          {
+            "type": "action",
+            "id": "img_action",
+            "label": "Image Action",
+            "anchor": true,
+            "two_step": true,
+            "default": ""
+          },
+          {
+            "type": "checkbox",
+            "id": "new_tab",
+            "label": "Open In New Window",
+            "default": "false"
+          },
+          {
+            "type": "text",
+            "id": "image_alt",
+            "label": "Image Alt Attribute",
+            "info": "Add an image alt attribute for SEO, and if the image cannot be displayed.",
+            "default": ""
+          },
+          {
+            "type": "header",
+            "content": "Image Overlay"
+          },
+          {
+            "type": "checkbox",
+            "id": "enable_overlay",
+            "label": "Show Overlay on Hover",
+            "default": "false"
+          },
+          {
+            "type": "checkbox",
+            "id": "always_show_on_mobile",
+            "label": "Always Show on Mobile",
+            "default": "false"
+          },
+          {
+            "type": "color",
+            "label": "Overlay Background Color",
+            "id": "overlay_background_color",
+            "default": "#fff"
+          },
+          {
+            "type": "color",
+            "label": "Overlay Text Color",
+            "id": "overlay_text_color",
+            "allow_blank": true
+          },
+          {
+            "type": "text",
+            "label": "Overlay Text",
+            "id": "overlay_text",
+            "default": "Click Here for More Details"
+          }
+        ]
+      },
+      {
+        "type": "sidebar_recent_posts",
+        "name": "Recent Posts",
+        "elements": [
+          {
+            "type": "header",
+            "content": "Recent Posts"
+          },
+          {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading",
+            "default": "Recent Posts"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_date",
+            "label": "Show Date",
+            "default": "true"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_tags",
+            "label": "Show Tags",
+            "default": "true"
+          },
+          {
+            "type": "color",
+            "id": "color_recent_posts_heading",
+            "label": "Recent Posts Heading Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "color",
+            "id": "color_recent_posts_title",
+            "label": "Recent Posts Title Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "color",
+            "id": "color_recent_posts_tag_text",
+            "label": "Tag Text Color",
+            "allow_blank": true,
+            "default": ""
+          },
+          {
+            "type": "color",
+            "id": "color_recent_posts_tag_background",
+            "label": "Tag Background Color",
+            "allow_blank": true,
+            "default": ""
+          },
+          {
+            "type": "color",
+            "id": "color_recent_posts_date",
+            "label": "Recent Posts Date Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "align",
+            "id": "recent_posts_text_align",
+            "label": "Text Alignment",
+            "default": "left",
+            "direction": "horizontal"
+          }
+        ]
+      },
+      {
+        "type": "sidebar_custom",
+        "name": "Custom Block",
+        "elements": [
+          {
+            "type": "header",
+            "content": "Custom Block"
+          },
+          {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading",
+            "default": "Custom Content Goes Here"
+          },
+          {
+            "type": "color",
+            "id": "color_custom_heading",
+            "label": "Heading Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "checkbox",
+            "id": "show_img",
+            "label": "Show Image",
+            "default": "true"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": "Suggested dimensions 600px x 300px"
+          },
+          {
+            "type": "text",
+            "id": "image_alt",
+            "label": "Image Alt Attribute",
+            "info": "Add an image alt attribute for SEO, and if the image cannot be displayed.",
+            "default": ""
+          },
+          {
+            "type": "rich_text",
+            "id": "content",
+            "label": "Content",
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui."
+          },
+          {
+            "type": "checkbox",
+            "id": "show_cta",
+            "label": "Show CTA",
+            "default": "true"
+          },
+          {
+            "type": "text",
+            "id": "btn_text",
+            "label": "Text",
+            "default": "Call To Action"
+          },
+          {
+            "type": "action",
+            "id": "btn_action",
+            "label": "Button Action",
+            "anchor": true,
+            "two_step": true,
+            "default": ""
+          },
+          {
+            "type": "checkbox",
+            "id": "new_tab",
+            "label": "Open In New Tab",
+            "default": ""
+          },
+          {
+            "type": "color",
+            "id": "btn_background_color",
+            "label": "Button Background Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "color",
+            "id": "btn_text_color",
+            "label": "Button Text Color",
+            "default": "",
+            "allow_blank": true,
+            "info": "For solid buttons only"
+          },
+          {
+            "type": "radio",
+            "id": "btn_width",
+            "label": "Button Width",
+            "default": "",
+            "allow_blank": true,
+            "options": [
+              {
+                "value": "full",
+                "label": "Full"
+              },
+              {
+                "value": "auto",
+                "label": "Auto"
+              }
+            ]
+          },
+          {
+            "type": "radio",
+            "id": "btn_style",
+            "label": "Button Style",
+            "default": "",
+            "allow_blank": true,
+            "options": [
+              { "label": "Solid", "value": "solid" },
+              { "label": "Outline", "value": "outline" }
+            ]
+          },
+          {
+            "type": "radio",
+            "id": "btn_size",
+            "label": "Button Size",
+            "default": "",
+            "allow_blank": true,
+            "options": [
+              { "label": "Small", "value": "small" },
+              { "label": "Medium", "value": "medium" },
+              { "label": "Large", "value": "large" }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "btn_border_radius",
+            "label": "Border Radius",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "align",
+            "id": "custom_text_align",
+            "label": "Text Alignment",
+            "default": "left",
+            "direction": "horizontal"
+          }
+        ]
+      },
+      {
+        "type": "sidebar_search",
+        "name": "Sidebar Search",
+        "elements": [
+          {
+            "type": "header",
+            "content": "Sidebar Search"
+          },
+          {
+            "type": "text",
+            "id": "search_text",
+            "label": "Search Text",
+            "default": "Search..."
+          },
+          {
+            "type": "header",
+            "content": "Section Appearance",
+            "style": "subheading"
+          },
+          {
+            "type": "color",
+            "id": "search_icon_color",
+            "label": "Search Icon Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "color",
+            "id": "search_text_color",
+            "label": "Search Text Color",
+            "default": "",
+            "allow_blank": true
+          }
+        ]
+      },
+      {
+        "type": "sidebar_cta",
+        "name": "Call to Action",
+        "elements": [
+          {
+            "type": "header",
+            "content": "Sidebar Call to Action"
+          },
+          {
+            "type": "rich_text",
+            "id": "content",
+            "label": "Content",
+            "default": "<h5>Stay connected with news and updates!</h5>"
+          },
+          {
+            "type": "text",
+            "id": "btn_text",
+            "label": "Text",
+            "default": "Call To Action"
+          },
+          {
+            "type": "action",
+            "id": "btn_action",
+            "label": "Button Action",
+            "anchor": true,
+            "two_step": true,
+            "default": ""
+          },
+          {
+            "type": "checkbox",
+            "id": "new_tab",
+            "label": "Open In New Tab",
+            "default": ""
+          },
+          {
+            "type": "color",
+            "id": "btn_background_color",
+            "label": "Button Background Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "color",
+            "id": "btn_text_color",
+            "label": "Button Text Color",
+            "default": "",
+            "allow_blank": true,
+            "info": "For solid buttons only"
+          },
+          {
+            "type": "radio",
+            "id": "btn_width",
+            "label": "Button Width",
+            "default": "",
+            "allow_blank": true,
+            "options": [
+              {
+                "value": "full",
+                "label": "Full"
+              },
+              {
+                "value": "auto",
+                "label": "Auto"
+              }
+            ]
+          },
+          {
+            "type": "radio",
+            "id": "btn_style",
+            "label": "Button Style",
+            "default": "",
+            "allow_blank": true,
+            "options": [
+              { "label": "Solid", "value": "solid" },
+              { "label": "Outline", "value": "outline" }
+            ]
+          },
+          {
+            "type": "radio",
+            "id": "btn_size",
+            "label": "Button Size",
+            "default": "",
+            "allow_blank": true,
+            "options": [
+              { "label": "Small", "value": "small" },
+              { "label": "Medium", "value": "medium" },
+              { "label": "Large", "value": "large" }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "btn_border_radius",
+            "label": "Border Radius",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "align",
+            "id": "cta_text_align",
+            "label": "Text Alignment",
+            "default": "left",
+            "direction": "horizontal"
+          }
+        ]
+      },
+      {
+        "type": "sidebar_social",
+        "name": "Social Links",
+        "elements": [
+          {
+            "type": "header",
+            "content": "Social Links",
+            "info": "Links to your social networking pages. Each link MUST begin with \"http://\" or \"https://\". Leaving a field blank will hide that icon."
+          },
+          {
+            "type": "divider"
+          },
+          {
+            "type": "text",
+            "id": "heading_text",
+            "label": "Heading Text",
+            "default": "Follow Us"
+          },
+          {
+            "type": "color",
+            "id": "color_social_heading",
+            "label": "Social Icons Heading Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "color",
+            "label": "Social Icon Color",
+            "id": "social_icons_text_color",
+            "allow_blank": true,
+            "info": "Change the color for the social icons."
+          },
+          {
+            "type": "color",
+            "label": "Social Icon Background Color",
+            "id": "social_icons_background_color",
+            "allow_blank": true,
+            "info": "Change the background color for the social icon containers."
+          },
+          {
+            "type": "select",
+            "id": "social_icon_background_style",
+            "label": "Social Icon Background Style",
+            "default": "",
+            "options": [
+              { "label": "Round", "value": "round" },
+              { "label": "Square", "value": "square" },
+              { "label": "None", "value": "" }
+            ]
+          },
+          {
+            "type": "checkbox",
+            "id": "new_tab",
+            "label": "Open In New Tab",
+            "default": "false"
+          },
+          {
+            "type": "align",
+            "id": "social_text_align",
+            "label": "Text Alignment",
+            "default": "left",
+            "direction": "horizontal"
+          },
+          {
+          "type": "text",
+          "id": "social_icon_link_facebook",
+          "label": "Facebook",
+          "default": "https://www.facebook.com/kajabi"
+          },
+          {
+            "type": "text",
+            "id": "social_icon_link_twitter",
+            "label": "Twitter",
+            "default": "https://www.twitter.com/kajabi"
+          },
+          {
+            "type": "text",
+            "id": "social_icon_link_instagram",
+            "label": "Instagram",
+            "default": "https://www.instagram.com/kajabi"
+          },
+          {
+            "type": "text",
+            "id": "social_icon_link_youtube",
+            "label": "YouTube",
+            "default": ""
+          },
+          {
+            "type": "text",
+            "id": "social_icon_link_pinterest",
+            "label": "Pinterest",
+            "default": ""
+          },
+          {
+            "type": "text",
+            "id": "social_icon_link_vimeo",
+            "label": "Vimeo",
+            "default": ""
+          },
+          {
+            "type": "text",
+            "id": "social_icon_link_github",
+            "label": "Github",
+            "default": ""
+          },
+          {
+            "type": "text",
+            "id": "social_icon_link_itunes",
+            "label": "iTunes",
+            "default": ""
+          },
+          {
+            "type": "text",
+            "id": "social_icon_link_linkedin",
+            "label": "LinkedIn",
+            "default": ""
+          },
+          {
+            "type": "text",
+            "id": "social_icon_link_soundcloud",
+            "label": "Soundcloud",
+            "default": ""
+          },
+          {
+            "type": "text",
+            "id": "social_icon_link_yelp",
+            "label": "Yelp",
+            "default": ""
+          },
+          {
+            "type": "text",
+            "id": "social_icon_link_tumblr",
+            "label": "Tumblr",
+            "default": ""
+          },
+          {
+            "type": "text",
+            "id": "social_icon_link_slack",
+            "label": "Slack",
+            "default": ""
+          },
+          {
+            "type": "text",
+            "id": "social_icon_link_flickr",
+            "label": "Flickr",
+            "default": ""
+          },
+          {
+            "type": "text",
+            "id": "social_icon_link_dribbble",
+            "label": "Dribbble",
+            "default": ""
+          },
+          {
+            "type": "text",
+            "id": "social_icon_link_tiktok",
+            "label": "TikTok",
+            "default": ""
+          },
+          {
+            "type": "text",
+            "id": "social_icon_link_medium",
+            "label": "Medium",
+            "default": ""
+          },
+          {
+            "type": "text",
+            "id": "social_icon_link_spotify",
+            "label": "Spotify",
+            "default": ""
+          },
+          {
+            "type": "text",
+            "id": "social_icon_link_podcasts",
+            "label": "Podcasts",
+            "default": ""
+          }
+        ]
+      },
+      {
+        "type": "sidebar_social_share",
+        "name": "Social Share",
+        "elements": [
+          {
+            "type": "header",
+            "content": "Social Share"
+          },
+          {
+            "type": "text",
+            "id": "btn_text",
+            "label": "Text",
+            "default": "Share"
+          },
+          {
+            "type": "color",
+            "id": "btn_background_color",
+            "label": "Button Background Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "color",
+            "id": "btn_text_color",
+            "label": "Button Text Color",
+            "default": "",
+            "allow_blank": true,
+            "info": "For solid buttons only"
+          },
+          {
+            "type": "radio",
+            "id": "btn_width",
+            "label": "Button Width",
+            "default": "",
+            "allow_blank": true,
+            "options": [
+              {
+                "value": "full",
+                "label": "Full"
+              },
+              {
+                "value": "auto",
+                "label": "Auto"
+              }
+            ]
+          },
+          {
+            "type": "radio",
+            "id": "btn_style",
+            "label": "Button Style",
+            "default": "",
+            "allow_blank": true,
+            "options": [
+              { "label": "Solid", "value": "solid" },
+              { "label": "Outline", "value": "outline" }
+            ]
+          },
+          {
+            "type": "radio",
+            "id": "btn_size",
+            "label": "Button Size",
+            "default": "",
+            "allow_blank": true,
+            "options": [
+              { "label": "Small", "value": "small" },
+              { "label": "Medium", "value": "medium" },
+              { "label": "Large", "value": "large" }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "btn_border_radius",
+            "label": "Border Radius",
+            "default": "",
+            "allow_blank": true
+          }
+        ]
+      }
+    ],
+    "groups": [
+      {
+        "name": "Blog Post Call to Action",
+        "elements": [
+          {
+            "type": "checkbox",
+            "id": "show_cta",
+            "label": "Show Call to Action",
+            "default": "true"
+          },
+          {
+            "type": "color",
+            "id": "cta_background_color",
+            "label": "Background Color",
+            "default": "#ffffff",
+            "allow_blank": true
+          },
+          {
+            "type": "color",
+            "id": "cta_border_color",
+            "label": "Border Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "text",
+            "id": "cta_border_width",
+            "label": "Border Width",
+            "default": "1px",
+            "allow_blank": true
+          },
+          {
+            "type": "rich_text",
+            "id": "cta_content",
+            "label": "Content",
+            "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed sapien quam. Sed dapibus est id enim facilisis, at posuere turpis adipiscing. Quisque sit amet dui dui."
+          },
+          {
+            "type": "align",
+            "id": "cta_content_text_align",
+            "label": "Text Alignment",
+            "default": "center",
+            "direction": "horizontal"
+          },
+          {
+            "type": "header",
+            "content": "Call to Action Button",
+            "style": "subheading"
+          },
+          {
+            "type": "text",
+            "id": "cta_btn_text",
+            "label": "Text",
+            "default": "Call To Action"
+          },
+          {
+            "type": "action",
+            "id": "cta_btn_action",
+            "label": "Button Action",
+            "anchor": true,
+            "two_step": true,
+            "default": ""
+          },
+          {
+            "type": "checkbox",
+            "id": "cta_new_tab",
+            "label": "Open In New Tab",
+            "default": ""
+          },
+          {
+            "type": "color",
+            "id": "cta_btn_background_color",
+            "label": "Button Background Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "color",
+            "id": "cta_btn_text_color",
+            "label": "Button Text Color",
+            "default": "",
+            "allow_blank": true,
+            "info": "For solid buttons only"
+          },
+          {
+            "type": "radio",
+            "id": "cta_btn_width",
+            "label": "Button Width",
+            "default": "",
+            "allow_blank": true,
+            "options": [
+              {
+                "value": "full",
+                "label": "Full"
+              },
+              {
+                "value": "auto",
+                "label": "Auto"
+              }
+            ]
+          },
+          {
+            "type": "radio",
+            "id": "cta_btn_style",
+            "label": "Button Style",
+            "default": "",
+            "allow_blank": true,
+            "options": [
+              { "label": "Solid", "value": "solid" },
+              { "label": "Outline", "value": "outline" }
+            ]
+          },
+          {
+            "type": "radio",
+            "id": "cta_btn_size",
+            "label": "Button Size",
+            "default": "",
+            "allow_blank": true,
+            "options": [
+              { "label": "Small", "value": "small" },
+              { "label": "Medium", "value": "medium" },
+              { "label": "Large", "value": "large" }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "cta_btn_border_radius",
+            "label": "Border Radius",
+            "default": "",
+            "allow_blank": true
+          }
+        ]
+      },
+      {
+        "name": "Blog Post Opt In",
+        "elements": [
+          {
+            "type": "checkbox",
+            "id": "show_opt_in",
+            "label": "Show Opt In",
+            "default": "true"
+          },
+          {
+            "type": "color",
+            "id": "opt_in_background_color",
+            "label": "Background Color",
+            "default": "#ffffff",
+            "allow_blank": true
+          },
+          {
+            "type": "color",
+            "id": "opt_in_border_color",
+            "label": "Border Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "text",
+            "id": "opt_in_border_width",
+            "label": "Border Width",
+            "default": "1px",
+            "allow_blank": true
+          },
+          {
+            "type": "form",
+            "id": "opt_in_form",
+            "label": "Form",
+            "info": "Select the form you wish to use on this Page.",
+            "default": "default"
+          },
+          {
+            "type": "action",
+            "id": "opt_in_thank_you",
+            "label": "Thank You Page",
+            "info": "Leave this field blank to go to the default thank you page."
+          },
+          {
+            "type": "rich_text",
+            "id": "opt_in_content",
+            "label": "Text",
+            "default": "<h4>Stay connected with news and updates!</h4><p>Join our mailing list to receive the latest news and updates from our team.<br class='hidden--mobile' />Don't worry, your information will not be shared.</p>"
+          },
+          {
+            "type": "text",
+            "id": "opt_in_disclaimer_text",
+            "label": "Disclaimer Text",
+            "default": "We hate SPAM. We will never sell your information, for any reason."
+          },
+          {
+            "type": "color",
+            "id": "opt_in_disclaimer_text_color",
+            "label": "Disclaimer Text Color",
+            "default": "#888888"
+          },
+          {
+            "type": "radio",
+            "id": "opt_in_input_label",
+            "label": "Input Label",
+            "default": "placeholder",
+            "options": [
+              { "label": "Placeholders", "value": "placeholder" },
+              { "label": "Labels", "value": "label" }
+            ]
+          },
+          {
+            "type": "align",
+            "id": "opt_in_content_text_align",
+            "label": "Text Alignment",
+            "default": "center",
+            "direction": "horizontal"
+          },
+          {
+            "type": "header",
+            "content": "Opt In Button",
+            "style": "subheading"
+          },
+          {
+            "type": "text",
+            "id": "opt_in_btn_text",
+            "label": "Text",
+            "default": "Call To Action"
+          },
+          {
+            "type": "color",
+            "id": "opt_in_btn_background_color",
+            "label": "Button Background Color",
+            "default": "",
+            "allow_blank": true
+          },
+          {
+            "type": "color",
+            "id": "opt_in_btn_text_color",
+            "label": "Button Text Color",
+            "default": "",
+            "allow_blank": true,
+            "info": "For solid buttons only"
+          },
+          {
+            "type": "radio",
+            "id": "opt_in_btn_width",
+            "label": "Button Width",
+            "default": "",
+            "allow_blank": true,
+            "options": [
+              {
+                "value": "full",
+                "label": "Full"
+              },
+              {
+                "value": "auto",
+                "label": "Auto"
+              }
+            ]
+          },
+          {
+            "type": "radio",
+            "id": "opt_in_btn_style",
+            "label": "Button Style",
+            "default": "",
+            "allow_blank": true,
+            "options": [
+              { "label": "Solid", "value": "solid" },
+              { "label": "Outline", "value": "outline" }
+            ]
+          },
+          {
+            "type": "radio",
+            "id": "opt_in_btn_size",
+            "label": "Button Size",
+            "default": "",
+            "allow_blank": true,
+            "options": [
+              { "label": "Small", "value": "small" },
+              { "label": "Medium", "value": "medium" },
+              { "label": "Large", "value": "large" }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "opt_in_btn_border_radius",
+            "label": "Border Radius",
+            "default": "",
+            "allow_blank": true
+          }
+        ]
+      },
+      {
+        "name": "Blog Post Container",
+        "elements": [
+          {
+            "type": "checkbox",
+            "id": "blog_post_body_in_panel",
+            "label": "Put Blog Post Body in Container",
+            "default": "false"
+          },
+          {
+            "type": "color",
+            "id": "blog_post_body_background_color",
+            "label": "Container Background Color",
+            "default": "#ffffff",
+            "allow_blank": true
+          },
+          {
+            "type": "select",
+            "id": "blog_post_body_border_type",
+            "label": "Container Border Type",
+            "default": "",
+            "options": [
+              {
+                "value": "none",
+                "label": "None"
+              },
+              {
+                "value": "solid",
+                "label": "Solid"
+              },
+              {
+                "value": "dotted",
+                "label": "Dotted"
+              },
+              {
+                "value": "dashed",
+                "label": "Dashed"
+              },
+              {
+                "value": "double",
+                "label": "Double"
+              },
+              {
+                "value": "ridge",
+                "label": "Ridge"
+              }
+            ]
+          },
+          {
+            "type": "range",
+            "id": "blog_post_body_border_width",
+            "label": "Container Border Width",
+            "default": "",
+            "min": "0",
+            "max": "50"
+          },
+          {
+            "type": "color",
+            "id": "blog_post_body_border_color",
+            "label": "Container Border color",
+            "default": "",
+            "allow_blank": "true"
+          },
+          {
+            "type": "range",
+            "id": "blog_post_body_border_radius",
+            "label": "Container Border Radius",
+            "default": "4",
+            "min": "0",
+            "max": "50"
+          },
+          {
+            "type": "select",
+            "id": "blog_post_body_box_shadow",
+            "label": "Container Box Shadow",
+            "default": "medium",
+            "options": [
+              {
+                "value": "none",
+                "label": "None"
+              },
+              {
+                "value": "small",
+                "label": "Small"
+              },
+              {
+                "value": "medium",
+                "label": "Medium"
+              },
+              {
+                "value": "large",
+                "label": "Large"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Sidebar Container",
+        "elements": [
+          {
+            "type": "checkbox",
+            "id": "sidebar_in_panel",
+            "label": "Put Sidebar in Container",
+            "default": "false"
+          },
+          {
+            "type": "color",
+            "id": "sidebar_background_color",
+            "label": "Container Background Color",
+            "default": "#ffffff",
+            "allow_blank": true
+          },
+          {
+            "type": "select",
+            "id": "sidebar_border_type",
+            "label": "Container Border Type",
+            "default": "",
+            "options": [
+              {
+                "value": "none",
+                "label": "None"
+              },
+              {
+                "value": "solid",
+                "label": "Solid"
+              },
+              {
+                "value": "dotted",
+                "label": "Dotted"
+              },
+              {
+                "value": "dashed",
+                "label": "Dashed"
+              },
+              {
+                "value": "double",
+                "label": "Double"
+              },
+              {
+                "value": "ridge",
+                "label": "Ridge"
+              }
+            ]
+          },
+          {
+            "type": "range",
+            "id": "sidebar_border_width",
+            "label": "Container Border Width",
+            "default": "",
+            "min": "0",
+            "max": "50"
+          },
+          {
+            "type": "color",
+            "id": "sidebar_border_color",
+            "label": "Container Border color",
+            "default": "",
+            "allow_blank": "true"
+          },
+          {
+            "type": "range",
+            "id": "sidebar_border_radius",
+            "label": "Container Border Radius",
+            "default": "4",
+            "min": "0",
+            "max": "50"
+          },
+          {
+            "type": "select",
+            "id": "sidebar_box_shadow",
+            "label": "Container Box Shadow",
+            "default": "medium",
+            "options": [
+              {
+                "value": "none",
+                "label": "None"
+              },
+              {
+                "value": "small",
+                "label": "Small"
+              },
+              {
+                "value": "medium",
+                "label": "Medium"
+              },
+              {
+                "value": "large",
+                "label": "Large"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Background",
+        "elements": [
+          {
+            "type": "select",
+            "id": "bg_type",
+            "label": "Background Media Type",
+            "default": "none",
+            "options": [
+              {
+                "value": "none",
+                "label": "None"
+              },
+              {
+                "value": "image",
+                "label": "Image"
+              },
+              {
+                "value": "video",
+                "label": "Video"
+              }
+            ]
+          },
+          {
+            "type": "video",
+            "id": "bg_video",
+            "label": "Background Video"
+          },
+          {
+            "type": "image_picker",
+            "id": "bg_image",
+            "label": "Background Image",
+            "info": "Suggested dimensions: 2880 × 1200. Learn more about how to properly use background images [here](premier_hero_bg_image).",
+            "fit": "max",
+            "width": 3000,
+            "height": 3000
+          },
+          {
+            "type": "radio",
+            "id": "bg_position",
+            "label": "Background Image Position",
+            "default": "center",
+            "info": "Vertical positioning of the background image.",
+            "options": [
+              {
+                "value": "top",
+                "label": "Top"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "bottom",
+                "label": "Bottom"
+              }
+            ]
+          },
+          {
+            "type": "checkbox",
+            "id": "background_fixed",
+            "label": "Fixed Background Image",
+            "default": "false",
+            "info": "Make this section's background image fixed on scroll. Does not apply to mobile devices."
+          },
+          {
+            "type": "color",
+            "label": "Background Color",
+            "id": "background_color",
+            "default": "",
+            "allow_blank": true,
+            "info": "Will be used as overlay if settings for background image selected. Use Opacity slider. Learn more about working with image overlays [here](image_overlay)"
+          }
+        ]
+      },
+      {
+        "name": "Desktop Layout",
+        "elements": [
+          {
+            "type": "spacer",
+            "id": "padding_desktop",
+            "label": "Desktop Section Padding",
+            "info": "Adjust padding inside of the section. Hold shift to increment/decrement by 10.",
+            "placeholder": {
+              "top": "40",
+              "right": "40",
+              "bottom": "40",
+              "left": "40"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Mobile Layout",
+        "elements": [
+          {
+            "type": "spacer",
+            "id": "padding_mobile",
+            "label": "Mobile Section Padding",
+            "info": "Adjust padding inside of the section",
+            "placeholder": {
+              "top": "40",
+              "right": "10",
+              "bottom": "40",
+              "left": "10"
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,82 @@
+<style>
+  {% if section.settings.bg_type == "image" %}
+    #section-{{ section.id }} {
+      background-image: url({{ section.settings.bg_image | image_picker_url: "background.jpg" }});
+      background-position: {{ section.settings.bg_position }};
+    }
+  {% endif %}
+  #section-{{ section.id }} .section__overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: {{ section.settings.background_color }};
+  }
+  #section-{{ section.id }} .sizer {
+    padding-top: {{ section.settings.padding_mobile.top | default: 40 | append: "px" }};
+    padding-bottom: {{ section.settings.padding_mobile.bottom | default: 40 | append: "px" }};
+  }
+  #section-{{ section.id }} .container {
+    max-width: calc(1260px + {{ section.settings.padding_mobile.right | default: 10 | append: "px" }} + {{ section.settings.padding_mobile.left | default: 10 | append: "px" }});
+    padding-right: {{ section.settings.padding_mobile.right | default: 10 | append: "px" }};
+    padding-left: {{ section.settings.padding_mobile.left | default: 10 | append: "px" }};
+    {% if section.settings.full_width == true %}
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    {% endif %}
+  }
+  #section-{{ section.id }} .row {
+    {% if section.settings.full_width == true %}
+      margin: 0 !important
+    {% endif %}
+  }
+  #section-{{ section.id }} .container--full {
+    width: 100%;
+    max-width: calc(100% + {{ section.settings.padding_mobile.right | default: 10 | append: "px" }} + {{ section.settings.padding_mobile.left | default: 10 | append: "px" }});
+  }
+  @media (min-width: 768px) {
+    {% if section.settings.bg_type == "image" %}
+      #section-{{ section.id }} {
+        {% if section.settings.background_fixed %}
+          background-attachment: fixed;
+        {% endif %}
+      }
+    {% endif %}
+    #section-{{ section.id }} .sizer {
+      padding-top: {{ section.settings.padding_desktop.top | default: 100 | append: "px" }};
+      padding-bottom: {{ section.settings.padding_desktop.bottom | default: 100 | append: "px" }};
+    }
+    #section-{{ section.id }} .container {
+      max-width: calc(1260px + {{ section.settings.padding_desktop.right | default: 40 | append: "px" }} + {{ section.settings.padding_desktop.left | default: 40 | append: "px" }});
+      padding-right: {{ section.settings.padding_desktop.right | default: 40 | append: "px" }};
+      padding-left: {{ section.settings.padding_desktop.left | default: 40 | append: "px" }};
+    }
+    #section-{{ section.id }} .container--full {
+      max-width: calc(100% + {{ section.settings.padding_desktop.right | default: 40 | append: "px" }} + {{ section.settings.padding_desktop.left | default: 40 | append: "px" }});
+    }
+  }
+  {% if section.settings.equal_height %}
+    #section-{{ section.id }} .row {
+      -webkit-box-align: stretch !important;
+      -ms-flex-align: stretch !important;
+      align-items: stretch !important;
+    }
+  {% endif %}
+  {% if section.type == 'carousel' %}
+    #section-{{ section.id }} .slick-prev:before, #section-{{ section.id }} .slick-next:before {
+      color: {{ section.settings.arrow_color| default: settings.btn_background_color }};
+      font-size: {{ section.settings.arrow_size | append: "px" }};
+    }
+    #section-{{ section.id }} .slick-dots li {
+      margin: 0 {{ section.settings.dot_spacing | append: "px" }};
+    }
+    #section-{{ section.id }} .slick-dots li button:before {
+      color: {{ section.settings.dot_color| default: settings.btn_background_color }};
+      font-size: {{ section.settings.dot_size | append: "px" }}
+    }
+    #section-{{ section.id }} .slick-dots li.slick-active button:before {
+      color: {{ section.settings.active_dot_color | default: settings.btn_background_color }};
+    }
+  {% endif %}
+</style>

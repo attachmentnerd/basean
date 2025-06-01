@@ -1,0 +1,6 @@
+{% include "element_social_icons_style" %}
+<div class="social-icons social-icons--{{ block.settings.social_icon_background_style }} social-icons--{{ block.id }}" kjb-settings-id="{{ 'social_icons_text_color' | settings_id: section: section, block: block }}">
+  <div class="social-icons__icons">
+    {% include "element_social_icons" %}
+  </div>
+</div>

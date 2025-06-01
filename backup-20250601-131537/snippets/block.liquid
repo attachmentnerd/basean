@@ -1,0 +1,46 @@
+{% include 'block_styles' %}
+
+{% if block.settings.make_block %}
+  <div class="block-break"></div>
+{% endif %}
+<div
+  id="block-{{ block.id }}"
+  class="
+  block-type--{{ block.type }}
+  text-{{ block.settings.text_align }}
+  {% if block.type == 'audio' %}col-{{ block.settings.width | at_least: 8 }}{% else %}col-{{ block.settings.width }}{% endif %}
+  {% if block.settings.hide_on_desktop == true %}hidden--desktop{% endif %}
+  {% if block.settings.hide_on_mobile == true %}hidden--mobile{% endif %}
+  {% if block.settings.animation_type %}
+    {% if block.settings.animation_type != "none" %} animated {% endif %}
+  {% endif %}
+  {% if block.settings.reveal_offset != blank or block.settings.reveal_event != blank %} reveal {% endif %}
+  {% if carousel %}slide{% endif %}"
+  {% if carousel %}data-slick-id="{{ block.id }}"{% endif %}
+  data-reveal-event="{{ current_site.find_event[block.settings.reveal_event].occurs_at | date: "%Y-%jT%T%:z" }}"
+  data-reveal-offset="{{ block.settings.reveal_offset }}"
+  data-reveal-units="{{ block.settings.reveal_units }}"
+  {% unless carousel %}
+    kjb-settings-id="{{ 'width' | settings_id: section: section, block: block }}"
+  {% endunless %}
+  {% block_attributes %}
+>
+  <div class="block
+    box-shadow-{{ block.settings.box_shadow }}
+    {% if block.settings.background_color != blank %} background-{{ block.settings.background_color | color_scheme_class }}{% endif %}"
+    {% if editor != true %}
+      data-aos="{{ block.settings.animation_type }}{% if block.settings.animation_direction != "none" %}-{{ block.settings.animation_direction }}"{% else %}"{% endif %}
+      data-aos-delay="{{ block.settings.delay }}"
+      data-aos-duration="{{ block.settings.duration }}"
+    {% endif %}
+    {% if editor == true and block.settings.animation_type !="none" %}
+      data-animated="true"
+    {% endif %}
+  >
+    {% assign block_type = 'block_' | append: type %}
+    {% include block_type %}
+  </div>
+</div>
+{% if block.settings.make_block %}
+  <div class="block-break"></div>
+{% endif %}

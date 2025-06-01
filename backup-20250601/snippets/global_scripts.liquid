@@ -1,0 +1,11 @@
+<!-- Javascripts ======================================================= -->
+{{ "encore_core.js" | kajabi_asset_url | script_tag }}
+{{ "scripts.js" | asset_url | script_tag }}
+
+{% comment %}
+<!-- Optional Bootstrap Javascript - Remove the liquid comment tags to enable -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+{% endcomment %}
+
+<!-- Customer JS ======================================================= -->
+{% include "global_custom_js" %}

@@ -1,0 +1,26 @@
+{% assign logo_settings_id = 'logo' | settings_id: section: section, block: block %}
+
+<style>
+  #block-{{ block.id }} {
+    line-height: 1;
+  }
+  #block-{{ block.id }} .logo__image {
+    display: block;
+    width: {{ block.settings.logo_width | remove: "px" | default: 40 | append: "px" }};
+  }
+  #block-{{ block.id }} .logo__text {
+    color: {{ block.settings.logo_text_color }};
+  }
+</style>
+
+<a class="logo" href="/">
+  {% if block.settings.logo_type == "image" %}
+    {% if current_site.logo_image != "" and block.settings.logo == "" %}
+      {{ current_site.logo_image | image_picker_url: 'logo.png' | image_tag: class: "logo__image", alt: block.settings.image_alt, kjb_settings_id: logo_settings_id }}
+    {% else %}
+      {{ block.settings.logo | image_picker_url: 'logo.png' | image_tag: class: "logo__image", alt: block.settings.image_alt, kjb_settings_id: logo_settings_id }}
+    {% endif %}
+  {% elsif block.settings.logo_type == "text" %}
+    <p class="logo__text" kjb-settings-id="{{ 'logo_text' | settings_id: section: section, block: block }}">{{ block.settings.logo_text }}</p>
+  {% endif %}
+</a>

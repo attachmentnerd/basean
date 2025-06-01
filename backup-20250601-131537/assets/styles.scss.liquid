@@ -1,0 +1,91 @@
+/* ==============================================
+   ATTACHMENTNERD THEME - Main Entry Point
+   
+   This file exists to satisfy Kajabi's requirement for styles.scss.liquid
+   Our actual styles are in pre-compiled CSS files for simplicity
+   ============================================== */
+
+/* 1. Import Kajabi Core CSS (includes Cornerstone framework) */
+@import url('https://cdn.mykajabi.com/assets/core.css');
+
+/* 2. Import Main Theme Styles (pre-compiled) */
+@import url('{{ "styles.css" | asset_url }}');
+
+/* 3. Import User Overrides (custom CSS from theme editor) */
+@import url('{{ "overrides.css" | asset_url }}');
+
+/* 5. Apply Theme-Specific Font Families */
+body {
+  font-family: var(--font-body, var(--font-sans));
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading, var(--font-sans));
+}
+
+/* 6. Dynamic Theme Settings Application */
+{% if settings.enable_rounded_corners == false %}
+  .btn,
+  .card,
+  .form-control,
+  .dropdown__menu {
+    border-radius: 0;
+  }
+{% endif %}
+
+{% if settings.enable_shadows == false %}
+  .card,
+  .btn:hover,
+  .dropdown__menu {
+    box-shadow: none !important;
+  }
+{% endif %}
+
+/* 7. Header Style Variations */
+{% case settings.header_style %}
+  {% when 'transparent' %}
+    .header {
+      background-color: transparent;
+      border-bottom: none;
+      position: absolute;
+      width: 100%;
+    }
+    
+    .header__link {
+      color: var(--color-white);
+    }
+  
+  {% when 'dark' %}
+    .header {
+      background-color: var(--color-gray-900);
+      border-bottom-color: var(--color-gray-800);
+    }
+    
+    .header__link {
+      color: var(--color-gray-300);
+    }
+    
+    .header__link:hover {
+      color: var(--color-white);
+    }
+{% endcase %}
+
+/* 8. Button Style Variations */
+{% case settings.button_style %}
+  {% when 'rounded' %}
+    .btn {
+      border-radius: var(--border-radius-full);
+    }
+  
+  {% when 'square' %}
+    .btn {
+      border-radius: 0;
+    }
+{% endcase %}
+
+/* 9. Custom CSS from Theme Editor */
+{% if settings.custom_css %}
+  {{ settings.custom_css }}
+{% endif %}
+</content>
+</invoke>

@@ -1,0 +1,37 @@
+<style>
+  /* Dropdown menu colors for desktop */
+  @media (min-width: 768px) {
+    #block-{{ block.id }} .dropdown__menu {
+      background: {{ block.settings.background_color }};
+      color: {{ block.settings.text_color }};
+    }
+    #block-{{ block.id }} .dropdown__item a,
+    #block-{{ block.id }} {
+      color: {{ block.settings.text_color }};
+    }
+  }
+  /* Mobile menu text alignment */
+  @media (max-width: 767px) {
+    #block-{{ block.id }} .dropdown__item a,
+    #block-{{ block.id }} .user__login a {
+      text-align: {{ section.settings.mobile_menu_text_alignment }};
+    }
+  }
+</style>
+
+<div class="user" kjb-settings-id="{{ 'language_login' | settings_id: section: section, block: block }}">
+  {% if current_site_user %}
+    <div class="dropdown">
+      <a class="dropdown__trigger">
+        {{ current_site_user | avatar_url | image_tag: class: "user__avatar", alt: "User Avatar" }}
+      </a>
+      <div class="dropdown__menu dropdown__menu--text-{{ block.settings.user_dropdown_menu_alignment }}">
+        <span class="dropdown__item" kjb-settings-id="{{ 'language_library' }}"><a href="/library">{{ block.settings.language_library }}</a></span>
+        <span class="dropdown__item" kjb-settings-id="{{ 'language_settings' }}">{{ block.settings.language_settings | member_settings_link }}</span>
+        <span class="dropdown__item" kjb-settings-id="{{ 'language_logout' }}">{{ block.settings.language_logout | member_logout_link }}</span>
+      </div>
+    </div>
+  {% else %}
+    <span class="user__login" kjb-settings-id="{{ 'language_login' }}">{{ block.settings.language_login | member_login_link }}</span>
+  {% endif %}
+</div>

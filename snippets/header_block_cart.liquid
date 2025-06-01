@@ -1,0 +1,14 @@
+<style>
+  #block-cart .cart-button button {
+    transition: all 0.1s;
+    color: {{ section.settings.text_color }};
+  }
+  .header.header--fixed #block-cart .cart-button button {
+    transition: all 0.1s;
+    color: {{ section.settings.sticky_text_color }};
+  }
+</style>
+
+<div id="block-cart" class="header__block--cart" kjb-settings-id="{{ 'info' | settings_id: section: section, block: block }}">
+  {{ "" | cart }}
+</div>

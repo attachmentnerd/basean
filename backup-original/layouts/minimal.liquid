@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  
+  <title>{{ page_title }}</title>
+  <meta name="description" content="{{ page_description | escape }}">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="{{ canonical_url }}">
+  
+  <!-- Favicon -->
+  {% if settings.favicon %}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url }}">
+  {% endif %}
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Kajabi Styles -->
+  {{ 'application.css' | asset_url | stylesheet_tag }}
+  
+  <!-- Custom CSS Variables -->
+  <style>
+    :root {
+      --color-primary: {{ settings.color_primary | default: '#2563eb' }};
+      --color-text: {{ settings.color_text | default: '#1f2937' }};
+      --color-background: {{ settings.color_background | default: '#ffffff' }};
+      --font-sans: {{ settings.font_sans | default: 'Inter, system-ui, -apple-system, sans-serif' }};
+      --container-max: 1280px;
+    }
+  </style>
+  
+  <!-- Kajabi Scripts -->
+  {{ content_for_header }}
+</head>
+
+<body class="layout-minimal template-{{ template | replace: '.', '-' | handle }}">
+  <!-- Main Content -->
+  <main class="main-content" role="main">
+    {{ content_for_layout }}
+  </main>
+  
+  <!-- Scripts -->
+  {{ 'application.js' | asset_url | script_tag }}
+  
+  <!-- Kajabi Footer Scripts -->
+  {{ content_for_footer }}
+</body>
+</html>

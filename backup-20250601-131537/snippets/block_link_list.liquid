@@ -1,0 +1,33 @@
+<style>
+  #block-{{ block.id }} .link-list__title {
+    color: {{ block.settings.title_color }};
+  }
+  #block-{{ block.id }} .link-list__link {
+    color: {{ block.settings.link_color }};
+  }
+</style>
+
+{% if placement == "section" %}
+  {% assign desktop_text_align = section.settings.text_align %}
+  {% assign mobile_text_align = section.settings.mobile_text_align %}
+{% else %}
+  {% assign desktop_text_align = block.settings.text_align %}
+  {% assign mobile_text_align = block.settings.mobile_text_align %}
+{% endif %}
+
+<div class="link-list link-list--{{ block.settings.vertical }} link-list--desktop-{{ block.settings.text_align }} link-list--mobile-{{ block.settings.mobile_text_align }}">
+  {% if block.settings.show_title and block.settings.title != blank %}
+    <h5 
+      class="link-list__title" 
+      kjb-settings-id="{{ 'title' | settings_id: section: section, block: block }}" 
+      {% element_attributes "block.settings.title" %}
+    >
+      {{ block.settings.title }}
+    </h5>
+  {% endif %}
+  <div class="link-list__links" kjb-settings-id="{{ 'menu' | settings_id: section: section, block: block }}">
+    {% for link in current_site.link_lists[block.settings.menu].links %}
+      <a class="link-list__link" href="{{ link.url }}" {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %}>{{ link.name }}</a>
+    {% endfor %}
+  </div>
+</div>

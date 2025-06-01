@@ -1,0 +1,16 @@
+<style>
+   .sidebar-cta--{{ block.id }} {
+     text-align: {{ block.settings.cta_text_align }};
+   }
+</style>
+
+<div class="sidebar-cta sidebar-cta--{{ block.id }}">
+  <div 
+    class="sidebar-cta__content" 
+    kjb-settings-id="{{ 'content' | settings_id: section: section, block: block }}" 
+    {% element_attributes "block.settings.content" %}
+  >
+    {{ block.settings.content }}
+  </div>
+  {% include "element_button" %}
+</div>

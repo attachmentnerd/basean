@@ -1,0 +1,16 @@
+{% if block.settings.assessment != blank %}
+<style>
+  .assessment-wrapper {
+    line-height: 0;
+  }
+</style>
+  <div class="assessment-wrapper">
+    <iframe id="assessment" src="{{ current_site.find_assessment[block.settings.assessment].url }}" frameborder="0" allowfullscreen onload="resizeAssessmentIframe(this)"></iframe>
+  </div>
+{% else %}
+  {% if editor %}
+    <div class="editor-null" kjb-settings-id="{{ 'assessment' | settings_id: section: section, block: block }}">
+      Click here to select an assessment to display.
+    </div>
+  {% endif %}
+{% endif %}

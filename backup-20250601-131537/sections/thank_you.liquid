@@ -1,0 +1,49 @@
+<section class="section">
+  <div class="container text-center">
+    <h1>{{ section.settings.title | default: 'Thank You!' }}</h1>
+    <p>{{ section.settings.message | default: 'Your submission has been received.' }}</p>
+    
+    {% if section.settings.show_button %}
+      <a href="{{ section.settings.button_link | default: '/' }}" class="btn btn--primary">
+        {{ section.settings.button_text | default: 'Continue' }}
+      </a>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Thank You",
+  "elements": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Thank You!"
+    },
+    {
+      "type": "text",
+      "id": "message",
+      "label": "Message",
+      "default": "Your submission has been received."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Show Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Continue"
+    },
+    {
+      "type": "action",
+      "id": "button_link",
+      "label": "Button Link"
+    }
+  ]
+}
+{% endschema %}

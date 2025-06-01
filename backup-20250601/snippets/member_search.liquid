@@ -1,0 +1,23 @@
+<style>
+  .filter__field {
+    color: {{ section.settings.color_filter_options }};
+  }
+  .filter__icon {
+    color: {{ section.settings.color_filter_options }};
+  }
+</style>
+
+<div class="member-search">
+  <div class="filter">
+    <select class="filter__field" name="search-value">
+      <option value="name">{{ section.settings.text_name }}</option>
+      <option value="location">{{ section.settings.text_location }}</option>
+    </select>
+    <div class="filter__icon"><i class="fa fa-caret-down"></i></div>
+  </div>
+  <form class="search" action="{{ member_directory.url }}" method="get" role="search" kjb-settings-id="{{ 'text_search_placeholder' | settings_id: section: section, block: block }}">
+    <input class="form-control search__control" type="search" name="name" placeholder="{{ section.settings.text_search_placeholder }}">
+    <input class="hidden form-control search__control" type="search" name="location" placeholder="{{ section.settings.text_search_placeholder }}">
+    {% include "element_button_submit_search", appended_classes: "hidden--submit" %}
+  </form>
+</div>

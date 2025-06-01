@@ -1,0 +1,38 @@
+/*
+ * Main Stylesheet for AttachmentNerd Kajabi Theme
+ * This file imports all component styles
+ */
+
+/* CSS Variables - Theme Settings */
+:root {
+  /* Colors from theme settings */
+  --color-primary: {{ settings.color_primary | default: '#2563eb' }};
+  --color-secondary: {{ settings.color_secondary | default: '#10b981' }};
+  --color-accent: {{ settings.color_accent | default: '#f59e0b' }};
+  --color-text: {{ settings.color_text | default: '#1f2937' }};
+  --color-text-light: {{ settings.color_text_light | default: '#6b7280' }};
+  --color-background: {{ settings.color_background | default: '#ffffff' }};
+  --color-surface: {{ settings.color_surface | default: '#f9fafb' }};
+  --color-border: {{ settings.color_border | default: '#e5e7eb' }};
+  
+  /* Typography from theme settings */
+  --font-heading: {{ settings.font_heading | default: 'Inter' }}, system-ui, sans-serif;
+  --font-body: {{ settings.font_body | default: 'Inter' }}, system-ui, sans-serif;
+  
+  /* Button colors */
+  --btn-primary-bg: {{ settings.button_primary_bg | default: settings.color_primary | default: '#2563eb' }};
+  --btn-primary-text: {{ settings.button_primary_text | default: '#ffffff' }};
+  --btn-secondary-bg: {{ settings.button_secondary_bg | default: 'transparent' }};
+  --btn-secondary-text: {{ settings.button_secondary_text | default: settings.color_primary | default: '#2563eb' }};
+  --btn-secondary-border: {{ settings.button_secondary_border | default: settings.color_primary | default: '#2563eb' }};
+}
+
+/* Import component styles - using @import for SCSS */
+@import url({{ 'css-variables.css' | asset_url }});
+@import url({{ 'components.css' | asset_url }});
+@import url({{ 'utilities.css' | asset_url }});
+@import url({{ 'responsive.css' | asset_url }});
+@import url({{ 'application.css' | asset_url }});
+@import url({{ 'custom_site_styles.css' | asset_url }});
+
+/* Additional custom styles can be added below */

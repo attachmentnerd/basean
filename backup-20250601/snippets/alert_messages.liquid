@@ -1,0 +1,20 @@
+{% if alert_messages.success %}
+  <div class="flash-messages flash--success">
+    <div class="container">
+      <h5 class="flash-text">
+        <span class="fa fa-check-circle"></span>
+        {{ alert_messages.success }}
+      </h5>
+    </div>
+  </div>
+{% endif %}
+{% if alert_messages.error %}
+  <div class="flash-messages flash--error">
+    <div class="container">
+      <h5 class="flash-text">
+        <span class="fa fa-exclamation-triangle"></span>
+        {{ alert_messages.error }}
+      </h5>
+    </div>
+  </div>
+{% endif %}

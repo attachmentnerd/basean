@@ -1,0 +1,26 @@
+{% assign offer = current_site.find_offer[block.settings.offer_id] %}
+
+<style>
+#block-{{ block.id }} {
+  background: {{ block.settings.background_color }};
+  text-align: {{ section.settings.alignment }};
+}
+</style>
+
+{% assign block_text_color = block.settings.text_color %}
+<div class="col-4">
+  <a href="{{ offer.checkout_url }}" id="block-{{ block.id }}" class="card store-card section-{{ block.settings.background_color | color_scheme_class }}"
+    kjb-settings-id="{{ 'background_color' | settings_id: section: section, block: block }}"
+    {% if block.settings.link_target %}target="_blank"{% endif %}>
+    {% if offer.image_url %}
+      {{ offer.image_url | image_tag: class: "store-card__image" }}
+    {% else %}
+      {{ 'placeholder.png' | asset_url | image_tag: class: "store-card__image" }}
+    {% endif %}
+    <div class="store-card__body">
+      <h5 class="store-card__title" style="color:{{ block_text_color }};">{{ offer.title }}</h5>
+      <p class="store-card__description" style="color:{{ block_text_color }};">{{ offer.description | strip_html }}</p>
+      <h5 class="store-card__price" style="color:{{ block_text_color }};">{{ offer | display_price }}</h5>
+    </div>
+  </a>
+</div>

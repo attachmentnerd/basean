@@ -1,0 +1,39 @@
+{% assign block_color = block.settings.background_color | default: "#fff" %}
+
+<style>
+  #block-{{ block.id }} {
+    background: {{ block.settings.background_color }};
+    text-align: {{ section.settings.alignment }};
+  }
+</style>
+
+<div class="col-4">
+  <a href="{{ block.settings.card_action }}" id="block-{{ block.id }}" class="card store-card section-{{ block.settings.background_color | color_scheme_class }}"
+    kjb-settings-id="{{ 'background_color' | settings_id: section: section, block: block }}"
+    {% if block.settings.link_target %}target="_blank"{% endif %}>
+    {{ block.settings.image | image_picker_url: 'card.jpg' | image_tag: class: "store-card__image" }}
+    <div class="store-card__body">
+      <h5
+        class="store-card__title"
+        style="color:{{ block_text_color }};"
+        {% element_attributes "block.settings.title" %}
+      >
+        {{ block.settings.title }}
+      </h5>
+      <p
+        class="store-card__description"
+        style="color:{{ block_text_color }};"
+        {% element_attributes "block.settings.description" %}
+      >
+        {{ block.settings.description | strip_html }}
+      </p>
+      <h5
+        class="store-card__price"
+        style="color:{{ block_text_color }};"
+        {% element_attributes "block.settings.price" %}
+      >
+        {{ block.settings.price }}
+      </h5>
+    </div>
+  </a>
+</div>

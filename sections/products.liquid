@@ -1,0 +1,663 @@
+{% assign btn_background_color = section.settings.btn_background_color | default: settings.btn_background_color %}
+{% assign btn_text_color = section.settings.btn_text_color | default: settings.btn_text_color %}
+{% assign btn_border_radius = section.settings.btn_border_radius | default: settings.btn_border_radius | remove: "px" | append: "px" %}
+{% assign btn_style = section.settings.btn_style | default: settings.btn_style %}
+{% assign btn_size = section.settings.btn_size | default: settings.btn_size %}
+{% assign btn_width = section.settings.btn_width | default: settings.btn_width %}
+
+<style>
+  .products .btn {
+    color: {{ btn_text_color }} !important;
+    border-color: {{ btn_background_color }};
+    border-radius: {{ btn_border_radius }};
+    background-color: {{ btn_background_color }};
+  }
+  .products .btn--outline {
+    background: transparent;
+    color: {{ btn_background_color }} !important;
+  }
+  {% if section.settings.bg_type == "image" %}
+    #section-{{ section.id }} {
+      background-image: url({{ section.settings.bg_image | image_picker_url: "background.jpg" }});
+      background-position: {{ section.settings.bg_position }};
+      {% if section.settings.background_fixed %}
+        background-attachment: fixed;
+      {% endif %}
+    }
+  {% endif %}
+  .products {
+    background-color: {{ section.settings.background_color }};
+  }
+  .products .sizer {
+    padding-top: {{ section.settings.padding_mobile.top | default: 40 | append: "px" }};
+    padding-bottom: {{ section.settings.padding_mobile.bottom | default: 40 | append: "px" }};
+  }
+  .products .container {
+    max-width: calc(1260px + {{ section.settings.padding_mobile.right | default: 10 | append: "px" }} + {{ section.settings.padding_mobile.left | default: 10 | append: "px" }});
+    padding-right: {{ section.settings.padding_mobile.right | default: 10 | append: "px" }};
+    padding-left: {{ section.settings.padding_mobile.left | default: 10 | append: "px" }};
+  }
+  .products__title {
+    color: {{ section.settings.color_heading_text }} !important;
+  }
+  {% if section.settings.equal_height %}
+    .products__list {
+      -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+      align-items: stretch;
+    }
+    .product {
+      height: 100%;
+    }
+    .product__info {
+      flex: 1;
+    }
+  {% endif %}
+  .progress {
+    background-color: {{ section.settings.product_background_color }};
+  }
+  .progress__inner {
+    background-color: {{ section.settings.progress_color | default: settings.btn_background_color }};
+  }
+  .product {
+    background-color: {{ section.settings.product_background_color }};
+    text-align: {{ section.settings.text_align }};
+    border: {{ section.settings.border_width | default: 1 | append: "px" }} {{ section.settings.border_type }} {{ section.settings.border_color | default: "black" }};
+    border-radius: {{ section.settings.border_radius | default: 4 | append: "px" }};
+    background-color: {{ section.settings.member_background_color }};
+  }
+  .product__title {
+    color: {{ section.settings.color_title_text }} !important;
+  }
+  .product__body {
+    color: {{ section.settings.color_body_text }};
+  }
+  .product__button {
+    text-align: {{ section.settings.btn_align }}
+  }
+  @media (min-width: 768px) {
+    {% if section.settings.bg_type == "image" %}
+      .products {
+        {% if section.settings.background_fixed %}
+          background-attachment: fixed;
+        {% endif %}
+      }
+    {% endif %}
+    .products .sizer {
+      padding-top: {{ section.settings.padding_desktop.top | default: 100 | append: "px" }};
+      padding-bottom: {{ section.settings.padding_desktop.bottom | default: 100 | append: "px" }};
+    }
+    .products .container {
+      max-width: calc(1260px + {{ section.settings.padding_desktop.right | default: 40 | append: "px" }} + {{ section.settings.padding_desktop.left | default: 40 | append: "px" }});
+      padding-right: {{ section.settings.padding_desktop.right | default: 40 | append: "px" }};
+      padding-left: {{ section.settings.padding_desktop.left | default: 40 | append: "px" }};
+    }
+  }
+  .pag__link {
+    color: {{ section.settings.color_pagination_default }};
+  }
+  .pag__link--current {
+    color: {{ section.settings.color_pagination_selected }};
+  }
+  .pag__link--disabled {
+    color: {{ section.settings.color_pagination_disabled }};
+  }
+</style>
+
+{% if products.size > 0 %}
+  <section class="section products {% if section.settings.background_color != blank %} background-{{ section.settings.background_color | color_scheme_class }}{% endif %}" kjb-settings-id="{{ 'background_color' | settings_id: section: section }}">
+    <div class="sizer">
+      {% if section.settings.bg_type == "video" %}
+        {% include "global_background_video" %}
+      {% endif %}
+      <div class="container">
+        <div class="row products__list">
+          <div class="col-12 products__col">
+            <div class="products__header">
+              <h3 class="products__title" kjb-settings-id="{{ 'text_heading' | settings_id: section: section }}">{{ section.settings.text_heading }}</h3>
+              {% if section.settings.show_resume_course_cta %}
+                {% include "resume_course" %}
+              {% endif %}
+            </div>
+          </div>
+          {% paginate products by section.settings.pagination_amount %}
+            {% for product in paginate.collection %}
+              <div class="col-{{ section.settings.layout }} products__col">
+                {% include "product" %}
+              </div>
+            {% endfor %}
+            {% if paginate.pages > 1 %}
+              {% include "pagination" %}
+            {% endif %}
+          {% endpaginate %}
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Products",
+    "deletable": "false",
+    "duplicatable": "false",
+    "elements": [
+      {
+        "type": "text",
+        "id": "text_heading",
+        "label": "Heading Text",
+        "default": "My Products"
+      },
+      {
+        "type": "color",
+        "id": "color_heading_text",
+        "label": "Heading Text Color",
+        "default": "",
+        "allow_blank": "true"
+      },
+      {
+        "type": "header",
+        "content": "Resume Course"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_resume_course_cta",
+        "label": "Show Resume Course",
+        "default": "true"
+      },
+      {
+        "type": "color",
+        "label": "Background Color",
+        "id": "resume_course_background_color",
+        "allow_blank": true
+      },
+      {
+        "type": "select",
+        "id": "resume_course_border_type",
+        "label": "Border Type",
+        "default": "",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "solid",
+            "label": "Solid"
+          },
+          {
+            "value": "dotted",
+            "label": "Dotted"
+          },
+          {
+            "value": "dashed",
+            "label": "Dashed"
+          },
+          {
+            "value": "double",
+            "label": "Double"
+          },
+          {
+            "value": "ridge",
+            "label": "Ridge"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "resume_course_border_width",
+        "label": "Border Width",
+        "default": "1",
+        "min": "0",
+        "max": "10"
+      },
+      {
+        "type": "color",
+        "id": "resume_course_border_color",
+        "label": "Border Color",
+        "default": "",
+        "allow_blank": "true"
+      },
+      {
+        "type": "range",
+        "id": "resume_course_border_radius",
+        "label": "Border Radius",
+        "default": "4",
+        "min": "0",
+        "max": "50"
+      },
+      {
+        "type": "select",
+        "id": "resume_course_box_shadow",
+        "label": "Box Shadow",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "start",
+        "label": "Start Text",
+        "default": "Start Course"
+      },
+      {
+        "type": "text",
+        "id": "resume",
+        "label": "Resume Text",
+        "default": "Resume Course"
+      },
+      {
+        "type": "text",
+        "id": "again",
+        "label": "Restart Course Text",
+        "default": "Start Course Over"
+      },
+      {
+        "type": "color",
+        "id": "resume_course_status_color",
+        "label": "Status Text Color",
+        "default": "",
+        "allow_blank": "true"
+      },
+      {
+        "type": "color",
+        "id": "resume_course_title_color",
+        "label": "Course Title Color",
+        "default": "",
+        "allow_blank": "true"
+      },
+      {
+        "type": "header",
+        "content": "Products Appearance"
+      },
+      {
+        "type": "select",
+        "id": "layout",
+        "label": "Products Layout Style",
+        "default": "12",
+        "options": [
+          {
+            "value": "12",
+            "label": "List"
+          },
+          {
+            "value": "6",
+            "label": "2 Column Grid"
+          },
+          {
+            "value": "4",
+            "label": "3 Column Grid"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "equal_height",
+        "label": "Equal Height Items",
+        "default": "true"
+      },
+      {
+        "type": "range",
+        "id": "pagination_amount",
+        "label": "Products Per Page",
+        "default": "12",
+        "min": "2",
+        "max": "24"
+      },
+      {
+        "type": "checkbox",
+        "id": "progress",
+        "label": "Show Product Progress",
+        "default": "true"
+      },
+      {
+        "type": "color",
+        "id": "progress_color",
+        "label": "Progress Bar Color",
+        "allow_blank": "true"
+      },
+      {
+        "type": "color",
+        "id": "product_background_color",
+        "label": "Product Background Color",
+        "allow_blank": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_product_body",
+        "label": "Show Product Body",
+        "default": "true"
+      },
+      {
+        "type": "text",
+        "id": "truncate_product_body",
+        "label": "Truncate At",
+        "default": "",
+        "info": "Insert a custom number if you would like to override the standard 300 character truncation."
+      },
+      {
+        "type": "align",
+        "id": "text_align",
+        "label": "Text Alignment",
+        "default": "left",
+        "direction": "horizontal"
+      },
+      {
+        "type": "color",
+        "label": "Title Text Color",
+        "id": "color_title_text",
+        "allow_blank": true,
+        "default": ""
+      },
+      {
+        "type": "color",
+        "label": "Body Text Color",
+        "id": "color_body_text",
+        "allow_blank": true,
+        "default": ""
+      },
+      {
+        "type": "select",
+        "id": "border_type",
+        "label": "Border Type",
+        "default": "",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "solid",
+            "label": "Solid"
+          },
+          {
+            "value": "dotted",
+            "label": "Dotted"
+          },
+          {
+            "value": "dashed",
+            "label": "Dashed"
+          },
+          {
+            "value": "double",
+            "label": "Double"
+          },
+          {
+            "value": "ridge",
+            "label": "Ridge"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "border_width",
+        "label": "Border Width",
+        "default": "1",
+        "min": "0",
+        "max": "10"
+      },
+      {
+        "type": "color",
+        "id": "border_color",
+        "label": "Border Color",
+        "default": "",
+        "allow_blank": "true"
+      },
+      {
+        "type": "range",
+        "id": "border_radius",
+        "label": "Border Radius",
+        "default": "4",
+        "min": "0",
+        "max": "50"
+      },
+      {
+        "type": "select",
+        "id": "box_shadow",
+        "label": "Box Shadow",
+        "default": "medium",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Button Appearance"
+      },
+      {
+        "type": "text",
+        "id": "btn_text",
+        "label": "Button Text",
+        "default": "View Product"
+      },
+      {
+        "type": "color",
+        "id": "btn_background_color",
+        "label": "Button Background Color",
+        "default": "",
+        "allow_blank": true
+      },
+      {
+        "type": "color",
+        "id": "btn_text_color",
+        "label": "Button Text Color",
+        "default": "",
+        "allow_blank": true,
+        "info": "For solid buttons only"
+      },
+      {
+        "type": "radio",
+        "id": "btn_width",
+        "label": "Button Width",
+        "default": "",
+        "allow_blank": true,
+        "options": [
+          {
+            "value": "full",
+            "label": "Full"
+          },
+          {
+            "value": "auto",
+            "label": "Auto"
+          }
+        ]
+      },
+      {
+        "type": "radio",
+        "id": "btn_style",
+        "label": "Button Style",
+        "default": "",
+        "allow_blank": true,
+        "options": [
+          { "label": "Solid", "value": "solid" },
+          { "label": "Outline", "value": "outline" }
+        ]
+      },
+      {
+        "type": "radio",
+        "id": "btn_size",
+        "label": "Button Size",
+        "default": "small",
+        "allow_blank": true,
+        "options": [
+          { "label": "Small", "value": "small" },
+          { "label": "Medium", "value": "medium" },
+          { "label": "Large", "value": "large" }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "btn_border_radius",
+        "label": "Border Radius",
+        "default": "",
+        "allow_blank": true
+      },
+      {
+        "type": "header",
+        "content": "Pagination Appearance"
+      },
+      {
+        "type": "color",
+        "label": "Pagination Default Color",
+        "id": "color_pagination_default",
+        "allow_blank": true,
+        "default": ""
+      },
+      {
+        "type": "color",
+        "label": "Pagination Selected Color",
+        "id": "color_pagination_selected",
+        "allow_blank": true,
+        "default": ""
+      },
+      {
+        "type": "color",
+        "label": "Pagination Disabled Color",
+        "id": "color_pagination_disabled",
+        "allow_blank": true,
+        "default": ""
+      }
+    ],
+    "groups": [
+      {
+        "name": "Background",
+        "elements": [
+          {
+            "type": "select",
+            "id": "bg_type",
+            "label": "Background Media Type",
+            "default": "none",
+            "options": [
+              {
+                "value": "none",
+                "label": "None"
+              },
+              {
+                "value": "image",
+                "label": "Image"
+              },
+              {
+                "value": "video",
+                "label": "Video"
+              }
+            ]
+          },
+          {
+            "type": "video",
+            "id": "bg_video",
+            "label": "Background Video"
+          },
+          {
+            "type": "image_picker",
+            "id": "bg_image",
+            "label": "Background Image",
+            "info": "A good background image sets the tone for your website without distracting from your content. Suggested dimensions: 2880 × 1200.",
+            "fit": "max",
+            "width": 3000,
+            "height": 3000
+          },
+          {
+            "type": "radio",
+            "id": "bg_position",
+            "label": "Background Image Position",
+            "default": "center",
+            "info": "Vertical positioning of the background image.",
+            "options": [
+              {
+                "value": "top",
+                "label": "Top"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "bottom",
+                "label": "Bottom"
+              }
+            ]
+          },
+          {
+            "type": "checkbox",
+            "id": "background_fixed",
+            "label": "Fixed Background Image",
+            "default": "false",
+            "info": "Make this section's background image fixed on scroll. Does not apply to mobile devices."
+          },
+          {
+            "type": "color",
+            "label": "Background Color",
+            "id": "background_color",
+            "allow_blank": true,
+            "info": "Set a background color or apply a color overlay to your background image or video. Use the color wheel slider to adjust opacity."
+          }
+        ]
+      },
+      {
+        "name": "Desktop Layout",
+        "elements": [
+          {
+            "type": "spacer",
+            "id": "padding_desktop",
+            "label": "Desktop Section Padding",
+            "info": "Adjust padding inside of the section. Hold shift to increment/decrement by 10.",
+            "placeholder": {
+              "top": "100",
+              "right": "40",
+              "bottom": "100",
+              "left": "40"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Mobile Layout",
+        "elements": [
+          {
+            "type": "spacer",
+            "id": "padding_mobile",
+            "label": "Mobile Section Padding",
+            "info": "Adjust padding inside of the section",
+            "placeholder": {
+              "top": "40",
+              "right": "20",
+              "bottom": "40",
+              "left": "20"
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

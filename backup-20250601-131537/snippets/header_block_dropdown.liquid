@@ -1,0 +1,33 @@
+<style>
+  /* Dropdown menu colors for desktop */
+  @media (min-width: 768px) {
+    #block-{{ block.id }} .dropdown__menu {
+      background-color: {{ block.settings.background_color }};
+    }
+    #block-{{ block.id }} .dropdown__item a {
+      color: {{ block.settings.text_color }};
+    }
+  }
+  /* Mobile menu text alignment */
+  @media (max-width: 767px) {
+    #block-{{ block.id }} .dropdown__item a {
+      text-align: {{ section.settings.mobile_menu_text_alignment }};
+    }
+  }
+</style>
+
+<div class="dropdown" kjb-settings-id="{{ 'trigger' | settings_id: section: section, block: block }}">
+  <a class="dropdown__trigger">
+    {% element "block.settings.trigger" %}
+      {{ block.settings.trigger }}
+    {% endelement %}
+    {% if block.settings.show_icon %}
+      <i class="dropdown__icon fa fa-chevron-down"></i>
+    {% endif %}
+  </a>
+  <div class="dropdown__menu dropdown__menu--text-{{ block.settings.dropdown_menu_alignment }} ">
+    {% for link in current_site.link_lists[block.settings.menu].links %}
+      <span class="dropdown__item"><a href="{{ link.url }}" {% if block.settings.new_tab == true %} target="_blank" rel="noopener" {% endif %}>{{ link.name }}</a></span>
+    {% endfor %}
+  </div>
+</div>
