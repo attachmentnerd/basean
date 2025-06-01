@@ -1,0 +1,149 @@
+<section class="about-hero-section" style="background-image: url('{{ section.settings.background_image | image_picker_url: 'background.jpg' }}');">
+  <div class="about-hero-overlay"></div>
+  <div class="container">
+    <div class="about-hero-content">
+      {% if section.settings.tagline != blank %}
+        <p class="about-hero-tagline" kjb-settings-id="{{ 'tagline' | settings_id: section: section }}">
+          {{ section.settings.tagline }}
+          {% if section.settings.cta_link != blank %}
+            <a href="{{ section.settings.cta_link }}" class="about-hero-tagline-link">{{ section.settings.cta_text }}</a>
+          {% endif %}
+        </p>
+      {% endif %}
+      
+      <h1 class="about-hero-title" kjb-settings-id="{{ 'title' | settings_id: section: section }}">
+        {{ section.settings.title }}
+      </h1>
+      
+      {% if section.settings.subtitle != blank %}
+        <p class="about-hero-subtitle" kjb-settings-id="{{ 'subtitle' | settings_id: section: section }}">
+          {{ section.settings.subtitle }}
+        </p>
+      {% endif %}
+      
+      <div class="about-hero-buttons">
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'button' %}
+              <a href="{{ block.settings.button_link }}" 
+                 class="btn {% if block.settings.button_style == 'primary' %}btn-primary about-hero-btn{% else %}btn-outline about-hero-btn-secondary{% endif %}" 
+                 kjb-settings-id="{{ 'button_text' | settings_id: section: section, block: block }}">
+                {{ block.settings.button_text }}
+              </a>
+          {% endcase %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About Hero",
+  "elements": [
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image",
+      "default": "background.jpg"
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Announcing our next round of funding."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Tagline Link Text",
+      "default": "Read more →"
+    },
+    {
+      "type": "action",
+      "id": "cta_link",
+      "label": "Tagline Link"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Data to enrich your online business"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "button",
+      "name": "Button",
+      "elements": [
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Click here"
+        },
+        {
+          "type": "action",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "radio",
+          "id": "button_style",
+          "label": "Button Style",
+          "default": "primary",
+          "options": [
+            { "label": "Primary", "value": "primary" },
+            { "label": "Secondary", "value": "secondary" }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Hero",
+      "category": "Hero",
+      "settings": {
+        "tagline": "Announcing our next round of funding.",
+        "cta_text": "Read more →",
+        "title": "Data to enrich your online business",
+        "subtitle": "Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat."
+      },
+      "blocks": [
+        {
+          "type": "button",
+          "settings": {
+            "button_text": "Get started",
+            "button_style": "primary"
+          }
+        },
+        {
+          "type": "button",
+          "settings": {
+            "button_text": "Learn more →",
+            "button_style": "secondary"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

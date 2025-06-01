@@ -1,0 +1,345 @@
+// Card Hover Effects and Animations
+// ================================
+
+// Base card hover effects mixin
+@mixin card-hover-base {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// Image zoom effect mixin
+@mixin image-zoom-effect {
+  overflow: hidden;
+  
+  img {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+  }
+  
+  &:hover img {
+    transform: scale(1.05);
+  }
+}
+
+// General card styles
+.card,
+.store-card,
+.product,
+.blog-listing,
+.offer-card {
+  @include card-hover-base;
+  position: relative;
+  overflow: hidden;
+  
+  // Remove existing filter-based hover
+  &:hover {
+    filter: none;
+  }
+}
+
+// Product cards specific effects
+.product {
+  .product__image {
+    @include image-zoom-effect;
+    position: relative;
+    
+    // Add overlay on hover
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+  }
+  
+  &:hover .product__image::after {
+    opacity: 1;
+  }
+  
+  // Animate title on hover
+  .product__title {
+    transition: color 0.3s ease;
+  }
+  
+  &:hover .product__title {
+    color: var(--primary-color, #333);
+  }
+}
+
+// Blog listing cards
+.blog-listing {
+  .blog-listing__media {
+    @include image-zoom-effect;
+  }
+  
+  // Animate title underline
+  .blog-listing__title {
+    position: relative;
+    transition: color 0.3s ease;
+    display: inline-block;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary-color, #333);
+      transition: width 0.3s ease;
+    }
+  }
+  
+  &:hover .blog-listing__title {
+    color: var(--primary-color, #333);
+    
+    &::after {
+      width: 100%;
+    }
+  }
+  
+  // Fade in content on hover
+  .blog-listing__content {
+    transition: opacity 0.3s ease;
+  }
+  
+  &:hover .blog-listing__content {
+    opacity: 0.8;
+  }
+  
+  // Animate tags on hover
+  .tag {
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: var(--primary-color, #333);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+  }
+}
+
+// Store/Offer cards
+.store-card,
+.offer-card {
+  background: #fff;
+  text-decoration: none;
+  
+  // Add border highlight on hover
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 2px solid var(--primary-color, #333);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  
+  &:hover::before {
+    opacity: 1;
+  }
+  
+  // Image zoom effect
+  .store-card__image {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  &:hover .store-card__image {
+    transform: scale(1.05);
+  }
+  
+  // Animate price
+  .store-card__price {
+    transition: all 0.3s ease;
+  }
+  
+  &:hover .store-card__price {
+    color: var(--primary-color, #333);
+    transform: scale(1.05);
+  }
+  
+  // Button animation inside cards
+  .btn,
+  .button {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+    
+    &:hover {
+      transform: scale(1.05);
+      
+      &::after {
+        width: 300px;
+        height: 300px;
+      }
+    }
+  }
+}
+
+// Block card effects (using .card class)
+.card {
+  .card__image {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+  }
+  
+  &:hover .card__image {
+    transform: scale(1.05);
+  }
+  
+  // Content animation
+  .card__body {
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover .card__body {
+    transform: translateY(-4px);
+  }
+  
+  // Button animation
+  .card__button {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+    
+    &:hover::before {
+      left: 0;
+    }
+  }
+  
+  // Footer text animation
+  .card__footer {
+    transition: color 0.3s ease;
+  }
+  
+  &:hover .card__footer {
+    color: var(--primary-color, #333);
+  }
+}
+
+// Add subtle animation to all cards on page load
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Apply entrance animation
+.card,
+.store-card,
+.product,
+.blog-listing,
+.offer-card {
+  animation: fadeInUp 0.6s ease-out backwards;
+  
+  // Stagger animation for multiple cards
+  @for $i from 1 through 12 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.1}s;
+    }
+  }
+}
+
+// Feature blocks
+.feature {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  // Image effects
+  .feature__image {
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: scale(1.1) rotate(3deg);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+  }
+  
+  // Text effects on parent hover
+  &:hover {
+    .feature__text {
+      color: var(--primary-color, #333);
+      
+      h1, h2, h3, h4, h5, h6 {
+        color: var(--primary-color, #333);
+      }
+    }
+  }
+}
+
+// Feature blocks inside cards or sections
+.block:has(.feature) {
+  @include card-hover-base;
+  
+  &:hover {
+    .feature__image {
+      transform: scale(1.05);
+    }
+  }
+}
+
+// Mobile adjustments
+@media (max-width: 768px) {
+  .card,
+  .store-card,
+  .product,
+  .blog-listing,
+  .offer-card {
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+    }
+  }
+  
+  // Disable image zoom on mobile for better performance
+  .product-image,
+  .blog-image,
+  .card-image {
+    &:hover img {
+      transform: none;
+    }
+  }
+}

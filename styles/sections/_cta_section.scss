@@ -1,0 +1,100 @@
+// CTA Section Styles
+.cta-section {
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .cta-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    flex-wrap: wrap;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      text-align: center;
+      gap: 40px;
+    }
+  }
+
+  .cta-image {
+    flex: 0 0 auto;
+    
+    img {
+      width: 300px;
+      height: auto;
+      max-width: 100%;
+      filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+      
+      @media (max-width: 768px) {
+        width: 200px;
+      }
+    }
+  }
+
+  .cta-content {
+    flex: 1;
+  }
+
+  .cta-eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .cta-heading {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 20px;
+    
+    @media (max-width: 768px) {
+      font-size: 32px;
+    }
+  }
+
+  .cta-subheading {
+    font-size: 18px;
+    line-height: 1.6;
+    margin: 0 0 32px;
+    max-width: 500px;
+    
+    @media (max-width: 768px) {
+      font-size: 16px;
+      margin: 0 auto 32px;
+    }
+  }
+
+  .cta-button {
+    display: inline-block;
+    padding: 16px 32px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      opacity: 0.9;
+    }
+    
+    @media (max-width: 768px) {
+      padding: 14px 28px;
+      font-size: 13px;
+    }
+  }
+}

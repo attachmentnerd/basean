@@ -1,0 +1,126 @@
+// About Hero Section
+.about-hero-section {
+  position: relative;
+  min-height: 500px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  padding: 80px 0;
+  overflow: hidden;
+  
+  // Force all text to be white
+  * {
+    color: #ffffff !important;
+  }
+}
+
+.about-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(30, 27, 75, 0.95) 0%, rgba(19, 47, 76, 0.95) 100%);
+  z-index: 1;
+}
+
+.about-hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 768px;
+  margin: 0 auto;
+  color: #ffffff !important;
+}
+
+.about-hero-tagline {
+  font-size: 14px;
+  font-weight: 500;
+  color: #a5b4fc !important;
+  margin-bottom: 24px;
+  display: inline-block;
+}
+
+.about-hero-tagline-link {
+  color: #a5b4fc !important;
+  text-decoration: none;
+  margin-left: 8px;
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: #c7d2fe !important;
+    text-decoration: underline;
+  }
+}
+
+.about-hero-title {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 24px;
+  color: #ffffff !important;
+  
+  @media (max-width: 768px) {
+    font-size: 36px;
+  }
+}
+
+.about-hero-subtitle {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #e0e7ff !important;
+  margin-bottom: 40px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.about-hero-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 32px;
+}
+
+// Fix for Kajabi's btn classes
+.about-hero-section .btn {
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-block;
+  border: 2px solid transparent;
+  
+  &.btn-primary,
+  &.about-hero-btn {
+    background-color: #6366f1 !important;
+    color: #ffffff !important;
+    border-color: #6366f1 !important;
+    
+    &:hover {
+      background-color: #4f46e5 !important;
+      border-color: #4f46e5 !important;
+      color: #ffffff !important;
+      transform: translateY(-2px);
+      text-decoration: none;
+    }
+  }
+  
+  &.btn-outline,
+  &.about-hero-btn-secondary {
+    background-color: transparent !important;
+    color: #ffffff !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+      border-color: rgba(255, 255, 255, 0.5) !important;
+      color: #ffffff !important;
+      text-decoration: none;
+    }
+  }
+}

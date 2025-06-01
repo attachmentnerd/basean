@@ -1,0 +1,18 @@
+<!-- Local Theme Scripts -->
+<script src="/assets/scripts.js"></script>
+
+<!-- Preview Server Notice -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Add preview notice
+    const notice = document.createElement('div');
+    notice.className = 'preview-notice';
+    notice.innerHTML = '🚀 Kajabi Theme Preview Server - <a href="/test">Server Info</a>';
+    document.body.insertBefore(notice, document.body.firstChild);
+    document.body.classList.add('has-preview-notice');
+    
+    // Log to console
+    console.log('Kajabi Theme Preview Server is running');
+    console.log('Note: Kajabi-specific functionality (forms, authentication, etc.) will not work in preview mode');
+  });
+</script>
