@@ -51,26 +51,85 @@ liquid.registerTag('section', {
       const sectionSettings = settings.sections?.[this.sectionName] || {};
       
       // Create section object with mock data
+      let defaultSettings = {};
+      
+      // Section-specific default settings
+      if (this.sectionName === 'header') {
+        defaultSettings = {
+          background_color: '#FFFFFF',
+          text_color: '#2d3031',
+          position: 'static',
+          font_size_desktop: '16px',
+          font_size_mobile: '14px',
+          mobile_header_background_color: '',
+          mobile_header_text_color: '',
+          hamburger_color: '#2d3031',
+          horizontal: 'between'
+        };
+      } else if (this.sectionName === 'login') {
+        defaultSettings = {
+          login_text: 'Sign in to your account',
+          email: 'Email',
+          password: 'Password',
+          remember_me: 'Remember Me',
+          forgot_password: 'Forgot Password',
+          btn_text: 'Sign In',
+          button_text: 'Sign In',
+          forgot_password_text: 'Forgot your password?',
+          signup_text: "Don't have an account?",
+          signup_link_text: 'Sign up',
+          show_image: false
+        };
+      }
+      
+      // Add mock blocks for sections that need them
+      let mockBlocks = [];
+      if (this.sectionName === 'header') {
+        mockBlocks = [
+          {
+            id: 'logo-block',
+            type: 'logo',
+            settings: {
+              logo: '/assets/logo.png',
+              logo_text: 'My Site',
+              logo_width: '150px'
+            }
+          },
+          {
+            id: 'menu-block', 
+            type: 'menu',
+            settings: {
+              menu_items: [
+                { title: 'Home', url: '/' },
+                { title: 'About', url: '/about' },
+                { title: 'Products', url: '/products' },
+                { title: 'Blog', url: '/blog' }
+              ]
+            }
+          },
+          {
+            id: 'user-block',
+            type: 'user',
+            settings: {
+              show_login: true,
+              login_text: 'Login'
+            }
+          }
+        ];
+      }
+      
       const sectionData = {
         ...scope.environments,
         section: {
           id: this.sectionName,
           settings: {
-            // Default settings for login section
-            login_text: 'Sign in to your account',
-            email: 'Email',
-            password: 'Password',
-            remember_me: 'Remember Me',
-            forgot_password: 'Forgot Password',
-            btn_text: 'Sign In',
-            button_text: 'Sign In',
-            forgot_password_text: 'Forgot your password?',
-            signup_text: "Don't have an account?",
-            signup_link_text: 'Sign up',
-            show_image: false,
+            ...defaultSettings,
             ...sectionSettings
-          }
-        }
+          },
+          blocks: mockBlocks
+        },
+        // Add mock block for header_block includes
+        block: mockBlocks[0] || { id: 'default', type: 'default', settings: {} }
       };
       
       const rendered = await liquid.renderFile(sectionPath, sectionData);
@@ -133,14 +192,33 @@ liquid.registerTag('element_attributes', {
   }
 });
 
+// Register block_attributes tag
+liquid.registerTag('block_attributes', {
+  parse: function(tagToken, remainingTokens) {
+    this.args = tagToken.args;
+  },
+  render: async function(scope, emitter) {
+    // This tag adds Kajabi-specific attributes to blocks
+    // For preview, we'll just output a simple id/class
+    const blockId = scope.environments.block?.id || 'default';
+    emitter.write(`class="kajabi-block" data-block-id="${blockId}"`);
+  }
+});
+
 // Register element tag
 liquid.registerTag('element', {
   parse: function(tagToken, remainingTokens) {
     this.args = tagToken.args;
     this.tokens = [];
     let token;
+    let depth = 1;
     while ((token = remainingTokens.shift())) {
-      if (token.getText && token.getText() === 'endelement') break;
+      const text = token.getText && token.getText();
+      if (text === 'element') depth++;
+      if (text === 'endelement') {
+        depth--;
+        if (depth === 0) break;
+      }
       this.tokens.push(token);
     }
   },
@@ -149,6 +227,52 @@ liquid.registerTag('element', {
     const childTemplates = liquid.parser.parseTokens(this.tokens);
     await liquid.renderer.renderTemplates(childTemplates, scope, emitter);
   }
+});
+
+// Register endelement tag (for proper parsing)
+liquid.registerTag('endelement', {
+  parse: function() {},
+  render: function() {}
+});
+
+// Register paginate tag
+liquid.registerTag('paginate', {
+  parse: function(tagToken, remainingTokens) {
+    this.collection = tagToken.args.trim();
+    this.tokens = [];
+    let token;
+    while ((token = remainingTokens.shift())) {
+      if (token.getText && token.getText() === 'endpaginate') break;
+      this.tokens.push(token);
+    }
+  },
+  render: async function(scope, emitter) {
+    // Add paginate object to scope
+    scope.environments.paginate = {
+      pages: 5,
+      current_page: 1,
+      items: 10,
+      parts: [
+        { is_link: false, title: '1' },
+        { is_link: true, title: '2', url: '?page=2' },
+        { is_link: true, title: '3', url: '?page=3' },
+        { is_link: true, title: '4', url: '?page=4' },
+        { is_link: true, title: '5', url: '?page=5' }
+      ],
+      previous: null,
+      next: { url: '?page=2', title: 'Next' }
+    };
+    
+    // Render the content between paginate tags
+    const childTemplates = liquid.parser.parseTokens(this.tokens);
+    await liquid.renderer.renderTemplates(childTemplates, scope, emitter);
+  }
+});
+
+// Register endpaginate tag
+liquid.registerTag('endpaginate', {
+  parse: function() {},
+  render: function() {}
 });
 
 // Register csrf_meta_tags
@@ -317,6 +441,49 @@ liquid.registerFilter('append', (v, str) => {
   return String(v) + str;
 });
 
+// Additional Kajabi filters for showcase
+liquid.registerFilter('display_price', (offer) => {
+  // Display price for an offer
+  if (!offer || !offer.price) return '$0.00';
+  return `$${parseFloat(offer.price).toFixed(2)}`;
+});
+
+liquid.registerFilter('strip_html', (v) => {
+  // Strip HTML tags from content
+  if (!v) return '';
+  return String(v).replace(/<[^>]*>/g, '');
+});
+
+liquid.registerFilter('truncate', (v, length = 50, suffix = '...') => {
+  // Truncate text to specified length
+  if (!v) return '';
+  const str = String(v);
+  if (str.length <= length) return str;
+  return str.substring(0, length - suffix.length) + suffix;
+});
+
+liquid.registerFilter('date', (v, format) => {
+  // Basic date formatting
+  if (!v) return '';
+  const date = new Date(v);
+  if (format === 'long') {
+    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+  return date.toLocaleDateString();
+});
+
+liquid.registerFilter('form_input', (field, options = {}) => {
+  // Generate form input HTML
+  const inputClass = options.input_class || 'form-control';
+  const placeholder = options.placeholder ? `placeholder="${field.placeholder || field.name}"` : '';
+  const label = options.label !== false ? `<label for="${field.name}">${field.name}</label>` : '';
+  
+  return `<div class="${options.class || 'form-group'}">
+    ${label}
+    <input type="${field.type || 'text'}" name="${field.name}" class="${inputClass}" ${placeholder}>
+  </div>`;
+});
+
 
 // Override renderFile to use preview versions of global includes
 const originalRenderFile = liquid.renderFile.bind(liquid);
@@ -398,7 +565,17 @@ function getMockKajabiData() {
     // Current site
     current_site: {
       title: 'My Kajabi Site',
-      url: 'http://localhost:3000'
+      url: 'http://localhost:3000',
+      find_offer: {
+        1: {
+          id: 1,
+          title: 'Premium Package',
+          description: 'Get access to all courses with this premium package',
+          price: 299.00,
+          image_url: '/assets/placeholder.png',
+          checkout_url: '/checkout/premium'
+        }
+      }
     },
     
     // Current site user (for forms)
@@ -423,7 +600,16 @@ function getMockKajabiData() {
     },
     
     // Powered by link
-    powered_by_link: '<a href="https://kajabi.com">Powered by Kajabi</a>'
+    powered_by_link: '<a href="https://kajabi.com">Powered by Kajabi</a>',
+    
+    // Newsletter mock data
+    newsletter: {
+      form: {
+        fields: [
+          { name: 'email', type: 'email', placeholder: 'Enter your email' }
+        ]
+      }
+    }
   };
 }
 
@@ -647,6 +833,102 @@ app.get('/login', async (req, res) => {
   }
 });
 
+app.get('/test-simple', async (req, res) => {
+  try {
+    const settings = await loadSettings();
+    const mockData = getMockKajabiData();
+    
+    const content = await renderWithLayout('templates/test_simple', {
+      ...mockData,
+      settings: settings.current || {},
+      template: 'test_simple'
+    });
+    
+    res.send(content);
+  } catch (error) {
+    res.status(500).send(`Error rendering test: ${error.message}`);
+  }
+});
+
+app.get('/showcase', async (req, res) => {
+  try {
+    const settings = await loadSettings();
+    const mockData = getMockKajabiData();
+    
+    // Add extra mock data for showcase
+    const showcaseData = {
+      ...mockData,
+      settings: settings.current || {},
+      template: 'test_showcase',
+      
+      // Mock data for various components
+      blog_posts: [
+        {
+          id: 1,
+          title: 'First Blog Post',
+          excerpt: 'This is the excerpt for the first blog post...',
+          content: 'Full content of the first blog post',
+          url: '/blog/first-post',
+          featured_image: '/assets/placeholder.png',
+          author: { name: 'John Doe' },
+          created_at: new Date().toISOString()
+        },
+        {
+          id: 2,
+          title: 'Second Blog Post',
+          excerpt: 'This is the excerpt for the second blog post...',
+          content: 'Full content of the second blog post',
+          url: '/blog/second-post',
+          featured_image: '/assets/placeholder.png',
+          author: { name: 'Jane Smith' },
+          created_at: new Date().toISOString()
+        }
+      ],
+      
+      announcements: [
+        {
+          id: 1,
+          title: 'Important Announcement',
+          content: 'This is an important announcement for all members.',
+          created_at: new Date().toISOString()
+        }
+      ],
+      
+      offers: [
+        {
+          id: 1,
+          title: 'Premium Package',
+          description: 'Get access to all courses with this premium package',
+          price: 299.00,
+          image_url: '/assets/placeholder.png',
+          checkout_url: '/checkout/premium'
+        }
+      ],
+      
+      // Pagination mock
+      paginate: {
+        pages: 5,
+        current: 2,
+        previous: { url: '/showcase?page=1' },
+        next: { url: '/showcase?page=3' },
+        parts: [
+          { is_link: true, url: '/showcase?page=1', title: '1' },
+          { is_link: false, title: '2' },
+          { is_link: true, url: '/showcase?page=3', title: '3' },
+          { is_link: true, url: '/showcase?page=4', title: '4' },
+          { is_link: true, url: '/showcase?page=5', title: '5' }
+        ]
+      }
+    };
+    
+    const content = await renderWithLayout('templates/test_showcase', showcaseData);
+    
+    res.send(content);
+  } catch (error) {
+    res.status(500).send(`Error rendering showcase: ${error.message}`);
+  }
+});
+
 app.get('/page/:slug', async (req, res) => {
   try {
     const settings = await loadSettings();
@@ -691,6 +973,7 @@ app.listen(port, () => {
   console.log(`🚀 Kajabi theme preview server running at http://localhost:${port}`);
   console.log('📝 Available routes:');
   console.log('   - http://localhost:' + port + '/ (Homepage)');
+  console.log('   - http://localhost:' + port + '/showcase (🎨 Component Showcase)');
   console.log('   - http://localhost:' + port + '/blog');
   console.log('   - http://localhost:' + port + '/products');
   console.log('   - http://localhost:' + port + '/login');

@@ -1,0 +1,75 @@
+{% comment %}
+  Simple Test Template
+  Tests basic functionality without problematic sections
+{% endcomment %}
+
+<div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+  <h1 style="text-align: center; color: #333;">Simple Component Test</h1>
+  
+  <hr style="margin: 40px 0;">
+  
+  <h2>Basic Sections</h2>
+  
+  <div style="margin: 20px 0; padding: 20px; background: #f5f5f5;">
+    <h3>Header Section</h3>
+    {% section 'header' %}
+  </div>
+  
+  <div style="margin: 20px 0; padding: 20px; background: #f5f5f5;">
+    <h3>Footer Section</h3>
+    {% section 'footer' %}
+  </div>
+  
+  <hr style="margin: 40px 0;">
+  
+  <h2>Simple Snippets</h2>
+  
+  <div style="margin: 20px 0; padding: 20px; background: #e8f5e9;">
+    <h3>Alert Messages</h3>
+    {% include 'alert_messages' %}
+  </div>
+  
+  <div style="margin: 20px 0; padding: 20px; background: #e3f2fd;">
+    <h3>Pagination</h3>
+    {% include 'pagination' %}
+  </div>
+  
+  <div style="margin: 20px 0; padding: 20px; background: #fff3e0;">
+    <h3>Social Icons</h3>
+    {% include 'element_social_icons' %}
+  </div>
+  
+  <hr style="margin: 40px 0;">
+  
+  <h2>Test Data</h2>
+  
+  <div style="margin: 20px 0; padding: 20px; background: #f3e5f5;">
+    <h3>Current User</h3>
+    {% if member %}
+      <p>Logged in as: {{ member.first_name }} {{ member.last_name }}</p>
+      <p>Email: {{ member.email }}</p>
+    {% else %}
+      <p>Not logged in</p>
+    {% endif %}
+  </div>
+  
+  <div style="margin: 20px 0; padding: 20px; background: #e0f2f1;">
+    <h3>Site Info</h3>
+    <p>Site Title: {{ current_site.title }}</p>
+    <p>Site URL: {{ current_site.url }}</p>
+  </div>
+  
+  <div style="margin: 20px 0; padding: 20px; background: #fce4ec;">
+    <h3>Products</h3>
+    {% if products.size > 0 %}
+      <ul>
+        {% for product in products %}
+          <li>{{ product.title }} - {{ product.price | money }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No products available</p>
+    {% endif %}
+  </div>
+  
+</div>

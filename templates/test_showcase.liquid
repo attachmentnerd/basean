@@ -28,8 +28,10 @@
 <h3 style="padding: 20px;">Carousel Section</h3>
 {% section 'carousel' %}
 
+{% comment %}
 <h3 style="padding: 20px;">Newsletter Hero Section</h3>
 {% section 'newsletter_hero' %}
+{% endcomment %}
 
 <h3 style="padding: 20px;">Section (Generic)</h3>
 {% section 'section' %}
@@ -69,7 +71,10 @@
 
 <div style="padding: 20px;">
   <h3>Newsletter Form</h3>
+  {% comment %} Temporarily disabled due to form parsing issue
   {% include 'newsletter_form' %}
+  {% endcomment %}
+  <p>Newsletter form temporarily disabled</p>
 </div>
 
 <div style="padding: 20px;">
