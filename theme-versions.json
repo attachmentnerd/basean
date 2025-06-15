@@ -1,0 +1,29 @@
+{
+  "themes": {
+    "website": {
+      "currentVersion": "1.0.0",
+      "lastRelease": null
+    },
+    "landing": {
+      "currentVersion": "1.0.5",
+      "lastRelease": {
+        "version": "1.0.5",
+        "date": "2025-06-15T20:45:23.654Z",
+        "path": "/Users/macbook/Library/CloudStorage/GoogleDrive-tharwood@postscapes.com/My Drive/01_PROJECTS/AttachmentNerd/AN-Kajabi/Theme/Base/exports/releases/v1.0.5/AttachmentNerd-Landing_1.0.5.zip"
+      }
+    },
+    "product": {
+      "currentVersion": "1.0.1",
+      "lastRelease": {
+        "version": "1.0.1",
+        "date": "2025-06-15T20:44:58.125Z",
+        "path": "/Users/macbook/Library/CloudStorage/GoogleDrive-tharwood@postscapes.com/My Drive/01_PROJECTS/AttachmentNerd/AN-Kajabi/Theme/Base/exports/releases/v1.0.1/AttachmentNerd-Product_1.0.1.zip"
+      }
+    },
+    "email": {
+      "currentVersion": "1.0.0",
+      "lastRelease": null
+    }
+  },
+  "sharedVersion": "1.0.0"
+}

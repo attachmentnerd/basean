@@ -1,0 +1,20 @@
+[
+  {
+    "name": "theme_info",
+    "settings_validatable": true,
+    "theme_name": "AttachmentNerd Product",
+    "theme_version": "1.0.0",
+    "theme_author": "AttachmentNerd"
+  },
+  {
+    "name": "Product Settings",
+    "elements": [
+      {
+        "type": "color",
+        "id": "product_primary_color",
+        "label": "Primary Color",
+        "default": "#FF6B6B"
+      }
+    ]
+  }
+]

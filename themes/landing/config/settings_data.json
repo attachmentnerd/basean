@@ -1,0 +1,10 @@
+{
+  "current": {
+    "primary_color": "#2C3E50",
+    "secondary_color": "#E74C3C",
+    "text_color": "#333333",
+    "bg_color": "#FFFFFF",
+    "font_family": "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
+    "heading_font": "Inter, sans-serif"
+  }
+}

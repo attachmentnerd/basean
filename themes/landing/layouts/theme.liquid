@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page_title }}</title>
+  
+  {% comment %} Favicon {% endcomment %}
+  <link rel="icon" type="image/png" href="{{ 'favicon.png' | image_picker_url: 'favicon.png' }}">
+  
+  {% comment %} Styles {% endcomment %}
+  {{ 'styles.scss.liquid' | asset_url | stylesheet_tag }}
+  
+  {% comment %} Head scripts {% endcomment %}
+  {{ content_for_header }}
+</head>
+<body>
+  <main>
+    {{ content_for_layout }}
+  </main>
+  
+  {% comment %} Scripts {% endcomment %}
+  <script src="{{ 'scripts.js' | asset_url }}" defer></script>
+  
+  {% comment %} Footer scripts {% endcomment %}
+  {{ content_for_footer }}
+</body>
+</html>

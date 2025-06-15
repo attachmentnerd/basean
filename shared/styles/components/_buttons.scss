@@ -1,0 +1,98 @@
+// Shared button styles for all themes
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-family;
+  font-weight: 500;
+  text-decoration: none;
+  text-align: center;
+  border: 2px solid transparent;
+  border-radius: $border-radius;
+  transition: $transition-base;
+  cursor: pointer;
+  line-height: 1.2;
+  position: relative;
+  overflow: hidden;
+  
+  // Sizes
+  &-sm {
+    padding: $spacing-xs $spacing-sm;
+    font-size: 14px;
+  }
+  
+  &-md {
+    padding: $spacing-sm $spacing-md;
+    font-size: 16px;
+  }
+  
+  &-lg {
+    padding: $spacing-md $spacing-lg;
+    font-size: 18px;
+  }
+  
+  // Styles
+  &-primary {
+    background-color: $primary-color;
+    color: white;
+    
+    &:hover {
+      background-color: darken($primary-color, 10%);
+      transform: translateY(-2px);
+      box-shadow: $box-shadow-lg;
+    }
+  }
+  
+  &-secondary {
+    background-color: $secondary-color;
+    color: white;
+    
+    &:hover {
+      background-color: darken($secondary-color, 10%);
+      transform: translateY(-2px);
+      box-shadow: $box-shadow-lg;
+    }
+  }
+  
+  &-outline {
+    background-color: transparent;
+    color: $primary-color;
+    border-color: $primary-color;
+    
+    &:hover {
+      background-color: $primary-color;
+      color: white;
+    }
+  }
+  
+  &-ghost {
+    background-color: transparent;
+    color: $text-color;
+    
+    &:hover {
+      background-color: rgba($primary-color, 0.1);
+      color: $primary-color;
+    }
+  }
+  
+  // Icon support
+  &-icon {
+    margin-right: $spacing-xs;
+    display: inline-flex;
+  }
+  
+  // Full width
+  &-block {
+    display: flex;
+    width: 100%;
+  }
+  
+  // Disabled state
+  &:disabled,
+  &.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}

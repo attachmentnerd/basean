@@ -1,0 +1,33 @@
+{% comment %}
+  Shared Button Component
+  Usage: {% include 'shared/snippets/ui/button', text: 'Click Me', url: '/path', style: 'primary', size: 'md' %}
+  
+  Parameters:
+  - text: Button text (required)
+  - url: Link URL (required)
+  - style: primary, secondary, outline, ghost (default: primary)
+  - size: sm, md, lg (default: md)
+  - icon: Icon name (optional)
+  - class: Additional CSS classes (optional)
+  - target: Link target (optional)
+  - data_attrs: Data attributes as string (optional)
+{% endcomment %}
+
+{% assign button_style = style | default: 'primary' %}
+{% assign button_size = size | default: 'md' %}
+{% assign button_classes = 'btn btn-' | append: button_style | append: ' btn-' | append: button_size %}
+{% if class %}
+  {% assign button_classes = button_classes | append: ' ' | append: class %}
+{% endif %}
+
+<a 
+  href="{{ url }}" 
+  class="{{ button_classes }}"
+  {% if target %}target="{{ target }}"{% endif %}
+  {% if data_attrs %}{{ data_attrs }}{% endif %}
+>
+  {% if icon %}
+    <span class="btn-icon">{% include 'shared/snippets/ui/icon', name: icon %}</span>
+  {% endif %}
+  <span class="btn-text">{{ text }}</span>
+</a>

@@ -19,3 +19,7 @@ npm-debug.log*
 
 # Dependencies
 node_modules/
+# Theme exports
+exports/
+dist/
+old-exports/

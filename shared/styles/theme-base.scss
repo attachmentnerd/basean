@@ -1,0 +1,61 @@
+// Base styles shared across all AttachmentNerd themes
+@import 'core/shared-variables';
+@import 'core/helpers';
+@import 'core/typography';
+@import 'components/buttons';
+
+// Base reset and defaults
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: $font-family;
+  font-size: $base-font-size;
+  line-height: $line-height;
+  color: $text-color;
+  background-color: $bg-color;
+}
+
+// Container
+.container {
+  max-width: $container-max;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+  
+  &.container-narrow {
+    max-width: $container-narrow;
+  }
+  
+  &.container-wide {
+    max-width: $container-wide;
+  }
+}
+
+// Common section spacing
+section {
+  padding: $spacing-xl 0;
+  
+  @media (min-width: $tablet) {
+    padding: $spacing-xxl 0;
+  }
+}
+
+// Typography
+h1, h2, h3, h4, h5, h6 {
+  font-family: $heading-font;
+  line-height: 1.2;
+  margin-top: 0;
+  margin-bottom: $spacing-md;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: $spacing-md;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}

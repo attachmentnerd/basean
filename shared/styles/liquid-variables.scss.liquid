@@ -1,0 +1,32 @@
+// Liquid variables from Kajabi settings
+// This file gets processed separately and included in the final CSS
+
+:root {
+  // Colors from theme settings
+  --primary-color: {{ settings.primary_color | default: '#2C3E50' }};
+  --secondary-color: {{ settings.secondary_color | default: '#E74C3C' }};
+  --tertiary-color: {{ settings.tertiary_color | default: '#F39C12' }};
+  
+  --text-color: {{ settings.text_color | default: '#333333' }};
+  --text-light: {{ settings.text_light | default: '#666666' }};
+  --bg-color: {{ settings.bg_color | default: '#FFFFFF' }};
+  --bg-light: {{ settings.bg_light | default: '#F8F9FA' }};
+  --border-color: {{ settings.border_color | default: '#E0E0E0' }};
+  
+  // Typography
+  --font-family: {{ settings.font_family | default: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif' }};
+  --heading-font: {{ settings.heading_font | default: settings.font_family | default: 'Inter, sans-serif' }};
+  --base-font-size: {{ settings.base_font_size | default: '16px' }};
+  --line-height: {{ settings.line_height | default: 1.6 }};
+  
+  // Spacing
+  --container-max: {{ settings.container_max | default: '1200px' }};
+  --container-narrow: {{ settings.container_narrow | default: '800px' }};
+  --container-wide: {{ settings.container_wide | default: '1400px' }};
+  
+  // Components
+  --border-radius: {{ settings.border_radius | default: '4px' }};
+  --border-radius-lg: {{ settings.border_radius_lg | default: '8px' }};
+  --box-shadow: {{ settings.box_shadow | default: '0 2px 4px rgba(0,0,0,0.1)' }};
+  --box-shadow-lg: {{ settings.box_shadow_lg | default: '0 4px 6px rgba(0,0,0,0.1)' }};
+}

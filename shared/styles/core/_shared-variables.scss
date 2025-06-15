@@ -1,0 +1,59 @@
+// Shared variables for all AttachmentNerd themes
+// These are default values that can be overridden
+
+// Brand Colors
+$primary-color: #2C3E50 !default;
+$secondary-color: #E74C3C !default;
+$tertiary-color: #F39C12 !default;
+
+// Neutral Colors
+$text-color: #333333 !default;
+$text-light: #666666 !default;
+$bg-color: #FFFFFF !default;
+$bg-light: #F8F9FA !default;
+$border-color: #E0E0E0 !default;
+
+// Typography
+$font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !default;
+$heading-font: $font-family !default;
+$base-font-size: 16px !default;
+$line-height: 1.6 !default;
+
+// Spacing System
+$spacing-unit: 8px !default;
+$spacing-xs: $spacing-unit !default;
+$spacing-sm: $spacing-unit * 2 !default;
+$spacing-md: $spacing-unit * 3 !default;
+$spacing-lg: $spacing-unit * 4 !default;
+$spacing-xl: $spacing-unit * 6 !default;
+$spacing-xxl: $spacing-unit * 8 !default;
+
+// Container Widths
+$container-max: 1200px !default;
+$container-narrow: 800px !default;
+$container-wide: 1400px !default;
+
+// Breakpoints
+$mobile: 480px !default;
+$tablet: 768px !default;
+$desktop: 1024px !default;
+$wide: 1200px !default;
+
+// Component Variables
+$border-radius: 4px !default;
+$border-radius-lg: 8px !default;
+$box-shadow: 0 2px 4px rgba(0,0,0,0.1) !default;
+$box-shadow-lg: 0 4px 6px rgba(0,0,0,0.1) !default;
+
+// Transitions
+$transition-base: all 0.3s ease !default;
+$transition-fast: all 0.15s ease !default;
+
+// Z-index layers
+$z-index-dropdown: 1000 !default;
+$z-index-sticky: 1020 !default;
+$z-index-fixed: 1030 !default;
+$z-index-modal-backdrop: 1040 !default;
+$z-index-modal: 1050 !default;
+$z-index-popover: 1060 !default;
+$z-index-tooltip: 1070 !default;

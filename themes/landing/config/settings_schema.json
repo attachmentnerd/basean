@@ -1,0 +1,57 @@
+[
+  {
+    "name": "theme_info",
+    "settings_validatable": true,
+    "theme_name": "AttachmentNerd Landing",
+    "theme_version": "1.0.0",
+    "theme_author": "AttachmentNerd",
+    "theme_documentation_url": "https://attachmentnerd.com/docs",
+    "theme_support_url": "https://attachmentnerd.com/support"
+  },
+  {
+    "name": "Colors",
+    "elements": [
+      {
+        "type": "color",
+        "id": "primary_color",
+        "label": "Primary Color",
+        "default": "#2C3E50"
+      },
+      {
+        "type": "color",
+        "id": "secondary_color",
+        "label": "Secondary Color",
+        "default": "#E74C3C"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text Color",
+        "default": "#333333"
+      },
+      {
+        "type": "color",
+        "id": "bg_color",
+        "label": "Background Color",
+        "default": "#FFFFFF"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "elements": [
+      {
+        "type": "text",
+        "id": "font_family",
+        "label": "Font Family",
+        "default": "Inter, -apple-system, BlinkMacSystemFont, sans-serif"
+      },
+      {
+        "type": "text",
+        "id": "heading_font",
+        "label": "Heading Font",
+        "default": "Inter, sans-serif"
+      }
+    ]
+  }
+]

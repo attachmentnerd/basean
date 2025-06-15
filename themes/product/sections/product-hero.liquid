@@ -1,0 +1,35 @@
+
+<section class="product-hero">
+  <h1>{{ section.settings.title }}</h1>
+  {% include 'shared/snippets/ui/button', 
+     text: section.settings.button_text,
+     url: section.settings.button_link,
+     style: 'primary',
+     size: 'lg'
+  %}
+</section>
+
+{% schema %}
+{
+  "name": "Product Hero",
+  "elements": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Amazing Product"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Buy Now"
+    },
+    {
+      "type": "action",
+      "id": "button_link",
+      "label": "Button Link"
+    }
+  ]
+}
+{% endschema %}

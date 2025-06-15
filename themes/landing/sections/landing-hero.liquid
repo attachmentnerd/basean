@@ -1,0 +1,73 @@
+<section class="landing-hero" style="background-color: {{ section.settings.bg_color }};">
+  <div class="container">
+    <div class="hero-content">
+      <h1 class="hero-title">{{ section.settings.title }}</h1>
+      <p class="hero-subtitle">{{ section.settings.subtitle }}</p>
+      
+      <div class="hero-buttons">
+        {% include 'shared/snippets/ui/button', 
+           text: section.settings.button_text,
+           url: section.settings.button_link,
+           style: 'primary',
+           size: 'lg'
+        %}
+        
+        {% if section.settings.secondary_button_text != blank %}
+          {% include 'shared/snippets/ui/button', 
+             text: section.settings.secondary_button_text,
+             url: section.settings.secondary_button_link,
+             style: 'outline',
+             size: 'lg'
+          %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Landing Hero",
+  "elements": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Hero Title",
+      "default": "Welcome to AttachmentNerd"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Hero Subtitle",
+      "default": "Transform your business with our powerful platform"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Primary Button Text",
+      "default": "Get Started"
+    },
+    {
+      "type": "action",
+      "id": "button_link",
+      "label": "Primary Button Link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_text",
+      "label": "Secondary Button Text"
+    },
+    {
+      "type": "action",
+      "id": "secondary_button_link",
+      "label": "Secondary Button Link"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#F8F9FA"
+    }
+  ]
+}
+{% endschema %}

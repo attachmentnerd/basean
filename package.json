@@ -8,22 +8,31 @@
     "start": "node server.js",
     "build": "gulp build",
     "watch": "gulp",
-    "compile-scss": "gulp styles"
+    "compile-scss": "gulp styles",
+    "theme:build": "node build-themes.js build",
+    "theme:export": "node theme-manager.js export",
+    "theme:dev": "node theme-manager.js dev",
+    "theme:list": "node theme-manager.js list",
+    "theme:archive": "node theme-manager.js archive",
+    "theme:clean": "node theme-manager.js clean"
   },
   "dependencies": {
+    "chokidar": "^3.5.3",
+    "connect-livereload": "^0.6.1",
     "express": "^4.18.2",
     "liquidjs": "^10.9.2",
-    "chokidar": "^3.5.3",
-    "livereload": "^0.9.3",
-    "connect-livereload": "^0.6.1"
+    "livereload": "^0.9.3"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1",
+    "archiver": "^7.0.1",
+    "fs-extra": "^11.3.0",
     "gulp": "^4.0.2",
-    "gulp-sass": "^5.1.0",
-    "sass": "^1.69.5",
+    "gulp-autoprefixer": "^8.0.0",
     "gulp-concat": "^2.6.1",
+    "gulp-sass": "^5.1.0",
     "gulp-sourcemaps": "^3.0.0",
-    "gulp-autoprefixer": "^8.0.0"
+    "nodemon": "^3.0.1",
+    "sass": "^1.69.5",
+    "semver": "^7.7.2"
   }
 }

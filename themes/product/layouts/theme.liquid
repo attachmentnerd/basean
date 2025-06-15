@@ -1,0 +1,11 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ page_title }}</title>
+  {{ 'styles.scss.liquid' | asset_url | stylesheet_tag }}
+</head>
+<body class="product-theme">
+  {{ content_for_layout }}
+</body>
+</html>
